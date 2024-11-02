@@ -12,8 +12,8 @@ public class User {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "user_name")
+    private String userName;
 
     @Column(name = "password")
     private String password;
@@ -38,14 +38,14 @@ public class User {
     private Collection<Role> roles;
 
     public User(
-            String name,
+            String userName,
             String password,
             String email,
             String firstName,
             String lastName,
             boolean active,
             Collection<Role> roles) {
-        this.name = name;
+        this.userName = userName;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
@@ -63,12 +63,12 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -123,7 +123,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
