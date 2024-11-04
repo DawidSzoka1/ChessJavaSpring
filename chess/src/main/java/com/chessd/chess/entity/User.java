@@ -4,56 +4,53 @@ import jakarta.persistence.*;
 
 import java.util.Collection;
 
+
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "user_name")
+    @Column(name = "username")
     private String userName;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email")
-    private String email;
 
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "enable")
+    private boolean enable;
 
-    @Column(name = "last_name")
-    private String lastName;
 
-    @Column(name = "active")
-    private boolean active;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "roles",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "id")
-    )
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
     public User(
             String userName,
             String password,
-            String email,
-            String firstName,
-            String lastName,
-            boolean active,
+            boolean enable,
             Collection<Role> roles) {
         this.userName = userName;
         this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.active = active;
+        this.enable = enable;
         this.roles = roles;
     }
-    public User() {}
+
+    public User() {
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
 
     public int getId() {
         return id;
@@ -79,45 +76,15 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public boolean isEnable() {
+        return enable;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public boolean isAcitive() {
-        return active;
-    }
-
-    public void setAcitive(boolean active) {
-        this.active = active;
-    }
-
-    public Collection<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
 
     @Override
     public String toString() {
@@ -125,11 +92,6 @@ public class User {
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", active=" + active +
-                ", roles=" + roles +
-                '}';
+                ", enable=" + enable + '}';
     }
 }

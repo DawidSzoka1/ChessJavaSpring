@@ -4,5 +4,5 @@ import com.chessd.chess.entity.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
-    public User findByUsername(String username);
+    User findByUserName(String username);
 }

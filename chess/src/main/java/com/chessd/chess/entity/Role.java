@@ -2,22 +2,26 @@ package com.chessd.chess.entity;
 
 import jakarta.persistence.*;
 
+
 @Entity
-@Table(name="roles")
+@Table(name = "role")
 public class Role {
     @Id
     @Column(name = "id")
     private int id;
 
-    @Column(name = "role")
-    private String role;
+    @Column(name = "name")
+    private String name;
 
-    public Role() {}
 
-    public Role(String role, int id) {
-        this.role = role;
+    public Role() {
+    }
+
+    public Role(String name, int id) {
+        this.name = name;
         this.id = id;
     }
+
 
     public int getId() {
         return id;
@@ -27,19 +31,19 @@ public class Role {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
-                ", role='" + role + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

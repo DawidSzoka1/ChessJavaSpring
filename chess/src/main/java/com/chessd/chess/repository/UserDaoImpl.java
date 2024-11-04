@@ -27,17 +27,17 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User findByUsername(String username) {
-        TypedQuery<User> query = entityManager.createQuery("FROM  User where userName=:uName and active=true", User.class);
+        TypedQuery<User> query = entityManager.createQuery("FROM  User where userName=:uName and enable=true", User.class);
         query.setParameter("uName", username);
         return query.getSingleResult();
     }
 
-    @Override
-    public User findByEmail(String email) {
-        TypedQuery<User> query = entityManager.createQuery("FROM  User where email=:email and active=true", User.class);
-        query.setParameter("email", email);
-        return query.getSingleResult();
-    }
+//    @Override
+//    public User findByEmail(String email) {
+//        TypedQuery<User> query = entityManager.createQuery("FROM  User where email=:email and enable=true", User.class);
+//        query.setParameter("email", email);
+//        return query.getSingleResult();
+//    }
 
     @Override
     @Transactional
@@ -53,14 +53,14 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public List<User> findAll() {
-        TypedQuery<User> query = entityManager.createQuery("FROM  User where active=true", User.class);
+        TypedQuery<User> query = entityManager.createQuery("FROM  User where enable=true", User.class);
 
         return query.getResultList();
     }
 
     @Override
     public List<User> findAllSortedByNameASC() {
-        TypedQuery<User> query = entityManager.createQuery("FROM  User where active=true order by userName asc", User.class);
+        TypedQuery<User> query = entityManager.createQuery("FROM  User where enable=true order by userName asc", User.class);
         return query.getResultList();
     }
 }

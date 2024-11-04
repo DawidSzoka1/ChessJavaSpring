@@ -18,7 +18,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Role findByRole(String role) {
-        TypedQuery<Role> query = entityManager.createQuery("FROM Role where role=:role", Role.class);
+        TypedQuery<Role> query = entityManager.createQuery("FROM Role where name=:role", Role.class);
         query.setParameter("role", role);
         return query.getSingleResult();
     }
