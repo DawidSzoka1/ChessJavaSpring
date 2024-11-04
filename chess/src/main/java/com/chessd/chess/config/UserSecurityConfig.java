@@ -23,50 +23,56 @@ public class UserSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    //authenticationProvider bean definition
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(UserService userService) {
+    public DaoAuthenticationProvider authenticationProvider(UserService userService) {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userService);
-        auth.setPasswordEncoder(passwordEncoder());
+        auth.setUserDetailsService(userService); //set the custom user details service
+        auth.setPasswordEncoder(passwordEncoder()); //set the password encoder - bcrypt
         return auth;
     }
 
     @Bean
-    public UserDetailsManager userDetailsManager(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "select id, username, password, active from users where username=?");
+        http.authorizeHttpRequests(configurer ->
+                        configurer
+                                .requestMatchers("/").permitAll()
+                                .requestMatchers("/leaders/**").hasRole("MANAGER")
+                                .requestMatchers("/systems/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                )
+                .formLogin(form ->
+                        form
+                                .loginPage("/showMyLoginPage")
+                                .loginProcessingUrl("/authenticateTheUser")
+                                .permitAll()
+                )
+                .logout(logout -> logout.permitAll()
+                )
+                .exceptionHandling(configurer ->
+                        configurer.accessDeniedPage("/access-denied")
+                );
 
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "select username_ref, role from roles where username_ref=?"
-
-        );
-
-        return jdbcUserDetailsManager;
-
+        return http.build();
     }
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.authorizeRequests(configurer ->
-//                        configurer.anyRequest().authenticated()
-//                )
-//                .formLogin(form ->
-//                        form
-//                                .loginPage("/login")
-//                                .loginProcessingUrl("/authenticateLogin")
-//                                .permitAll()
-//                )
-//                .logout(logout ->
-//                        logout
-//                                .permitAll()
-//                )
-//                .exceptionHandling(configurer ->
-//                        configurer.accessDeniedPage("/access-denied")
-//                );
-//        http.httpBasic(Customizer.withDefaults());
-//
-//        return http.build();
-//    }
 }
+
+//    @Bean
+//    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+//
+//        jdbcUserDetailsManager.setUsersByUsernameQuery(
+//                "select id, username, password, active from users where username=?");
+//
+//        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+//                "select username_ref, role from roles where username_ref=?"
+//
+//        );
+//
+//        return jdbcUserDetailsManager;
+//
+//    }
+
+

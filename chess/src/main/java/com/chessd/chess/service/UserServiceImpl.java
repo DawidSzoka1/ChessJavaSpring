@@ -27,12 +27,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUserName(String username) {
-        return userDao.findByUsername(username);
+        return userDao.findByUserName(username);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByUsername(username);
+        User user = userDao.findByUserName(username);
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
@@ -40,8 +40,6 @@ public class UserServiceImpl implements UserService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUserName(),
                 user.getPassword(),
-                user.isEnable(),
-                true, true, true,
                 mapRolesToAuthorities(user.getRoles())
         );
     }

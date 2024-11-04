@@ -24,7 +24,7 @@ public class User {
     private boolean enable;
 
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
         joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -39,6 +39,11 @@ public class User {
         this.password = password;
         this.enable = enable;
         this.roles = roles;
+    }
+    public User(String userName, String password, boolean enabled) {
+        this.userName = userName;
+        this.password = password;
+        this.enable = enabled;
     }
 
     public User() {
@@ -92,6 +97,8 @@ public class User {
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", enable=" + enable + '}';
+                ", enable=" + enable +
+                ", roles=" + roles
+                +'}';
     }
 }
