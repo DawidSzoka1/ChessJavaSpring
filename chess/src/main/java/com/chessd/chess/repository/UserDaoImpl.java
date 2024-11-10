@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao{
@@ -62,5 +63,12 @@ public class UserDaoImpl implements UserDao{
     public List<User> findAllSortedByNameASC() {
         TypedQuery<User> query = entityManager.createQuery("FROM  User where enable=true order by userName asc", User.class);
         return query.getResultList();
+    }
+
+    @Override
+    public Optional<User> findById(int id) {
+        TypedQuery<User> query = entityManager.createQuery("FROM  User where id=:id and enable=true", User.class);
+        query.setParameter("id", id);
+        return Optional.ofNullable(query.getSingleResult());
     }
 }
