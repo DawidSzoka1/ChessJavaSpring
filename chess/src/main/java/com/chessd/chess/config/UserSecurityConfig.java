@@ -47,7 +47,7 @@ public class UserSecurityConfig {
                 )
                 .formLogin(form ->
                         form
-                                .loginPage("/showMyLoginPage")
+                                .loginPage("/login")
                                 .loginProcessingUrl("/authenticateTheUser")
                                 .permitAll()
                 )
