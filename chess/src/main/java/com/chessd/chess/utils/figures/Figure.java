@@ -11,6 +11,7 @@ public abstract class Figure {
     private int y;
     private Player player;
     private boolean active;
+    private boolean check;
 
     public Figure() {}
     public Figure(int x, int y, Player player, boolean active) {
@@ -18,6 +19,7 @@ public abstract class Figure {
         this.y = y;
         this.player = player;
         this.active = active;
+        check = false;
     }
     public int getX() {
         return x;
@@ -32,6 +34,14 @@ public abstract class Figure {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
     }
 
     public Player getPlayer() {
@@ -50,6 +60,9 @@ public abstract class Figure {
         this.active = active;
     }
 
+    boolean capture(){
+        return false;
+    }
     abstract void move(Board board, int toX, int toY);
     abstract boolean isValidMove(Board board, int toX, int toY);
     abstract List<Integer[]> avaibleMoves();
