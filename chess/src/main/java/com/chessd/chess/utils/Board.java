@@ -60,25 +60,25 @@ public class Board {
 
     public void startGame(){
         for(int i = 0; i < 8; i++){
-            board[1][i] = new Pawn(1, i, true, true);
-            board[6][i] = new Pawn(6, i, false, true);
+            board[1][i] = new Pawn(1, i, white, true);
+            board[6][i] = new Pawn(6, i, black, true);
             if(i == 0 || i == 7){
-                board[0][i] = new Rook(0, i, true, true);
-                board[7][i] = new Rook(7, i, false, true);
+                board[0][i] = new Rook(0, i, white, true);
+                board[7][i] = new Rook(7, i, black, true);
             }
             if(i == 1 || i == 6){
-                board[0][i] = new Bishop(0, i, true, true);
-                board[7][i] = new Bishop(7, i, false, true);
+                board[0][i] = new Bishop(0, i, white, true);
+                board[7][i] = new Bishop(7, i, black, true);
             }
             if (i == 2 || i == 5){
-                board[0][i] = new Knight(0, i, true, true);
-                board[7][i] = new Knight(7, i, false, true);
+                board[0][i] = new Knight(0, i, white, true);
+                board[7][i] = new Knight(7, i, black, true);
             }
         }
-        board[0][4] = new King(0, 4, true, true);
-        board[0][3] = new Queen(0, 3, true, true);
-        board[7][4] = new King(7, 4, false, true);
-        board[7][3] = new Queen(7, 3, false, true);
+        board[0][4] = new King(0, 4, white, true);
+        board[0][3] = new Queen(0, 3, white, true);
+        board[7][4] = new King(7, 4, black, true);
+        board[7][3] = new Queen(7, 3, black, true);
 
 
     }

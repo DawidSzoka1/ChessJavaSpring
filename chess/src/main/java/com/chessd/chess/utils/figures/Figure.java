@@ -2,18 +2,21 @@ package com.chessd.chess.utils.figures;
 
 
 import com.chessd.chess.utils.Board;
+import com.chessd.chess.utils.Player;
+
+import java.util.List;
 
 public abstract class Figure {
     private int x;
     private int y;
-    private boolean white;
+    private Player player;
     private boolean active;
 
     public Figure() {}
-    public Figure(int x, int y, boolean white, boolean active) {
+    public Figure(int x, int y, Player player, boolean active) {
         this.x = x;
         this.y = y;
-        this.white = white;
+        this.player = player;
         this.active = active;
     }
     public int getX() {
@@ -31,12 +34,12 @@ public abstract class Figure {
         this.y = y;
     }
 
-    public boolean isWhite() {
-        return white;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setWhite(boolean white) {
-        this.white = white;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public boolean isActive() {
@@ -48,6 +51,8 @@ public abstract class Figure {
     }
 
     abstract void move(Board board, int toX, int toY);
+    abstract boolean isValidMove(Board board, int toX, int toY);
+    abstract List<Integer[]> avaibleMoves();
 
 
     @Override
@@ -55,7 +60,7 @@ public abstract class Figure {
         return "Figure{" +
                 "x=" + x +
                 ", y=" + y +
-                ", white=" + white +
+                ", player=" + player +
                 ", active=" + active +
                 '}';
     }
