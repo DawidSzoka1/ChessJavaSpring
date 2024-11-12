@@ -5,15 +5,15 @@ import com.chessd.chess.utils.figures.*;
 public class Board {
     private Player white;
     private Player black;
-    private String move;
+    private boolean moveWhite;
     private String result;
     private Figure[][] board;
 
     public Board() {}
-    public Board(Player white, Player black, String move, String result) {
+    public Board(Player white, Player black, boolean moveWhite, String result) {
         this.white = white;
         this.black = black;
-        this.move = move;
+        this.moveWhite = moveWhite;
         this.result = result;
         this.board = new Figure[8][8];
     }
@@ -34,12 +34,12 @@ public class Board {
         this.black = black;
     }
 
-    public String getMove() {
-        return move;
+    public boolean getMoveWhite() {
+        return moveWhite;
     }
 
-    public void setMove(String move) {
-        this.move = move;
+    public void setMoveWhite(boolean moveWhite) {
+        this.moveWhite = moveWhite;
     }
 
     public String getResult() {

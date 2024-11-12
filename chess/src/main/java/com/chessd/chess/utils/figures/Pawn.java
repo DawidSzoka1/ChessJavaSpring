@@ -15,29 +15,35 @@ public class Pawn extends Figure {
 
     @Override
     void move(Board board, int toX, int toY) {
-
+        if(isValidMove(board, toX, toY)) {
+            this.setX(toX);
+            this.setY(toY);
+            board.setMoveWhite(!board.getMoveWhite());
+        }
     }
 
     @Override
     boolean isValidMove(Board board, int toX, int toY) {
+        if(this.getPlayer().isWhite()  != board.getMoveWhite()){
+            return false;
+        }
         if(toX >= 8 || toY >= 8 || toX < 0 || toY < 0 ){
             return false;
         }
         if(this.isActive()){
             return false;
         }
-        if(board.getBoard()[toX][toY].getPlayer().equals(this.getPlayer())){
+        if(board.getBoard()[toX][toY] != null && board.getBoard()[toX][toY].getPlayer().equals(this.getPlayer())){
             return false;
         }
         if(board.getBoard()[toX][toY].getPlayer() != null) {
-            return capture();
+            return true;
         }
         if(toX != this.getX()){
             return false;
         }
         int direction = this.getPlayer().isWhite() ? 1 : -1;
         if( this.first && (toY == this.getY() + direction || toY == this.getY() + direction * 2)) {
-            first = false;
             return true;
         }
         if(toY == this.getY() + direction){
