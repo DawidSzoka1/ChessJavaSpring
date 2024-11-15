@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Rook extends Figure {
     public Rook(int x, int y, Player player, boolean active) {
-        super(x, y, player, active);
+        super(x, y, player, active, "rook");
     }
 
     @Override

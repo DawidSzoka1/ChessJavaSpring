@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Queen extends Figure {
     public Queen(int x, int y, Player player, boolean active) {
-        super(x, y, player, active);
+        super(x, y, player, active, "queen");
     }
 
     @Override

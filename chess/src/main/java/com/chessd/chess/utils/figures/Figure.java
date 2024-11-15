@@ -12,14 +12,16 @@ public abstract class Figure {
     private Player player;
     private boolean active;
     private boolean check;
+    private String name;
 
     public Figure() {}
-    public Figure(int x, int y, Player player, boolean active) {
+    public Figure(int x, int y, Player player, boolean active, String name) {
         this.x = x;
         this.y = y;
         this.player = player;
         this.active = active;
         check = false;
+        this.name = name;
     }
     public int getX() {
         return x;
@@ -63,6 +65,15 @@ public abstract class Figure {
     boolean capture(){
         return false;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     abstract void move(Board board, int toX, int toY);
     abstract boolean isValidMove(Board board, int toX, int toY);
     abstract List<Integer[]> avaibleMoves();
@@ -74,6 +85,7 @@ public abstract class Figure {
                 "x=" + x +
                 ", y=" + y +
                 ", player=" + player +
+                ", name='" + name +
                 ", active=" + active +
                 '}';
     }

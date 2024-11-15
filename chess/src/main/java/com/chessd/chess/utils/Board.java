@@ -67,12 +67,12 @@ public class Board {
                 board[7][i] = new Rook(i, 7, black, true);
             }
             if(i == 1 || i == 6){
-                board[0][i] = new Bishop(i, 0, white, true);
-                board[7][i] = new Bishop(i, 7, black, true);
-            }
-            if (i == 2 || i == 5){
                 board[0][i] = new Knight(i, 0, white, true);
                 board[7][i] = new Knight(i, 7, black, true);
+            }
+            if (i == 2 || i == 5){
+                board[0][i] = new Bishop(i, 0, white, true);
+                board[7][i] = new Bishop(i, 7, black, true);
             }
         }
         board[0][4] = new King(4, 0, white, true);

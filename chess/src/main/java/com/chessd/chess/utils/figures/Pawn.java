@@ -9,7 +9,7 @@ public class Pawn extends Figure {
     private boolean first;
 
     public Pawn(int x, int y, Player player, boolean active) {
-        super(x, y, player, active);
+        super(x, y, player, active, "pawn");
         first = true;
     }
 
