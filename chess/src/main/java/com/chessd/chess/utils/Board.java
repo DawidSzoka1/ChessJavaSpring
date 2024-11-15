@@ -10,10 +10,10 @@ public class Board {
     private Figure[][] board;
 
     public Board() {}
-    public Board(Player white, Player black, boolean moveWhite, String result) {
+    public Board(Player white, Player black, String result) {
         this.white = white;
         this.black = black;
-        this.moveWhite = moveWhite;
+        this.moveWhite = true;
         this.result = result;
         this.board = new Figure[8][8];
     }

@@ -43,6 +43,7 @@ public class UserSecurityConfig {
                                 .requestMatchers("/showMyLoginPage").anonymous()
                                 .requestMatchers("/leaders/**").hasRole("MANAGER")
                                 .requestMatchers("/users/**").hasRole("ADMIN")
+                                .requestMatchers("/game/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->

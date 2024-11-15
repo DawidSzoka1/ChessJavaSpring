@@ -52,4 +52,13 @@ public class Player {
     public int hashCode() {
         return Objects.hash(user, white, move);
     }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "user=" + user +
+                ", white=" + white +
+                ", move=" + move +
+                '}';
+    }
 }

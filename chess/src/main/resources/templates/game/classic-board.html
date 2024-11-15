@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="/js/board_script.js"></script>
 </head>
 <body>
+<table th:each="x : ${board.board}" id="chessboard">
+    <tr th:each="y : ${x}">
+        <td th:text="${y}">
 
+        </td>
+    </tr>
+</table>
+<br>
 </body>
 </html>

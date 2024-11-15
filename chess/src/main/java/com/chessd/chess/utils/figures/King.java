@@ -24,6 +24,4 @@ public class King extends Figure {
     List<Integer[]> avaibleMoves() {
         return null;
     }
-
-
 }
