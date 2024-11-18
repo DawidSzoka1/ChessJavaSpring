@@ -21,7 +21,7 @@ public class Queen extends Figure {
     }
 
     @Override
-    List<Integer[]> avaibleMoves() {
+    List<Integer[]> movesPattern() {
         return null;
     }
 }

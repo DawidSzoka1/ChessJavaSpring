@@ -76,7 +76,7 @@ public abstract class Figure {
 
     abstract void move(Board board, int toX, int toY);
     abstract boolean isValidMove(Board board, int toX, int toY);
-    abstract List<Integer[]> avaibleMoves();
+    abstract List<Integer[]> movesPattern();
 
 
     @Override

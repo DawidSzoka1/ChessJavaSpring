@@ -55,7 +55,7 @@ public class Pawn extends Figure {
     }
 
     @Override
-    List<Integer[]> avaibleMoves() {
+    List<Integer[]> movesPattern() {
         int direction = this.getPlayer().isWhite() ? 1 : -1;
         List<Integer[]> moves = new ArrayList<>();
         moves.add(new Integer[]{this.getX(), this.getY() + direction});

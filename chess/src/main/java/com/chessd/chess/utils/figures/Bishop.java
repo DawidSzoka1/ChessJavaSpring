@@ -24,7 +24,7 @@ public class Bishop extends Figure {
     }
 
     @Override
-    List<Integer[]> avaibleMoves() {
+    List<Integer[]> movesPattern() {
         List<Integer[]> moves = new ArrayList<>();
 
         return null;

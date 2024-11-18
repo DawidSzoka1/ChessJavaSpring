@@ -21,7 +21,7 @@ public class Knight extends Figure {
     }
 
     @Override
-    List<Integer[]> avaibleMoves() {
+    List<Integer[]> movesPattern() {
         return null;
     }
 }
