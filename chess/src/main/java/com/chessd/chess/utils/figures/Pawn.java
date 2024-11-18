@@ -3,6 +3,7 @@ package com.chessd.chess.utils.figures;
 import com.chessd.chess.utils.Board;
 import com.chessd.chess.utils.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Figure {
@@ -15,7 +16,10 @@ public class Pawn extends Figure {
 
     @Override
     void move(Board board, int toX, int toY) {
-        if(isValidMove(board, toX, toY)) {
+        if(this.isActive()){
+            System.out.println("nie zyje");
+        }
+        else if(isValidMove(board, toX, toY)) {
             this.setX(toX);
             this.setY(toY);
             board.setMoveWhite(!board.getMoveWhite());
@@ -30,14 +34,12 @@ public class Pawn extends Figure {
         if(toX >= 8 || toY >= 8 || toX < 0 || toY < 0 ){
             return false;
         }
-        if(this.isActive()){
-            return false;
-        }
         if(board.getBoard()[toX][toY] != null && board.getBoard()[toX][toY].getPlayer().equals(this.getPlayer())){
             return false;
         }
         if(board.getBoard()[toX][toY].getPlayer() != null) {
-            return true;
+//            to do!
+            return false;
         }
         if(toX != this.getX()){
             return false;
@@ -54,6 +56,13 @@ public class Pawn extends Figure {
 
     @Override
     List<Integer[]> avaibleMoves() {
-        return null;
+        int direction = this.getPlayer().isWhite() ? 1 : -1;
+        List<Integer[]> moves = new ArrayList<>();
+        moves.add(new Integer[]{this.getX(), this.getY() + direction});
+        if(this.first){
+            moves.add(new Integer[]{this.getX(), this.getY() + direction * 2});
+        }
+
+        return moves;
     }
 }
