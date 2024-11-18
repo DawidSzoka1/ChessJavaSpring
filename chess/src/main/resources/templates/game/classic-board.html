@@ -16,14 +16,12 @@
                      th:id="figure">
                     <div th:class="square-content">
                         <div th:class="square-content">
-                            <div th:id="${staty.index}" class="hidden" th:data-o></div>
                             <th:block th:if="${statx.index == 1}">
-                                <img th:src="@{/pawn.jpeg}" alt="pawn" class="piece">
+                                <img th:src="@{/pawn.png}" alt="pawn" class="piece">
                             </th:block>
 
                         </div>
                     </div>
-
                 </div>
             </div>
             <div th:if="${statx.odd}">
@@ -38,7 +36,7 @@
         </div>
     </div>
 </div>
-<br>
+
 <!--<script th:src="@{js/chessboard.js}" src="js/chessboard.js"></script>-->
 </body>
 </html>
