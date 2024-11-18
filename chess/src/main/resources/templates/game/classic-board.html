@@ -3,40 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="/js/board_script.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <style>
-        .chessboard {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            width: 50%;
-            height: 50%;
-        }
-        .square {
-            width: 100%;
-            padding-top: 100%;
-            position: relative;
-        }
-        .square.white {
-            background-color: #f0d9b5;
-        }
-
-        .square.black {
-            background-color: #b58863;
-        }
-        .square-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: black;
-        }
-
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link th:href="@{/chessboardStyle.css}" rel="stylesheet">
 </head>
 <body>
 <div id="chessboard" class="container">
@@ -44,17 +13,21 @@
         <div th:each="y, staty : ${x}" class="col g-0">
             <div th:if="${statx.even}">
                 <div th:class="${staty.odd ? 'square black' : 'square white'}"
-                   th:id="figure">
-                    <div th:class="square-content"
-                    th:text="${y != null ? y.name : ''}">
+                     th:id="figure">
+                    <div th:class="square-content">
+                        <div th:class="square-content">
+                            <th:block th:if="${statx.index == 1}">
+                                <img th:src="@{/pawn.jpeg}" alt="pawn" class="piece">
+                            </th:block>
 
+                        </div>
                     </div>
 
                 </div>
             </div>
             <div th:if="${statx.odd}">
                 <div th:class="${staty.even ? 'square black' : 'square white'}"
-                   th:id="figure">
+                     th:id="figure">
                     <div th:class="square-content"
                          th:text="${y != null ? y.name : ''}">
 
@@ -65,6 +38,6 @@
     </div>
 </div>
 <br>
-
+<!--<script th:src="@{js/chessboard.js}" src="js/chessboard.js"></script>-->
 </body>
 </html>
