@@ -37,3 +37,6 @@
     pointer-events: none;
 
 }
+.hidden{
+    visibility: hidden;
+}

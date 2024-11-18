@@ -16,6 +16,7 @@
                      th:id="figure">
                     <div th:class="square-content">
                         <div th:class="square-content">
+                            <div th:id="${staty.index}" class="hidden" th:data-o></div>
                             <th:block th:if="${statx.index == 1}">
                                 <img th:src="@{/pawn.jpeg}" alt="pawn" class="piece">
                             </th:block>
