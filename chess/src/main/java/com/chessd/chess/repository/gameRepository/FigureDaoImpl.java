@@ -62,7 +62,9 @@ public class FigureDaoImpl implements FigureDao {
     }
 
     @Override
+    @Transactional
     public void moveToPosition(Figure figure, String position) {
         figure.setPosition(position);
+        update(figure);
     }
 }
