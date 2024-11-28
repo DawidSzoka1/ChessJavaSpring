@@ -26,7 +26,7 @@ public class Game {
     private User black;
 
     @Column(name = "start")
-    private Timestamp timestamp;
+    private Timestamp start;
 
     @Column(name = "end")
     private Timestamp end;
@@ -35,12 +35,12 @@ public class Game {
     private List<Figure> figures;
 
     public Game() {}
-    public Game(String gameId, int result, User white, User black, Timestamp timestamp, Timestamp end, List<Figure> figures) {
+    public Game(String gameId, int result, User white, User black, Timestamp start, Timestamp end, List<Figure> figures) {
         this.gameId = gameId;
         this.result = result;
         this.white = white;
         this.black = black;
-        this.timestamp = timestamp;
+        this.start = start;
         this.end = end;
         this.figures = figures;
     }
@@ -85,12 +85,12 @@ public class Game {
         this.black = black;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public Timestamp getStart() {
+        return start;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setStart(Timestamp timestamp) {
+        this.start = timestamp;
     }
 
     public Timestamp getEnd() {
@@ -108,7 +108,7 @@ public class Game {
                 ", gameId='" + gameId + '\'' +
                 ", white=" + white +
                 ", black=" + black +
-                ", timestamp=" + timestamp +
+                ", timestamp=" + start +
                 ", end=" + end +
                 '}';
     }
