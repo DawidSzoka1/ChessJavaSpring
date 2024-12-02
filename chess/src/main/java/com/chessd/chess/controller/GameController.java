@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/game")
@@ -28,9 +27,10 @@ public class GameController {
     public String classic(Model model) {
         Game game = new Game(randomUniqIdGenerator.generateUniqId());
         gameService.startGame(game);
-        model.addAttribute("game", game)
+        model
+                .addAttribute("game", game)
                 .addAttribute("col", Column.values())
-                .addAttribute("row", IntStream.range(1, 8));
+                .addAttribute("row", new int[]{1, 2, 3, 4, 5, 6, 7, 8});
         return "game/classic-board";
     }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class GameDaoImpl implements GameDao {
@@ -19,17 +20,22 @@ public class GameDaoImpl implements GameDao {
     }
 
     @Override
-    public Game getGameById(String gameId) {
-        TypedQuery<Game> query = entityManager.createQuery(
-                "SELECT g FROM Game g WHERE g.gameId = :gameId", Game.class);
-        query.setParameter("gameId", gameId);
-        return query.getSingleResult();
+    public Optional<Game> getGameById(String gameId) {
+        try{
+            TypedQuery<Game> query = entityManager.createQuery(
+                    "FROM Game  WHERE gameId =:gameId", Game.class);
+            query.setParameter("gameId", gameId);
+
+            return Optional.ofNullable(query.getSingleResult());
+        }catch (Exception e){
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<Game> getGamesByPlayerId(String playerId) {
         TypedQuery<Game> query = entityManager.createQuery(
-                "SELECT g FROM Game g WHERE g.white = :playerId or g.black = :playerId " +
+                "FROM Game WHERE white = :playerId or black = :playerId " +
                         "order by g.start", Game.class);
         query.setParameter("playerId", playerId);
         return query.getResultList();
