@@ -5,12 +5,13 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "figure")
 public class Figure {
-    @Id
+
+    @EmbeddedId
+    private FigureId id;
+
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name="game_id", referencedColumnName = "game_id", nullable = false),
-            @JoinColumn(name = "position", referencedColumnName = "position")
-    })
+    @MapsId("gameId")
+    @JoinColumn(name="game_id", referencedColumnName = "game_id", nullable = false)
     private Game game;
 
     @Column(name = "name")
@@ -19,11 +20,31 @@ public class Figure {
     @Column(name = "position")
     private String position;
 
+    @Column(name = "custom_id")
+    private String customId;
+
     public Figure() {}
     public Figure(Game game, String name, String position) {
+        this.id = new FigureId(game.getGameId(), "custom_id"+position);
         this.game = game;
         this.name = name;
         this.position = position;
+    }
+
+    public String getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(String customId) {
+        this.customId = customId;
+    }
+
+    public FigureId getId() {
+        return id;
+    }
+
+    public void setId(FigureId id) {
+        this.id = id;
     }
 
     public Game getGame() {
