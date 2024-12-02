@@ -11,8 +11,7 @@ import com.chessd.chess.utils.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Map;
 
 @Service
@@ -48,11 +47,11 @@ public class GameServiceImpl implements GameService {
                 figureDao.save(new Figure(
                         game,
                         pieceMapping.get(column.getIndex()),
-                        column + "2"));
+                        column + "1"));
                 figureDao.save(new Figure(
                         game,
                         pieceMapping.get(column.getIndex()).replace("W", "B"),
-                        column + "2"));
+                        column + "8"));
             }
         }
 

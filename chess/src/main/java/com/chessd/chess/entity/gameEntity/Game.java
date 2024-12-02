@@ -35,6 +35,9 @@ public class Game {
     private List<Figure> figures;
 
     public Game() {}
+    public Game(String gameId) {
+        this.gameId = gameId;
+    }
     public Game(String gameId, int result, User white, User black, Timestamp start, Timestamp end, List<Figure> figures) {
         this.gameId = gameId;
         this.result = result;
