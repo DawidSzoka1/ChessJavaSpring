@@ -20,24 +20,15 @@ public class Figure {
     @Column(name = "position")
     private String position;
 
-    @Column(name = "custom_id")
-    private String customId;
 
     public Figure() {}
     public Figure(Game game, String name, String position) {
-        this.id = new FigureId(game.getGameId(), "custom_id"+position);
+        this.id = new FigureId(game.getGameId(), position);
         this.game = game;
         this.name = name;
         this.position = position;
     }
 
-    public String getCustomId() {
-        return customId;
-    }
-
-    public void setCustomId(String customId) {
-        this.customId = customId;
-    }
 
     public FigureId getId() {
         return id;

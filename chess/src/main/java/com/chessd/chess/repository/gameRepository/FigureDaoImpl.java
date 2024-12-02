@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class FigureDaoImpl implements FigureDao {
@@ -23,14 +24,18 @@ public class FigureDaoImpl implements FigureDao {
 
 
     @Override
-    public Figure getFigureByPosition(String position, String gameId) {
-        TypedQuery<Figure> query = entityManager.createQuery(
-                "FROM Figure where position=:position and game=:game",
-                Figure.class
-        );
-        query.setParameter("position", position);
-        query.setParameter("game", gameDao.getGameById(gameId));
-        return query.getSingleResult();
+    public Optional<Figure> getFigureByPosition(String position, String gameId) {
+        try{
+            TypedQuery<Figure> query = entityManager.createQuery(
+                    "FROM Figure where position=:position and game=:game",
+                    Figure.class
+            );
+            query.setParameter("position", position);
+            query.setParameter("game", gameDao.getGameById(gameId));
+            return Optional.ofNullable(query.getSingleResult());
+        }catch (Exception e){
+            return Optional.empty();
+        }
     }
 
     @Override
