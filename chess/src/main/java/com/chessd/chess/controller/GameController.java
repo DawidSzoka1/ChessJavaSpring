@@ -4,6 +4,7 @@ import com.chessd.chess.entity.gameEntity.Game;
 import com.chessd.chess.service.GameService;
 import com.chessd.chess.service.RandomUniqIdGenerator;
 import com.chessd.chess.utils.Column;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,14 +24,18 @@ public class GameController {
         this.randomUniqIdGenerator = randomUniqIdGenerator;
     }
 
+//    @PostConstruct
+//    public void init() {
+//        Game game = new Game(randomUniqIdGenerator.generateUniqId());
+//        gameService.startGame(game);
+//    }
     @GetMapping("/classic")
     public String classic(Model model) {
-        Game game = new Game(randomUniqIdGenerator.generateUniqId());
-        gameService.startGame(game);
         model
-                .addAttribute("game", game)
+                .addAttribute("game", gameService.getGameById("0d259cc2-2492-4ee8-809f-3c1104d36808").get())
+                .addAttribute("gameService", gameService)
                 .addAttribute("col", Column.values())
-                .addAttribute("row", new int[]{1, 2, 3, 4, 5, 6, 7, 8});
+                .addAttribute("row", new String[]{"8", "7", "6", "5", "4", "3", "2", "1"});
         return "game/classic-board";
     }
 

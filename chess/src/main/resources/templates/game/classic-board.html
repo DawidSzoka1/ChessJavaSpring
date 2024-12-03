@@ -9,18 +9,24 @@
 </head>
 <body>
 <div id="chessboard" class="container">
-    <div th:each="x, statx : ${board.board}" class="row g-0 chessboard">
-        <div th:each="y, staty : ${x}" class="col g-0">
+    <div th:each="x, statx : ${row}" class="row g-0 chessboard">
+        <div th:each="y, staty : ${col}" class="col g-0">
             <div th:if="${statx.even}">
                 <div th:class="${staty.odd ? 'square black' : 'square white'}"
                      th:id="figure">
                     <div th:class="square-content">
                         <div th:class="square-content">
+                            <!--Black pawns-->
                             <th:block th:if="${statx.index == 1}">
                                 <img th:src="@{/images/black_pawn.png}" alt="pawn" class="piece">
                             </th:block>
-                            <th:block th:unless="${statx.index == 1}">
-                                <div th:text="${y != null ? y.name : ''}"></div>
+                            <!-- White pieces like rook queen ...-->
+                            <th:block th:if="${statx.index == 7}">
+                                <div
+                                        th:text="${
+                                        gameService.getFigureById(y + x, game.gameId).isPresent()
+                                        ? gameService.getFigureById(y + x, game.gameId).get().name : ''}">
+                                </div>
                             </th:block>
 
                         </div>
@@ -31,13 +37,16 @@
                 <div th:class="${staty.even ? 'square black' : 'square white'}"
                      th:id="figure">
                     <div th:class="square-content">
+                        <!--White pawns-->
                         <th:block th:if="${statx.index == 6}">
                             <img th:src="@{/images/white_pawn.png}" alt="pawn" class="piece">
                         </th:block>
-                        <th:block th:unless="${statx.index == 6}">
-                            <div th:text="${y != null ? y.name : ''}"></div>
+                        <!-- Black pieces like rook queen ...-->
+                        <th:block th:if="${statx.index == 0}">
+                            <div th:text="${
+                                        gameService.getFigureById(y + x, game.gameId).isPresent()
+                                        ? gameService.getFigureById(y + x, game.gameId).get().name : ''}"></div>
                         </th:block>
-
                     </div>
                 </div>
             </div>
