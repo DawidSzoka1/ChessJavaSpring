@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link th:href="@{/css/chessboardStyle.css}" rel="stylesheet">
+    <script th:src="@{/js/figureMove.js}"></script>
 </head>
 <body>
 <div id="chessboard" class="container">
@@ -14,14 +15,13 @@
             <div th:if="${statx.even}">
                 <div th:class="${staty.odd ? 'square black' : 'square white'}"
                      th:id="figure">
-                    <div th:class="square-content">
-                        <div th:class="square-content">
-                            <!--Black pawns-->
+                        <div th:class="square-content" th:id="${y+x}" >
                             <th:block th:if="${statx.index == 1}">
-                                <img th:src="@{/images/black_pawn.png}" alt="pawn" class="piece">
+                                <!--Black pawns-->
+                                <img  th:src="@{/images/black_pawn.png}" alt="pawn" class="piece">
                             </th:block>
-                            <!-- White pieces like rook queen ...-->
                             <th:block th:if="${statx.index == 7}">
+                                <!-- White pieces like rook queen ...-->
                                 <div
                                         th:text="${
                                         gameService.getFigureById(y + x, game.gameId).isPresent()
@@ -29,21 +29,20 @@
                                 </div>
                             </th:block>
 
-                        </div>
                     </div>
                 </div>
             </div>
             <div th:if="${statx.odd}">
                 <div th:class="${staty.even ? 'square black' : 'square white'}"
                      th:id="figure">
-                    <div th:class="square-content">
-                        <!--White pawns-->
+                    <div th:class="square-content" th:id="${y+x}">
                         <th:block th:if="${statx.index == 6}">
-                            <img th:src="@{/images/white_pawn.png}" alt="pawn" class="piece">
+                            <!--White pawns-->
+                            <img th:id="${'Wp'+x}" th:src="@{/images/white_pawn.png}" alt="pawn" class="piece">
                         </th:block>
-                        <!-- Black pieces like rook queen ...-->
                         <th:block th:if="${statx.index == 0}">
-                            <div th:text="${
+                            <!-- Black pieces like rook queen ...-->
+                            <div  th:text="${
                                         gameService.getFigureById(y + x, game.gameId).isPresent()
                                         ? gameService.getFigureById(y + x, game.gameId).get().name : ''}"></div>
                         </th:block>
