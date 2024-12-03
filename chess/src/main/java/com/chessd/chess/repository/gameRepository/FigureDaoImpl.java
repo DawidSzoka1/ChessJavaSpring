@@ -27,11 +27,11 @@ public class FigureDaoImpl implements FigureDao {
     public Optional<Figure> getFigureByPosition(String position, String gameId) {
         try{
             TypedQuery<Figure> query = entityManager.createQuery(
-                    "FROM Figure where position=:position and game=:game",
+                    "FROM Figure where position=:position and game.gameId=:gameId",
                     Figure.class
             );
             query.setParameter("position", position);
-            query.setParameter("game", gameDao.getGameById(gameId));
+            query.setParameter("gameId", gameId);
             return Optional.ofNullable(query.getSingleResult());
         }catch (Exception e){
             return Optional.empty();

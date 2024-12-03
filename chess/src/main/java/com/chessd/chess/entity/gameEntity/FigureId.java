@@ -9,12 +9,12 @@ import java.util.Objects;
 public class FigureId implements Serializable {
 
     private String gameId;
-    private String customID;
+    private String customId;
 
     public FigureId() {}
-    public FigureId(String gameId, String customID) {
+    public FigureId(String gameId, String customId) {
         this.gameId = gameId;
-        this.customID = customID;
+        this.customId = customId;
     }
     public String getGameId() {
         return gameId;
@@ -24,23 +24,23 @@ public class FigureId implements Serializable {
         this.gameId = gameId;
     }
 
-    public String setCustomID() {
-        return customID;
+    public String setCustomId() {
+        return customId;
     }
 
-    public void setCustomID(String customID) {
-        this.customID = customID;
+    public void setCustomId(String customId) {
+        this.customId = customId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         FigureId figureId = (FigureId) o;
-        return Objects.equals(gameId, figureId.gameId) && Objects.equals(customID, figureId.customID);
+        return Objects.equals(gameId, figureId.gameId) && Objects.equals(customId, figureId.customId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameId, customID);
+        return Objects.hash(gameId, customId);
     }
 }

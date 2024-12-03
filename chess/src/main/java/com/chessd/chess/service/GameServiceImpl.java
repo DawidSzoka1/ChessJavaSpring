@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -65,5 +66,16 @@ public class GameServiceImpl implements GameService {
     @Override
     public void endGame(Game game) {
 
+    }
+
+    @Override
+    public Optional<Game> getGameById(String gameId) {
+        return gameDao.getGameById(gameId);
+    }
+
+
+    @Override
+    public Optional<Figure> getFigureById(String position, String gameId) {
+        return figureDao.getFigureByPosition(position, gameId);
     }
 }
