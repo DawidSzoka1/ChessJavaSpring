@@ -31,9 +31,9 @@
     color: black;
 }
 .piece{
-    width: 150%;
-    height: 150%;
+    width: 10%;
+    height: 10%;
     object-fit: contain;
-    pointer-events: none;
+    position: fixed;
 
 }
