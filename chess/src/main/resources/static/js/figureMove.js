@@ -7,14 +7,15 @@ document.addEventListener("DOMContentLoaded", () => {
         piece.addEventListener("dragstart", dragStart)
     })
 
-    function dragStart(e){
+    function dragStart(e) {
         selectedPiece = e.target
         console.log("dragging start")
     }
 
-    function dragging(e){
+    function dragging(e) {
         console.log(e.target)
     }
+
     squares.forEach(square => {
         square.addEventListener("dragover", dragOver)
         square.addEventListener("dragenter", dragEnter)
@@ -22,18 +23,22 @@ document.addEventListener("DOMContentLoaded", () => {
         square.addEventListener("drop", dragDrop)
         square.addEventListener("dragend", dragEnd)
     })
-    function dragOver(e){
-        e.preventDefault()
-        console.log("now on this shit " + e.target)
-    }
-    function dragEnter(e){
 
-        console.log("now on this shit " + e.target)
+    function dragOver(e) {
+        e.preventDefault()
     }
-    function dragLeave(){}
-    function dragDrop(e){
+
+    function dragEnter(e) {
+    }
+
+    function dragLeave(e) {
+    }
+
+    function dragDrop(e) {
         e.preventDefault()
         e.target.appendChild(selectedPiece)
     }
-    function dragEnd(){}
+
+    function dragEnd(e) {
+    }
 });
