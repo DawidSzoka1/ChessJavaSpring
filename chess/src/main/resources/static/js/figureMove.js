@@ -1,30 +1,39 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const squares = document.querySelectorAll(".square-content");
-    const pieces = document.querySelectorAll(".piece");
-    const container = document.querySelector(".container")
-    const containerRect = container.getBoundingClientRect()
-
-    let selectedPiece
+    const pieces = document.querySelectorAll(".piece")
+    const squares = document.querySelectorAll(".square-content")
+    let selectedPiece;
     pieces.forEach(piece => {
-        piece.addEventListener("mousedown", (e) => {
-            selectedPiece = piece;
-        })
+        piece.addEventListener("drag", dragging)
+        piece.addEventListener("dragstart", dragStart)
     })
 
+    function dragStart(e){
+        selectedPiece = e.target
+        console.log("dragging start")
+    }
 
-    container.addEventListener("mousemove", (e) => {
-        if(selectedPiece){
-            const mouseX = e.clientX - containerRect.x;
-            const mouseY = e.clientY - containerRect.y;
-            selectedPiece.style.left = mouseX + 'px'
-            selectedPiece.style.top = mouseY + 'px'
-        }
+    function dragging(e){
+        console.log(e.target)
+    }
+    squares.forEach(square => {
+        square.addEventListener("dragover", dragOver)
+        square.addEventListener("dragenter", dragEnter)
+        square.addEventListener("dragleave", dragLeave)
+        square.addEventListener("drop", dragDrop)
+        square.addEventListener("dragend", dragEnd)
     })
-    container.addEventListener("mouseup", (e) =>{
+    function dragOver(e){
         e.preventDefault()
-        if (selectedPiece){
-            selectedPiece = null;
-        }
-    })
+        console.log("now on this shit " + e.target)
+    }
+    function dragEnter(e){
 
-})
+        console.log("now on this shit " + e.target)
+    }
+    function dragLeave(){}
+    function dragDrop(e){
+        e.preventDefault()
+        e.target.appendChild(selectedPiece)
+    }
+    function dragEnd(){}
+});
