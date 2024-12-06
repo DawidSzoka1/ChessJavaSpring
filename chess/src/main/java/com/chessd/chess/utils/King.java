@@ -1,27 +1,35 @@
 package com.chessd.chess.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class King extends Figure {
 
-    public King(){}
-    public King(String name, String color, String position){
+    public King() {
+    }
+
+    public King(String name, String color, String position) {
         super(name, color, position);
     }
+    HashMap<Optional<Column>, Integer> directions(){
+        HashMap<Optional<Column>, Integer> dire = new HashMap<>();
+        Optional<Column> colO = Column.fromName(String.valueOf((this.getPosition().charAt(0))));
+        int row = Integer.parseInt(String.valueOf(this.getPosition().charAt(1)));
+        Column col;
+        if(colO.isPresent()){
+            col = colO.get();
+        }
+        for(int i = 0; i < 3; i++){
+
+        }
+        return dire;
+    }
+
     @Override
     List<String> avaibleMoves() {
         List<String> moves = new ArrayList<>();
-        List<int[]> directions = new ArrayList<>();
-        directions.add(new int[]{-1, -1}); // Góra-lewo
-        directions.add(new int[]{-1, 0});  // Góra
-        directions.add(new int[]{-1, 1});  // Góra-prawo
-        directions.add(new int[]{0, -1});  // Lewo
-        directions.add(new int[]{0, 1});   // Prawo
-        directions.add(new int[]{1, -1}); // Dół-lewo
-        directions.add(new int[]{1, 0});  // Dół
-        directions.add(new int[]{1, 1});
+        HashMap<Optional<Column>, Integer> directions = directions();
+
 
 
         return moves;
