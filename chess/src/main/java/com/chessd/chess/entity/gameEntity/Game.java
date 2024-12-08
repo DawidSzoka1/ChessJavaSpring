@@ -2,13 +2,7 @@ package com.chessd.chess.entity.gameEntity;
 
 import com.chessd.chess.entity.User;
 import jakarta.persistence.*;
-
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-
 import com.chessd.chess.utils.Figure;
 
 @Entity

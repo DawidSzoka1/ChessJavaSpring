@@ -39,7 +39,6 @@ public class GameServiceImpl implements GameService {
     //TODO: test for errors
     @Override
     public void startGame(@NotNull Game game) {
-//        TODO: file board with missing figures
         for (int i = 0; i < 8; i++) {
             Column colName = Column.fromIndex(i).orElseThrow();
 
