@@ -32,11 +32,16 @@ public class King extends Figure {
     }
 
     @Override
-    List<String> avaibleMoves() {
+    List<String> availableMoves() {
         List<String> moves = new ArrayList<>();
         HashMap<Optional<Column>, Integer> directions = directions();
         
 
         return moves;
+    }
+
+    @Override
+    void makeMove(String newPosition) {
+
     }
 }

@@ -1,7 +1,6 @@
 package com.chessd.chess.service;
 
 import com.chessd.chess.entity.User;
-import com.chessd.chess.entity.gameEntity.Figure;
 import com.chessd.chess.entity.gameEntity.Game;
 import com.chessd.chess.entity.gameEntity.Move;
 import com.chessd.chess.repository.gameRepository.FigureDao;
@@ -10,21 +9,20 @@ import com.chessd.chess.repository.gameRepository.MoveDao;
 import com.chessd.chess.utils.Column;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.chessd.chess.utils.Figure;
 
 
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class GameServiceImpl implements GameService {
     private GameDao gameDao;
-    private FigureDao figureDao;
     private MoveDao moveDao;
 
     @Autowired
-    public GameServiceImpl(GameDao gameDao, FigureDao figureDao, MoveDao moveDao) {
+    public GameServiceImpl(GameDao gameDao, MoveDao moveDao) {
         this.gameDao = gameDao;
-        this.figureDao = figureDao;
+
         this.moveDao = moveDao;
     }
 
@@ -32,28 +30,18 @@ public class GameServiceImpl implements GameService {
     @Override
     public void startGame(Game game) {
         Map<Integer, String> pieceMapping = Map.of(
-                0, "Ww",
-                1, "Ws",
-                2, "Wg",
-                3, "Wh",
+                0, "Wr",
+                1, "Wk",
+                2, "Wb",
+                3, "Wq",
                 4, "Wk",
-                5, "Wg",
-                6, "Ws",
-                7, "Ww"
+                5, "Wb",
+                6, "Wk",
+                7, "Wr"
         );
+
         for (Column column : Column.values()) {
-            figureDao.save(new Figure(game, "Wp", column + "2"));
-            figureDao.save(new Figure(game, "Bp", column + "7"));
-            if (pieceMapping.containsKey(column.getIndex())) {
-                figureDao.save(new Figure(
-                        game,
-                        pieceMapping.get(column.getIndex()),
-                        column + "1"));
-                figureDao.save(new Figure(
-                        game,
-                        pieceMapping.get(column.getIndex()).replace("W", "B"),
-                        column + "8"));
-            }
+
         }
 
     }
@@ -76,6 +64,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Optional<Figure> getFigureById(String position, String gameId) {
-        return figureDao.getFigureByPosition(position, gameId);
+        return Optional.empty();
     }
 }

@@ -38,15 +38,15 @@ public class Game {
 
 
     @Transient
-    private List<HashMap<String, Optional<Figure>>> board;
+    private Figure[][] board;
 
     public Game() {
-        this.board = new ArrayList<>();
+        this.board = new Figure[8][8];
     }
 
     public Game(String gameId) {
         this.gameId = gameId;
-        this.board = new ArrayList<>();
+        this.board = new Figure[8][8];
     }
 
     public Game(String gameId, int result, User white, User black, Timestamp start, Timestamp end) {
@@ -56,18 +56,17 @@ public class Game {
         this.black = black;
         this.start = start;
         this.end = end;
-        this.board = new ArrayList<>();
+        this.board = new Figure[8][8];
 
     }
 
-    public List<HashMap<String, Optional<Figure>>> getBoard() {
+    public Figure[][] getBoard() {
         return board;
     }
 
-    public void setBoard(List<HashMap<String, Optional<Figure>>> board) {
+    public void setBoard(Figure[][] board) {
         this.board = board;
     }
-
 
     public String getGameId() {
         return gameId;

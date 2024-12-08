@@ -1,7 +1,7 @@
 package com.chessd.chess.service;
 
 import com.chessd.chess.entity.User;
-import com.chessd.chess.entity.gameEntity.Figure;
+import com.chessd.chess.utils.Figure;
 import com.chessd.chess.entity.gameEntity.Game;
 import com.chessd.chess.entity.gameEntity.Move;
 

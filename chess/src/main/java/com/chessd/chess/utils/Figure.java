@@ -50,5 +50,7 @@ public abstract class Figure {
     public void setColor(String color) {
         this.color = color;
     }
-    abstract List<String> avaibleMoves();
+    abstract List<String> availableMoves();
+
+    abstract void makeMove(String newPosition);
 }

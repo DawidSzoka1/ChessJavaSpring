@@ -33,7 +33,7 @@ public class GameController {
 //    }
     @GetMapping("/classic")
     public String classic(Model model) {
-        Pawn p = new Pawn("W", "d2");
+        Pawn p = new Pawn("B", "d7");
         model
                 .addAttribute("pawn", p)
                 .addAttribute("game", gameService.getGameById("0d259cc2-2492-4ee8-809f-3c1104d36808").get())
