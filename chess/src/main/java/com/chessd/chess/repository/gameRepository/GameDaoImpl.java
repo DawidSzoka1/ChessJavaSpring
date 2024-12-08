@@ -21,13 +21,13 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public Optional<Game> getGameById(String gameId) {
-        try{
+        try {
             TypedQuery<Game> query = entityManager.createQuery(
                     "FROM Game  WHERE gameId =:gameId", Game.class);
             query.setParameter("gameId", gameId);
 
             return Optional.ofNullable(query.getSingleResult());
-        }catch (Exception e){
+        } catch (Exception e) {
             return Optional.empty();
         }
     }
@@ -59,6 +59,7 @@ public class GameDaoImpl implements GameDao {
     public void update(Game game) {
         entityManager.merge(game);
     }
+
 
     @Override
     @Transactional

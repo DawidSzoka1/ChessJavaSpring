@@ -7,6 +7,7 @@ import com.chessd.chess.repository.gameRepository.FigureDao;
 import com.chessd.chess.repository.gameRepository.GameDao;
 import com.chessd.chess.repository.gameRepository.MoveDao;
 import com.chessd.chess.utils.Column;
+import com.chessd.chess.utils.Pawn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.chessd.chess.utils.Figure;
@@ -22,25 +23,17 @@ public class GameServiceImpl implements GameService {
     @Autowired
     public GameServiceImpl(GameDao gameDao, MoveDao moveDao) {
         this.gameDao = gameDao;
-
         this.moveDao = moveDao;
     }
 
 
     @Override
     public void startGame(Game game) {
-        Map<Integer, String> pieceMapping = Map.of(
-                0, "Wr",
-                1, "Wk",
-                2, "Wb",
-                3, "Wq",
-                4, "Wk",
-                5, "Wb",
-                6, "Wk",
-                7, "Wr"
-        );
+        Figure[][] board = new Figure[8][8];
 
-        for (Column column : Column.values()) {
+        for (int i = 0; i < 8; i++) {
+            game.placeFigure(1, i, new Pawn("W", String.valueOf(Column.fromIndex(i)) + 1));
+            game.placeFigure(6, i, new Pawn("B", String.valueOf(Column.fromIndex(i)) + 6));
 
         }
 

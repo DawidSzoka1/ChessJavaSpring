@@ -68,6 +68,10 @@ public class Game {
         this.board = board;
     }
 
+    public void placeFigure(int row, int col, Figure figure) {
+        this.board[row][col] = figure;
+    }
+
     public String getGameId() {
         return gameId;
     }
