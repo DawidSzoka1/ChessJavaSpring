@@ -5,6 +5,9 @@ import java.util.List;
 public class Queen extends Figure {
     public Queen() {
     }
+    public Queen(String color){
+        super(color+"q", color, "d" + (color.equals("W") ? 1 : 8));
+    }
 
     public Queen(String color, String position) {
         super(color + "q", color, position);

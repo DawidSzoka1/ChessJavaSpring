@@ -5,11 +5,13 @@ import java.util.*;
 
 public class King extends Figure {
 
-    public King() {
+    public King() {}
+    public King(String color){
+        super(color+"k", color, "e" + (color.equals("W") ? 1 : 8));
     }
 
-    public King(String name, String color, String position) {
-        super(name, color, position);
+    public King(String color, String position) {
+        super(color+"k", color, position);
     }
 
     HashMap<Optional<Column>, Integer> directions() {
