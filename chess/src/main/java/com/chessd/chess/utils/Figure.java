@@ -1,16 +1,30 @@
 package com.chessd.chess.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Figure {
     private String name;
     private String color;
     private String position;
+    private List<String> moves;
     public Figure(){}
     public Figure(String name, String color, String position) {
         this.name = name;
         this.color = color;
         this.position = position;
+        this.moves = new ArrayList<>();
+    }
+
+    public List<String> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(List<String> moves) {
+        this.moves = moves;
+    }
+    public void addMove(String move){
+        this.moves.add(move);
     }
 
     public String getPosition() {

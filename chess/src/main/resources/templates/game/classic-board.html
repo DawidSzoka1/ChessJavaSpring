@@ -9,6 +9,7 @@
 
 </head>
 <body>
+<div th:text="${pawn.getMoves()}"></div>
 <div id="chessboard" class="container">
     <div th:each="x, statx : ${row}" class="row g-0 chessboard">
         <div th:each="y, staty : ${col}" class="col g-0">

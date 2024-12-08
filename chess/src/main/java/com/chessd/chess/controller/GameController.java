@@ -4,8 +4,10 @@ import com.chessd.chess.entity.gameEntity.Game;
 import com.chessd.chess.service.GameService;
 import com.chessd.chess.service.RandomUniqIdGenerator;
 import com.chessd.chess.utils.Column;
+import com.chessd.chess.utils.Pawn;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +33,9 @@ public class GameController {
 //    }
     @GetMapping("/classic")
     public String classic(Model model) {
+        Pawn p = new Pawn("W", "d2");
         model
+                .addAttribute("pawn", p)
                 .addAttribute("game", gameService.getGameById("0d259cc2-2492-4ee8-809f-3c1104d36808").get())
                 .addAttribute("gameService", gameService)
                 .addAttribute("col", Column.values())
