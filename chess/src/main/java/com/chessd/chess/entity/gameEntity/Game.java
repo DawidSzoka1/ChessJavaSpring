@@ -4,7 +4,12 @@ import com.chessd.chess.entity.User;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+
+import com.chessd.chess.utils.Figure;
 
 @Entity
 @Table(name = "game")
@@ -31,30 +36,38 @@ public class Game {
     @Column(name = "end")
     private Timestamp end;
 
-    @OneToMany(mappedBy = "game")
-    private List<Figure> figures;
 
-    public Game() {}
+    @Transient
+    private List<HashMap<String, Optional<Figure>>> board;
+
+    public Game() {
+        this.board = new ArrayList<>();
+    }
+
     public Game(String gameId) {
         this.gameId = gameId;
+        this.board = new ArrayList<>();
     }
-    public Game(String gameId, int result, User white, User black, Timestamp start, Timestamp end, List<Figure> figures) {
+
+    public Game(String gameId, int result, User white, User black, Timestamp start, Timestamp end) {
         this.gameId = gameId;
         this.result = result;
         this.white = white;
         this.black = black;
         this.start = start;
         this.end = end;
-        this.figures = figures;
+        this.board = new ArrayList<>();
+
     }
 
-    public List<Figure> getFigures() {
-        return figures;
+    public List<HashMap<String, Optional<Figure>>> getBoard() {
+        return board;
     }
 
-    public void setFigures(List<Figure> figures) {
-        this.figures = figures;
+    public void setBoard(List<HashMap<String, Optional<Figure>>> board) {
+        this.board = board;
     }
+
 
     public String getGameId() {
         return gameId;
