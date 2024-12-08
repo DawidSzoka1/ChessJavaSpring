@@ -35,7 +35,7 @@ public class King extends Figure {
     List<String> availableMoves() {
         List<String> moves = new ArrayList<>();
         HashMap<Optional<Column>, Integer> directions = directions();
-        
+        // TODO: moves for king to finish
 
         return moves;
     }

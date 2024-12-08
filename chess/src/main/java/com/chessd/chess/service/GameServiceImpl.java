@@ -26,11 +26,11 @@ public class GameServiceImpl implements GameService {
         this.moveDao = moveDao;
     }
 
-
+    //File up the board whit Figures in starting positions
     @Override
     public void startGame(Game game) {
         Figure[][] board = new Figure[8][8];
-
+//        TODO: file board with missing figures
         for (int i = 0; i < 8; i++) {
             game.placeFigure(1, i, new Pawn("W", String.valueOf(Column.fromIndex(i)) + 1));
             game.placeFigure(6, i, new Pawn("B", String.valueOf(Column.fromIndex(i)) + 6));
