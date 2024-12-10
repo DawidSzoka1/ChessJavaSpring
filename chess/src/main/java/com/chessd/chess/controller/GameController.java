@@ -33,15 +33,11 @@ public class GameController {
 //    }
     @GetMapping("/classic")
     public String classic(Model model) {
-        Pawn p = new Pawn("B", "d7");
-
+        Game g = gameService.getGameById("0d259cc2-2492-4ee8-809f-3c1104d36808").get();
+        gameService.startGame(g);
         model
-                .addAttribute("check", 4 * (2 == 2 ? 3 : 1))
-                .addAttribute("pawn", p)
-                .addAttribute("game", gameService.getGameById("0d259cc2-2492-4ee8-809f-3c1104d36808").get())
-                .addAttribute("gameService", gameService)
-                .addAttribute("col", Column.values())
-                .addAttribute("row", new String[]{"8", "7", "6", "5", "4", "3", "2", "1"});
+                .addAttribute("game", g)
+                .addAttribute("gameService", gameService);
         return "game/classic-board";
     }
 

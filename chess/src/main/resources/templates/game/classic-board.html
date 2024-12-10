@@ -9,45 +9,30 @@
 
 </head>
 <body>
-<div th:text="${check}"></div>
 <div id="chessboard" class="container">
-    <div th:each="x, statx : ${row}" class="row g-0 chessboard">
-        <div th:each="y, staty : ${col}" class="col g-0">
-            <div th:if="${statx.even}">
-                <div th:class="${staty.odd ? 'square black' : 'square white'}"
+    <div th:each="row, statRow : ${game.board}" class="row g-0 chessboard">
+        <div th:each="col, statCol : ${row}" class="col g-0">
+            <div th:if="${statRow.even}">
+                <div th:class="${statCol.odd ? 'square black' : 'square white'}"
                      th:id="figure">
-                    <div th:class="square-content" th:id="${y+x}">
-                        <th:block th:if="${statx.index == 1}">
-                            <!--Black pawns-->
-                            <img th:src="@{/images/black_pawn.png}" alt="pawn" class="piece" draggable="true"
-                                 th:id="${'Wp'+y+x}">
-                        </th:block>
-                        <th:block th:if="${statx.index == 7}">
-                            <!-- White pieces like rook queen ...-->
-                            <div
-                                    th:text="${
-                                        gameService.getFigureById(y + x, game.gameId).isPresent()
-                                        ? gameService.getFigureById(y + x, game.gameId).get().name : ''}">
-                            </div>
+                    <div th:class="square-content">
+                        <th:block th:if="${col != null}">
+                            <!--figure on a2,b2, ..., h2 and a8, b8, ..., h8-->
+                            <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="pawn" class="piece"
+                                 draggable="true">
                         </th:block>
 
                     </div>
                 </div>
             </div>
-            <div th:if="${statx.odd}">
-                <div th:class="${staty.even ? 'square black' : 'square white'}"
+            <div th:if="${statRow.odd}">
+                <div th:class="${statCol.even ? 'square black' : 'square white'}"
                      th:id="figure">
-                    <div th:class="square-content" th:id="${y+x}">
-                        <th:block th:if="${statx.index == 6}">
-                            <!--White pawns-->
-                            <img th:src="@{/images/white_pawn.png}" alt="pawn" class="piece" th:id="${'Wp'+y+x}"
+                    <div th:class="square-content">
+                        <th:block th:if="${col != null}">
+                            <!--figure on a1,b1, ..., h1 and a7, b7, ..., h7-->
+                            <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="pawn" class="piece"
                                  draggable="true">
-                        </th:block>
-                        <th:block th:if="${statx.index == 0}">
-                            <!-- Black pieces like rook queen ...-->
-                            <div th:text="${
-                                        gameService.getFigureById(y + x, game.gameId).isPresent()
-                                        ? gameService.getFigureById(y + x, game.gameId).get().name : ''}"></div>
                         </th:block>
                     </div>
                 </div>
