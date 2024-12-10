@@ -6,14 +6,11 @@ import java.util.List;
 public class Pawn extends Figure{
     private boolean first = true;
     private int direction;
-    public Pawn(){}
-
     public Pawn(String color, String position) {
-        super(color+"p", color, position);
+        super("pawn", color, position);
         direction = this.getColor().equals("W") ? 1 : -1;
         this.setMoves(availableMoves());
     }
-
     public boolean isFirst() {
         return first;
     }
@@ -45,7 +42,7 @@ public class Pawn extends Figure{
     void makeMove(String newPosition) {
         this.setPosition(this.getMoves().contains(newPosition) ? newPosition : this.getPosition());
         if(newPosition.equals(this.getPosition())){
-            this.first = false;
+            this.setFirst(false);
             this.setMoves(availableMoves());
         }
     }

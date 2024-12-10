@@ -3,15 +3,16 @@ package com.chessd.chess.utils;
 import java.util.List;
 
 public class Queen extends Figure {
-    public Queen() {
-    }
     public Queen(String color){
-        super(color+"q", color, "d" + (color.equals("W") ? 1 : 8));
+        //default values that will work
+        //if changed you need to change images name as well
+        super("queen", color, "d" + (color.toLowerCase().startsWith("w") ? 1 : 8));
     }
 
     public Queen(String color, String position) {
-        super(color + "q", color, position);
+        super("queen", color, position);
     }
+
 
     //TODO: moves for Queen
     @Override

@@ -4,11 +4,8 @@ import java.util.List;
 
 
 public class Knight extends Figure{
-    public Knight() {
-    }
-
     public Knight(String color, String position) {
-        super(color+"k", color, position);
+        super("knight", color, position);
     }
     //TODO: moves
     @Override
