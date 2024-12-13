@@ -5,9 +5,9 @@ import java.util.*;
 
 public class King extends Figure {
 
-    //generic figure name and position naming and image name color white, black or w, b or upperCase
+    //generic figure name and position
     public King(String color){
-        super("king", color, "e" + (color.toLowerCase().startsWith("w") ? 1 : 8));
+        super("king", color, "e" + (color.startsWith("W") ? 1 : 8));
     }
 
     public King(String color, String position) {

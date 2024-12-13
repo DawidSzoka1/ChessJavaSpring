@@ -13,7 +13,8 @@ public abstract class Figure {
     public Figure() {}
     public Figure(String name, String color, String position) {
         this.name = name;
-        this.color = color;
+        // color must be this format for page to work
+        this.color = color.toLowerCase().startsWith("w") ? "W" : "B";
         this.position = position;
         this.moves = new ArrayList<>();
         this.setImageName();
@@ -28,7 +29,7 @@ public abstract class Figure {
 
     //generic image name
     public void setImageName() {
-        this.imageName = (this.getColor().toLowerCase().startsWith("w") ? "W" : "B") + "_" + this.name + ".png";
+        this.imageName = this.getColor() + "_" + this.name + ".png";
     }
 
     public String getImageName() {

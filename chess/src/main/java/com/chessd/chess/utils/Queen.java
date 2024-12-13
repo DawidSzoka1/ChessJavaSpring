@@ -6,7 +6,7 @@ public class Queen extends Figure {
     public Queen(String color){
         //default values that will work
         //if changed you need to change images name as well
-        super("queen", color, "d" + (color.toLowerCase().startsWith("w") ? 1 : 8));
+        super("queen", color, "d" + (color.startsWith("W") ? 1 : 8));
     }
 
     public Queen(String color, String position) {
