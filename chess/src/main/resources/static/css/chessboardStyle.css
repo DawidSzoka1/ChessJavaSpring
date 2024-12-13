@@ -29,10 +29,10 @@
     align-items: center;
     justify-content: center;
     color: black;
+    box-sizing: border-box;
 }
 .piece{
-    width: 10%;
-    height: 10%;
-    object-fit: contain;
-    position: fixed;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
 }

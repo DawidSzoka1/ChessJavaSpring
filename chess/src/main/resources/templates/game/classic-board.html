@@ -15,11 +15,11 @@
             <div th:if="${statRow.even}">
                 <div th:class="${statCol.odd ? 'square black' : 'square white'}"
                      th:id="figure">
-                    <div th:class="square-content">
+                    <div th:class="square-content" th:id="${col != null ? col.position : statCol.index}">
                         <th:block th:if="${col != null}">
-                            <!--figure on a2,b2, ..., h2 and a8, b8, ..., h8-->
-                            <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="pawn" class="piece"
-                                 draggable="true">
+                            <!--white pawns and black back rows -->
+                            <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure" class="piece"
+                                 draggable="true" th:id="${col.color+col.position}">
                         </th:block>
 
                     </div>
@@ -28,11 +28,11 @@
             <div th:if="${statRow.odd}">
                 <div th:class="${statCol.even ? 'square black' : 'square white'}"
                      th:id="figure">
-                    <div th:class="square-content">
+                    <div th:class="square-content" th:id="${col != null ? col.position : statCol.index}">
                         <th:block th:if="${col != null}">
-                            <!--figure on a1,b1, ..., h1 and a7, b7, ..., h7-->
-                            <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="pawn" class="piece"
-                                 draggable="true">
+                            <!--white back rows and black pawns -->
+                            <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure" class="piece"
+                                 draggable="true" th:id="${col.color+col.position}">
                         </th:block>
                     </div>
                 </div>

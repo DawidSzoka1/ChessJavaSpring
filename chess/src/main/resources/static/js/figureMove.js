@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function dragging(e) {
-        console.log(e.target)
+
     }
 
     squares.forEach(square => {
@@ -35,8 +35,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function dragDrop(e) {
+
+        console.log(e.target)
+        console.log(selectedPiece)
+        if(e.target.tagName === "DIV"){
+            e.target.appendChild(selectedPiece)
+        }else if(e.target.className === "piece"){
+            console.log("bicie")
+        }
         e.preventDefault()
-        e.target.appendChild(selectedPiece)
     }
 
     function dragEnd(e) {
