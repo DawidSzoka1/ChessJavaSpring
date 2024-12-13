@@ -1,4 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
+    const socket = new WebSocket("ws://localhost:8080/game/classic")
+
+    socket.onopen = () => {
+        console.log("Connected to websocket")
+    }
+
+    socket.onmessage = (e) => {
+        console.log(JSON.parse(e.data))
+    }
+
+    function sendMove(){
+        socket.send(JSON.stringify({"from": "e2", "to" : "e4"}))
+    }
+    sendMove()
+
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
