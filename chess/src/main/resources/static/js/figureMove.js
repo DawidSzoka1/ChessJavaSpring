@@ -1,18 +1,39 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const socket = new WebSocket("ws://localhost:8080/game/classic")
+    const socket = new WebSocket("ws://localhost:8080/chess")
 
+    let isPongReceived = true;
     socket.onopen = () => {
-        console.log("Connected to websocket")
+        console.log("Connected to WebSocket")
+        setInterval(() => {
+            if(socket.readyState === WebSocket.OPEN){
+                if(!isPongReceived){
+                    console.log("Some error with pong")
+                    socket.close();
+                }else{
+                    isPongReceived = false
+                    console.log("Sending Ping")
+                    socket.send("PING")
+                }
+            }
+        }, 30000)
     }
 
     socket.onmessage = (e) => {
-        console.log(JSON.parse(e.data))
-    }
+        if(e.data === "PONG"){
+            console.log("Pong received from server")
+            isPongReceived = true
+        }else{
+            console.log(e)
+        }
 
-    function sendMove(){
-        socket.send(JSON.stringify({"from": "e2", "to" : "e4"}))
     }
-    sendMove()
+    socket.onerror = (error) => {
+        console.log(error)
+    }
+    socket.onclose = (e) => {
+        console.log("Connection closed")
+
+    }
 
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
@@ -50,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function dragDrop(e) {
-
+        socket.send("ruch zostal zrobiony")
         console.log(e.target)
         console.log(selectedPiece)
         if(e.target.tagName === "DIV"){

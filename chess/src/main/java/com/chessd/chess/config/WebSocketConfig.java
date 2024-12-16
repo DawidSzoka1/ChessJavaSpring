@@ -12,6 +12,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new ChessWebSocketHandler(), "/game/classic").setAllowedOrigins("*");
+        registry.addHandler(new ChessWebSocketHandler(), "/chess")
+                .setAllowedOrigins("http://localhost:8080/game/classic");
     }
 }
