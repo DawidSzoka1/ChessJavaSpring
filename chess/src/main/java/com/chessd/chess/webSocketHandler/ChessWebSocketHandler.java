@@ -2,13 +2,10 @@ package com.chessd.chess.webSocketHandler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.PingMessage;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
 import java.io.IOException;
-import java.nio.ByteBuffer;
 
 public class ChessWebSocketHandler extends TextWebSocketHandler {
     @Override
@@ -19,7 +16,7 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         if(message.getPayload().equals("PING")){
-            sendPing(session);
+            session.sendMessage(new TextMessage("PONG"));
         }else{
             System.out.println("PONG not received");
         }
