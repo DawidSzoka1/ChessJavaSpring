@@ -1,5 +1,6 @@
 package com.chessd.chess.webSocketHandler;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -15,17 +16,18 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        if(message.getPayload().equals("PING")){
+        String payload = message.getPayload();
+
+        if(payload.equals("PING")){
             session.sendMessage(new TextMessage("PONG"));
         }else{
-            System.out.println("PONG not received");
+            System.out.println(payload);
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println("Connection closed: ");
-        session.sendMessage(new TextMessage("Gra zakoncona"));
+        System.out.println("Connection closed: " + status.getReason());
     }
 
     @Scheduled(fixedRate= 30000)

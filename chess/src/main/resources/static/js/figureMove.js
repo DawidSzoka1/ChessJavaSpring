@@ -1,7 +1,14 @@
 import {customWebSocket} from "./connectionWithWebSocket.js";
 document.addEventListener("DOMContentLoaded", () => {
-    customWebSocket()
+    let socket = customWebSocket()
+    let errorClose = true
+    socket.onclose = () => {
+        if(errorClose){
+            socket = customWebSocket()
+        }
+    }
 
+    const gameID = document.querySelector(".gameID")
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
@@ -38,9 +45,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function dragDrop(e) {
-        socket.send("ruch zostal zrobiony")
-        console.log(e.target)
-        console.log(selectedPiece)
+        socket.send(JSON.stringify({gameId: gameID.id, move: `${selectedPiece.id}-${e.target.id}`}))
+        // socket.onmessage = (message) => {
+        //     console.log("In drago Drop onmessage")
+        //     console.log(message)
+        // }
         if(e.target.tagName === "DIV"){
             e.target.appendChild(selectedPiece)
         }else if(e.target.className === "piece"){
