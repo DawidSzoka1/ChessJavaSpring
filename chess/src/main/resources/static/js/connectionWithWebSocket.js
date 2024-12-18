@@ -34,4 +34,5 @@ export function customWebSocket() {
         console.log("Connection closed")
 
     }
+    return socket
 }

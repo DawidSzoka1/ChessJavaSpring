@@ -48,7 +48,7 @@ public class GameServiceImpl implements GameService {
 
             //putting correct figure on a1, b1, ..., h1 and a8, b8, ..., h8 so for white and black
             game.placeFigure(0, i, putFigure(this.figuresName[i], "W", colName + "1"));
-            game.placeFigure(7, i, putFigure(this.figuresName[i], "B", colName + "7"));
+            game.placeFigure(7, i, putFigure(this.figuresName[i], "B", colName + "8"));
         }
     }
 
