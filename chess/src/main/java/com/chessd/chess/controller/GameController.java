@@ -36,6 +36,7 @@ public class GameController {
         Game g = gameService.getGameById("0d259cc2-2492-4ee8-809f-3c1104d36808").get();
         gameService.startGame(g);
         model
+                .addAttribute("columns", Column.values())
                 .addAttribute("game", g)
                 .addAttribute("gameService", gameService);
         return "game/classic-board";
