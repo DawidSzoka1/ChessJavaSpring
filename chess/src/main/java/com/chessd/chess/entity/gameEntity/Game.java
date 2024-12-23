@@ -3,12 +3,13 @@ package com.chessd.chess.entity.gameEntity;
 import com.chessd.chess.entity.User;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import java.util.Arrays;
+
 import com.chessd.chess.utils.Figure;
 
 @Entity
 @Table(name = "game")
 public class Game {
-
     @Id
     @Column(name = "game_id")
     private String gameId;
@@ -123,6 +124,7 @@ public class Game {
                 ", black=" + black +
                 ", timestamp=" + start +
                 ", end=" + end +
+                "board" + Arrays.deepToString(board) +
                 '}';
     }
 }

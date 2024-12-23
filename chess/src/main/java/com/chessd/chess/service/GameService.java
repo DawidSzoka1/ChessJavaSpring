@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface GameService {
     void startGame(Game game);
-    void move(Figure figure, Game game, User user, Move move);
+    String move(Game game, String from, String to, String color);
     void endGame(Game game);
     Optional<Game> getGameById(String gameId);
     Optional<Figure> getFigureById(String position, String gameId);

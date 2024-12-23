@@ -71,4 +71,12 @@ public abstract class Figure {
     abstract List<String> availableMoves();
 
     abstract void makeMove(String newPosition);
+
+    @Override
+    public String toString() {
+        return "Figure{" +
+                "name='" + name + '\'' +
+                position +
+                '}';
+    }
 }
