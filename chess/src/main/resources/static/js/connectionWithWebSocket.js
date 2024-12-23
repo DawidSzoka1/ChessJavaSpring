@@ -12,7 +12,7 @@ export function customWebSocket() {
                 }else{
                     isPongReceived = false
                     console.log("Sending Ping")
-                    socket.send("PING")
+                    socket.send(JSON.stringify({message: "Sending ping", messageType: "PING", gameId: "gameId"}))
                 }
             }
         }, 30000)

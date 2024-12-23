@@ -45,7 +45,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function dragDrop(e) {
-        socket.send(JSON.stringify({gameId: gameID.id, move: `${selectedPiece.id}-${e.target.id}`}))
+        socket.send(JSON.stringify(
+            {
+                message:`${selectedPiece.id}-${e.target.id}`,
+                messageType: "move",
+                gameId: gameID.id,
+                }))
         // socket.onmessage = (message) => {
         //     console.log("In drago Drop onmessage")
         //     console.log(message)
