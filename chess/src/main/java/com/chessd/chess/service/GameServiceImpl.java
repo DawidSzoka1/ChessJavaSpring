@@ -1,14 +1,13 @@
 package com.chessd.chess.service;
 
-import com.chessd.chess.entity.User;
 import com.chessd.chess.entity.gameEntity.Game;
-import com.chessd.chess.entity.gameEntity.Move;
 import com.chessd.chess.repository.gameRepository.GameDao;
 import com.chessd.chess.repository.gameRepository.MoveDao;
 import com.chessd.chess.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 @Service
@@ -53,8 +52,22 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void move(Figure figure, Game game, User user, Move move) {
-
+    public String move(Game game, String from, String to, String color) {
+        Figure[][] board = game.getBoard();
+        int col = Column.fromName(String.valueOf(from.charAt(0))).get().getIndex();
+        int row = Integer.parseInt(String.valueOf(from.charAt(1))) - 1;
+        Figure figure = board[row][col];
+        if (figure != null) {
+            return figure.toString();
+        }
+        ArrayList<Figure> positions = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                positions.add(board[i][j]);
+            }
+        }
+        System.out.println(positions);
+        return col + " " + row;
     }
 
     @Override

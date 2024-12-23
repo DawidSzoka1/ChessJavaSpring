@@ -1,21 +1,25 @@
 package com.chessd.chess.webSocketHandler;
 
-import com.chessd.chess.repository.gameRepository.GameDaoImpl;
-import com.chessd.chess.repository.gameRepository.MoveDaoImpl;
-import com.chessd.chess.service.GameService;
-import com.chessd.chess.service.GameServiceImpl;
 
+import com.chessd.chess.entity.gameEntity.Game;
+import com.chessd.chess.service.GameService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+
+@Component
 public class GameHandleTextMessage {
     private String message;
     private String messageType;
-    private String gameId;
-    public GameHandleTextMessage(){}
-    public GameHandleTextMessage(String message, String gameId, String messageType){
-        this.message = message;
-        this.gameId = gameId;
-        this.messageType = messageType;
-    }
+    private Game game;
+    private GameService gameService;
 
+    public GameHandleTextMessage(){}
+
+    @Autowired
+    public GameHandleTextMessage(GameService gameService) {
+        this.gameService = gameService;
+    }
     public void setMessage(String message) {
         this.message = message;
     }
@@ -28,8 +32,8 @@ public class GameHandleTextMessage {
         this.messageType = messageType;
     }
 
-    public void setGameId(String gameId) {
-        this.gameId = gameId;
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public GameHandleTextMessage(String message) {
@@ -37,8 +41,9 @@ public class GameHandleTextMessage {
     }
 
     public String handleMessageMove(){
-
-        return "Success";
+        String[] moveDetails = message.split("-");
+        System.out.println(game);
+        return gameService.move(game, moveDetails[0].substring(1), moveDetails[1], moveDetails[0].substring(0, 1));
     }
     public String pongMessage(){
         return "PONG";
@@ -54,8 +59,8 @@ public class GameHandleTextMessage {
         return message;
     }
 
-    public String getGameId() {
-        return gameId;
+    public Game getGame() {
+        return game;
     }
 
     @Override
