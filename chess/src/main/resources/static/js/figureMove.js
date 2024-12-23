@@ -8,10 +8,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const gameID = document.querySelector(".gameID")
+    const gameObj = document.querySelector("#game").getAttribute('data')
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
+    console.log(gameObj)
+    let successfuleMove;
     pieces.forEach(piece => {
         piece.addEventListener("drag", dragging)
         piece.addEventListener("dragstart", dragStart)
@@ -49,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             {
                 message:`${selectedPiece.id}-${e.target.id}`,
                 messageType: "move",
-                gameId: gameID.id,
+                game: gameObj,
                 }))
         // socket.onmessage = (message) => {
         //     console.log("In drago Drop onmessage")

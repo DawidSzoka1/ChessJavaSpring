@@ -9,7 +9,7 @@
 
 </head>
 <body>
-<div hidden="hidden" th:id="${game.gameId}" class="gameID"></div>
+<div hidden="hidden" id="game" th:data="${game}" ></div>
 <div id="chessboard" class="container">
     <div th:each="row, statRow : ${game.board}" class="row g-0 chessboard">
         <div th:each="col, statCol : ${row}" class="col g-0">
