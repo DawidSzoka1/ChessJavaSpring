@@ -5,8 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonDeserialize(using = FigureDeserializer.class)
-public abstract class Figure {
+public class Figure {
     private String name;
     private String color;
     private String position;
@@ -74,9 +73,13 @@ public abstract class Figure {
         this.color = color;
     }
 
-    abstract List<String> availableMoves();
+    List<String> availableMoves() {
+        return null;
+    }
 
-    abstract void makeMove(String newPosition);
+    void makeMove(String newPosition) {
+
+    }
 
     @Override
     public String toString() {

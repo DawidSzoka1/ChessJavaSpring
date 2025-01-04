@@ -8,12 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    const gameObj = document.querySelector("#game").getAttribute('data')
+    const gameId = document.querySelector("#game").getAttribute('data-id')
+    let gameBoard = document.querySelector("#game").getAttribute("data-board")
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
-    console.log(gameObj)
     let successfuleMove;
+    console.log(JSON.parse(gameBoard))
     pieces.forEach(piece => {
         piece.addEventListener("drag", dragging)
         piece.addEventListener("dragstart", dragStart)
@@ -51,8 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
             {
                 message:`${selectedPiece.id}-${e.target.id}`,
                 messageType: "move",
-                game: gameObj,
+                gameId: gameId,
+                board: JSON.parse(gameBoard)
                 }))
+
         // socket.onmessage = (message) => {
         //     console.log("In drago Drop onmessage")
         //     console.log(message)

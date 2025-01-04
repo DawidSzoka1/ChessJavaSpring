@@ -5,6 +5,8 @@ import com.chessd.chess.service.GameService;
 import com.chessd.chess.service.RandomUniqIdGenerator;
 import com.chessd.chess.utils.Column;
 import com.chessd.chess.utils.Pawn;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -32,12 +34,15 @@ public class GameController {
 //        gameService.startGame(game);
 //    }
     @GetMapping("/classic")
-    public String classic(Model model) {
+    public String classic(Model model) throws JsonProcessingException {
         Game g = gameService.getGameById("0d259cc2-2492-4ee8-809f-3c1104d36808").get();
         gameService.startGame(g);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String boardJson = objectMapper.writeValueAsString(g.getBoard());
         model
                 .addAttribute("columns", Column.values())
                 .addAttribute("game", g)
+                .addAttribute("gameBoard", boardJson)
                 .addAttribute("gameService", gameService);
         return "game/classic-board";
     }

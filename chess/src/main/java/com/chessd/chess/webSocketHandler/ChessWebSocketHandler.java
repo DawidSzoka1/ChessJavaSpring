@@ -9,13 +9,15 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.Arrays;
+
 
 @Component
 public class ChessWebSocketHandler extends TextWebSocketHandler {
     private GameHandleTextMessage gameHandleTextMessage;
 
     @Autowired
-    public ChessWebSocketHandler(GameHandleTextMessage gameHandleTextMessage){
+    public ChessWebSocketHandler(GameHandleTextMessage gameHandleTextMessage) {
         this.gameHandleTextMessage = gameHandleTextMessage;
     }
 
@@ -30,11 +32,16 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
         ObjectMapper objectMapper = new ObjectMapper();
         GameHandleTextMessage gh =
                 objectMapper.readValue(payload, GameHandleTextMessage.class);
-        gameHandleTextMessage.setMessage(gh.getMessage());
-        gameHandleTextMessage.setMessageType(gh.getMessageType());
-        gameHandleTextMessage.setGame(gh.getGame());
-        session.sendMessage(new TextMessage(gameHandleTextMessage.handleMessage()));
-        System.out.println(gameHandleTextMessage);
+        if (gh.getMessageType().equals("PING")) {
+            session.sendMessage(new TextMessage("PONG"));
+        } else {
+            gameHandleTextMessage.setBoard(gh.getBoard());
+            gameHandleTextMessage.setGameId(gh.getGameId());
+            gameHandleTextMessage.setMessage(gh.getMessage());
+            gameHandleTextMessage.setMessageType(gh.getMessageType());
+            session.sendMessage(new TextMessage(gameHandleTextMessage.handleMessage()));
+            System.out.println(gameHandleTextMessage);
+        }
 
     }
 

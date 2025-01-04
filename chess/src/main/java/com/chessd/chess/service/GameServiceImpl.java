@@ -5,6 +5,7 @@ import com.chessd.chess.repository.gameRepository.GameDao;
 import com.chessd.chess.repository.gameRepository.MoveDao;
 import com.chessd.chess.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,8 +53,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public String move(Game game, String from, String to, String color) {
-        Figure[][] board = game.getBoard();
+    public String move(String gameId, String from, String to, String color, Figure[][] lastBoard) {
+        Optional<Game> game = gameDao.getGameById(gameId);
+        if(game.isEmpty()){
+            //TODO throw error
+            return "No such game";
+        }
+        game.get().setBoard(lastBoard);
+        Figure[][] board = game.get().getBoard();
         int col = Column.fromName(String.valueOf(from.charAt(0))).get().getIndex();
         int row = Integer.parseInt(String.valueOf(from.charAt(1))) - 1;
         Figure figure = board[row][col];
