@@ -9,12 +9,7 @@ public class Knight extends Figure{
     }
     //TODO: moves
     @Override
-    List<String> availableMoves() {
+    public List<String> availableMoves() {
         return List.of();
-    }
-
-    @Override
-    void makeMove(String newPosition) {
-
     }
 }

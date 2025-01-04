@@ -28,7 +28,7 @@ public class Pawn extends Figure{
     }
 
     @Override
-    List<String> availableMoves() {
+    public List<String> availableMoves() {
         List<String> moves = new ArrayList<>();
         int row = Integer.parseInt(String.valueOf(this.getPosition().charAt(1)));
         moves.add(String.valueOf(this.getPosition().charAt(0)) + (row + this.direction));
@@ -36,14 +36,5 @@ public class Pawn extends Figure{
             moves.add(String.valueOf(this.getPosition().charAt(0)) + (row + this.direction * 2));
         }
         return moves;
-    }
-
-    @Override
-    void makeMove(String newPosition) {
-        this.setPosition(this.getMoves().contains(newPosition) ? newPosition : this.getPosition());
-        if(newPosition.equals(this.getPosition())){
-            this.setFirst(false);
-            this.setMoves(availableMoves());
-        }
     }
 }

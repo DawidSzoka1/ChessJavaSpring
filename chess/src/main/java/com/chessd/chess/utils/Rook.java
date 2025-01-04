@@ -8,12 +8,7 @@ public class Rook extends Figure{
     }
 
     @Override
-    List<String> availableMoves() {
+    public List<String> availableMoves() {
         return List.of();
-    }
-
-    @Override
-    void makeMove(String newPosition) {
-
     }
 }

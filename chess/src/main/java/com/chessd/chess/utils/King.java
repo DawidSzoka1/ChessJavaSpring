@@ -34,16 +34,11 @@ public class King extends Figure {
     }
 
     @Override
-    List<String> availableMoves() {
+    public List<String> availableMoves() {
         List<String> moves = new ArrayList<>();
         HashMap<Optional<Column>, Integer> directions = directions();
         // TODO: moves for king to finish
 
         return moves;
-    }
-
-    @Override
-    void makeMove(String newPosition) {
-
     }
 }

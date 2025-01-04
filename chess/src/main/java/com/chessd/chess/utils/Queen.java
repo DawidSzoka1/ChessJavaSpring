@@ -16,12 +16,8 @@ public class Queen extends Figure {
 
     //TODO: moves for Queen
     @Override
-    List<String> availableMoves() {
+    public List<String> availableMoves() {
         return List.of();
     }
 
-    @Override
-    void makeMove(String newPosition) {
-
-    }
 }

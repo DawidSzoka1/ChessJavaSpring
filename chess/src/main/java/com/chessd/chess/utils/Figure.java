@@ -73,9 +73,17 @@ public abstract class Figure {
         this.color = color;
     }
 
-    abstract List<String> availableMoves();
+    public abstract List<String> availableMoves();
 
-    abstract void makeMove(String newPosition);
+    public boolean makeMove(String newPosition){
+        for(String move: availableMoves()){
+            if(move.equals(newPosition)){
+                this.position = newPosition;
+                return true;
+            }
+        }
+        return false;
+    };
 
     @Override
     public String toString() {
