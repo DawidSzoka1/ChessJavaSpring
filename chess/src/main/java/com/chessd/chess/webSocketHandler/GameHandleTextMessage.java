@@ -1,13 +1,9 @@
 package com.chessd.chess.webSocketHandler;
 
-
-import com.chessd.chess.entity.gameEntity.Game;
 import com.chessd.chess.service.GameService;
 import com.chessd.chess.utils.Figure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
 
 
 @Component
@@ -56,15 +52,10 @@ public class GameHandleTextMessage {
         this.gameId = gameId;
     }
 
-    public GameHandleTextMessage(String message) {
-        this.message = message;
-    }
-
     public String handleMessageMove(){
-        String[] moveDetails = message.split("-");
-
-        System.out.println(Arrays.deepToString(board));
-        return "success";
+        String[] moveDetails = message.substring(1).split("-");
+        boolean valid = gameService.move(gameId, moveDetails[0], moveDetails[1],String.valueOf(message.charAt(0)), board);
+        return "type:move, valid:" + valid;
     }
     public String pongMessage(){
         return "PONG";

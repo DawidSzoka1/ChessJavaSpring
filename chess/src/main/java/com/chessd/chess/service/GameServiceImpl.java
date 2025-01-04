@@ -53,28 +53,22 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public String move(String gameId, String from, String to, String color, Figure[][] lastBoard) {
-        Optional<Game> game = gameDao.getGameById(gameId);
-        if(game.isEmpty()){
+    public boolean move(String gameId, String from, String to, String color, Figure[][] lastBoard) {
+        Optional<Game> gameOpt = gameDao.getGameById(gameId);
+        if(gameOpt.isEmpty()){
             //TODO throw error
-            return "No such game";
+            return false;
         }
-        game.get().setBoard(lastBoard);
-        Figure[][] board = game.get().getBoard();
+        Game game = gameOpt.get();
+        game.setBoard(lastBoard);
+        Figure[][] board = game.getBoard();
         int col = Column.fromName(String.valueOf(from.charAt(0))).get().getIndex();
         int row = Integer.parseInt(String.valueOf(from.charAt(1))) - 1;
         Figure figure = board[row][col];
-        if (figure != null) {
-            return figure.toString();
+        if (figure == null) {
+            return false;
         }
-        ArrayList<Figure> positions = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                positions.add(board[i][j]);
-            }
-        }
-        System.out.println(positions);
-        return col + " " + row;
+        return figure.makeMove(to);
     }
 
     @Override

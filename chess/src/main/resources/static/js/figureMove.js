@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function dragDrop(e) {
+
         socket.send(JSON.stringify(
             {
                 message:`${selectedPiece.id}-${e.target.id}`,
@@ -54,12 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 gameId: gameId,
                 board: JSON.parse(gameBoard)
                 }))
-
-        // socket.onmessage = (message) => {
-        //     console.log("In drago Drop onmessage")
-        //     console.log(message)
-        // }
-        if(e.target.tagName === "DIV"){
+        socket.onmessage = (event) => {
+            // TODO message from move
+            console.log("Z dragDrop ")
+            console.log(event)
+            console.log("Po dragDropie")
+        }
+        if(e.target.tagName === "DIV" && successfuleMove){
             e.target.appendChild(selectedPiece)
         }else if(e.target.className === "piece"){
             console.log("bicie")
