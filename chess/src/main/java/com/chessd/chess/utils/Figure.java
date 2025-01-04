@@ -1,8 +1,11 @@
 package com.chessd.chess.utils;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonDeserialize(using = FigureDeserializer.class)
 public abstract class Figure {
     private String name;
     private String color;
@@ -10,7 +13,9 @@ public abstract class Figure {
     private String imageName;
     private List<String> moves;
 
-    public Figure() {}
+    public Figure() {
+    }
+
     public Figure(String name, String color, String position) {
         this.name = name;
         // color must be this format for page to work
@@ -19,6 +24,7 @@ public abstract class Figure {
         this.moves = new ArrayList<>();
         this.setImageName();
     }
+
     public List<String> getMoves() {
         return moves;
     }
