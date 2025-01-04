@@ -62,7 +62,7 @@ public class GameHandleTextMessage {
 
     public String handleMessageMove(){
         String[] moveDetails = message.split("-");
-        System.out.println("to tutaj sie wyswietla");
+
         System.out.println(Arrays.deepToString(board));
         return "success";
     }

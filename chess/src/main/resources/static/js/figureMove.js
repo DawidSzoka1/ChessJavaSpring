@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
     let successfuleMove;
-    console.log(JSON.parse(gameBoard))
     pieces.forEach(piece => {
         piece.addEventListener("drag", dragging)
         piece.addEventListener("dragstart", dragStart)

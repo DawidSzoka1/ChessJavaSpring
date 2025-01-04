@@ -16,15 +16,14 @@ public class FigureDeserializer extends JsonDeserializer<Figure> {
             return null;
         }
         String type = node.get("name").asText();
-        switch (type){
+        return switch (type){
             case "pawn" -> new Pawn(node.get("color"). asText(), node.get("position").asText());
             case "bishop" -> new Bishop(node.get("color"). asText(), node.get("position").asText());
             case "rook" -> new Rook(node.get("color"). asText(), node.get("position").asText());
             case "knight" -> new Knight(node.get("color"). asText(), node.get("position").asText());
             case "king" -> new King(node.get("color"). asText(), node.get("position").asText());
             case "queen" -> new Queen(node.get("color"). asText(), node.get("position").asText());
-            default -> throw new IllegalArgumentException("Not know name of figure " + type);
-        }
-        return null;
+            default -> null;
+        };
     }
 }

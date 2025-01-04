@@ -1,5 +1,6 @@
 package com.chessd.chess.webSocketHandler;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,13 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(@NotNull WebSocketSession session, @NotNull TextMessage message) throws Exception {
         String payload = message.getPayload();
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         GameHandleTextMessage gh =
                 objectMapper.readValue(payload, GameHandleTextMessage.class);
         if (gh.getMessageType().equals("PING")) {
             session.sendMessage(new TextMessage("PONG"));
         } else {
+
             gameHandleTextMessage.setBoard(gh.getBoard());
             gameHandleTextMessage.setGameId(gh.getGameId());
             gameHandleTextMessage.setMessage(gh.getMessage());
