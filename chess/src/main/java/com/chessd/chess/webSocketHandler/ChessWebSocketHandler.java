@@ -22,7 +22,7 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(@NotNull WebSocketSession session) throws Exception {
-        session.sendMessage(new TextMessage("Game starts now"));
+        session.sendMessage(new TextMessage(new MessageToJS("start", "game starts now", true).toJson()));
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
         gameHandleTextMessage.setGameId(gh.getGameId());
         gameHandleTextMessage.setMessage(gh.getMessage());
         gameHandleTextMessage.setMessageType(gh.getMessageType());
-        session.sendMessage(gameHandleTextMessage.handleMessage());
+        session.sendMessage(new TextMessage(gameHandleTextMessage.handleMessage().toJson()));
         System.out.println(gameHandleTextMessage);
     }
 

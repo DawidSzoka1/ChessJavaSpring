@@ -2,21 +2,19 @@ package com.chessd.chess.webSocketHandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.web.socket.WebSocketMessage;
 
-public class MessageToJS implements WebSocketMessage<MessageToJS> {
+public class MessageToJS {
     private String type;
     private String content;
-    private boolean successfulAction;
+    private boolean valid;
 
     public MessageToJS() {
     }
 
-    public MessageToJS(String type, String content, boolean successfulAction) {
+    public MessageToJS(String type, String content, boolean valid) {
         this.type = type;
         this.content = content;
-        this.successfulAction = successfulAction;
+        this.valid = valid;
     }
 
     public String getType() {
@@ -35,35 +33,25 @@ public class MessageToJS implements WebSocketMessage<MessageToJS> {
         this.content = content;
     }
 
-    public boolean isSuccessfulAction() {
-        return successfulAction;
+    public boolean isValid() {
+        return valid;
     }
 
-    public void setSuccessfulAction(boolean successfulAction) {
-        this.successfulAction = successfulAction;
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
-    public String toJson()  {
+    public String toJson() {
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.writeValueAsString(this);
-        }catch (JsonProcessingException e){
-            return  "{}";
+        } catch (JsonProcessingException e) {
+            return "{}";
         }
     }
 
-    @Override
-    public @NotNull MessageToJS getPayload() {
-        return this;
-    }
-
-    @Override
-    public int getPayloadLength() {
-        return content != null ? content.getBytes().length : 0;
-    }
-
-    @Override
-    public boolean isLast() {
-        return true;
+    public static MessageToJS fromJson(String json) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(json, MessageToJS.class);
     }
 }
