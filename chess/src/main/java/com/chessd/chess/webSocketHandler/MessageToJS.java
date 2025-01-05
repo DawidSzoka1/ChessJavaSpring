@@ -1,5 +1,6 @@
 package com.chessd.chess.webSocketHandler;
 
+import com.chessd.chess.utils.Figure;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -7,6 +8,7 @@ public class MessageToJS {
     private String type;
     private String content;
     private boolean valid;
+    private String gameBoard;
 
     public MessageToJS() {
     }
@@ -15,6 +17,21 @@ public class MessageToJS {
         this.type = type;
         this.content = content;
         this.valid = valid;
+    }
+
+    public MessageToJS(String type, String content, boolean valid, String gameBoard) {
+        this.type = type;
+        this.content = content;
+        this.valid = valid;
+        this.gameBoard = gameBoard;
+    }
+
+    public String getGameBoard() {
+        return gameBoard;
+    }
+
+    public void setGameBoard(String  gameBoard) {
+        this.gameBoard = gameBoard;
     }
 
     public String getType() {
