@@ -2,6 +2,8 @@ package com.chessd.chess.webSocketHandler;
 
 import com.chessd.chess.service.GameService;
 import com.chessd.chess.utils.Figure;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,18 +48,21 @@ public class GameHandleTextMessage {
         this.gameId = gameId;
     }
 
-    public MessageToJS handleMessageMove() {
+    public MessageToJS handleMessageMove() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
         String[] moveDetails = message.substring(1).split("-");
-        boolean valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)), board);
-
-        return new MessageToJS("MOVE", message, valid);
+        Object[] valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)), board);
+        if((boolean) valid[0]){
+            return new MessageToJS("MOVE", message, true,objectMapper.writeValueAsString(valid[1]));
+        }
+        return new MessageToJS("MOVE", (String) valid[1], false);
     }
 
     public MessageToJS pongMessage() {
         return new MessageToJS("PONG", "pong", true);
     }
 
-    public MessageToJS handleMessage() {
+    public MessageToJS handleMessage() throws JsonProcessingException {
         return switch (messageType) {
             case "move" -> handleMessageMove();
             default -> pongMessage();
