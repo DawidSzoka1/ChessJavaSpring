@@ -1,19 +1,16 @@
-import {customWebSocket} from "./connectionWithWebSocket.js";
-document.addEventListener("DOMContentLoaded", () => {
-    let socket = customWebSocket()
-    let errorClose = true
-    socket.onclose = () => {
-        if(errorClose){
-            socket = customWebSocket()
-        }
-    }
+import CustomWebSocket from "./connectionWithWebSocket.js";
 
+document.addEventListener("DOMContentLoaded", () => {
     const gameId = document.querySelector("#game").getAttribute('data-id')
     let gameBoard = document.querySelector("#game").getAttribute("data-board")
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
-    let successfuleMove;
+    let successfulMove;
+
+    const ws = new CustomWebSocket(gameId, "ws://localhost:8080/chess");
+    ws.connect();
+
     pieces.forEach(piece => {
         piece.addEventListener("drag", dragging)
         piece.addEventListener("dragstart", dragStart)
@@ -47,25 +44,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function dragDrop(e) {
-
-        socket.send(JSON.stringify(
+        ws.eventForMove = e;
+        ws.setPieceToMove(selectedPiece)
+        ws.send(
             {
-                message:`${selectedPiece.id}-${e.target.id}`,
+                message: `${selectedPiece.id}-${e.target.id}`,
                 messageType: "move",
                 gameId: gameId,
                 board: JSON.parse(gameBoard)
-                }))
-        socket.onmessage = (event) => {
-            // TODO message from move
-            console.log("Z dragDrop ")
-            console.log(event)
-            console.log("Po dragDropie")
-        }
-        if(e.target.tagName === "DIV" && successfuleMove){
-            e.target.appendChild(selectedPiece)
-        }else if(e.target.className === "piece"){
-            console.log("bicie")
-        }
+            })
         e.preventDefault()
     }
 
