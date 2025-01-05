@@ -52,11 +52,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public boolean move(String gameId, String from, String to, String color, Figure[][] lastBoard) {
+    public Object[] move(String gameId, String from, String to, String color, Figure[][] lastBoard) {
         Optional<Game> gameOpt = gameDao.getGameById(gameId);
+        Object[] tab = new Object[2];
+        tab[0] = false;
         if (gameOpt.isEmpty()) {
             //TODO throw error
-            return false;
+            tab[1] = "board is empty";
+            return tab;
         }
         Game game = gameOpt.get();
         game.setBoard(lastBoard);
@@ -65,9 +68,25 @@ public class GameServiceImpl implements GameService {
         int row = Integer.parseInt(String.valueOf(from.charAt(1))) - 1;
         Figure figure = board[row][col];
         if (figure == null) {
-            return false;
+            tab[1] = "there int any figure on this position";
+            return tab;
         }
-        return figure.makeMove(to);
+        boolean valid = figure.makeMove(to);
+        if (!valid) {
+            tab[1] = "Invalid move";
+            return tab;
+        }
+        changeBoard(figure, to, board, col, row);
+        tab[0] = true;
+        tab[1] = board;
+        return tab;
+    }
+
+    public void changeBoard(Figure figure, String to, Figure[][] board, int colFrom, int rowFrom) {
+        int colTo = Column.fromName(String.valueOf(to.charAt(0))).get().getIndex();
+        int rowTo = Integer.parseInt(String.valueOf(to.charAt(1))) - 1;
+        board[rowTo][colTo] = figure;
+        board[rowFrom][colFrom] = null;
     }
 
     @Override
