@@ -81,6 +81,7 @@ public abstract class Figure {
         for (String move : availableMoves()) {
             if (move.equals(newPosition)) {
                 this.position = newPosition;
+                this.availableMoves();
                 return true;
             }
         }

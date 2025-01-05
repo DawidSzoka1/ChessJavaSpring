@@ -4,6 +4,7 @@ export default class CustomWebSocket {
     socket = null;
     isPongRecived = true;
     pieceToMove = null;
+    #board = null;
 
     constructor(gameId, url) {
         this.#gameId = gameId;
@@ -12,6 +13,14 @@ export default class CustomWebSocket {
 
     setPieceToMove(pieceToMove) {
         this.pieceToMove = pieceToMove;
+    }
+
+    set board(board) {
+        this.#board = board;
+    }
+
+    get board() {
+        return this.#board;
     }
 
     set eventForMove(event) {
@@ -52,6 +61,8 @@ export default class CustomWebSocket {
             switch (data.type) {
                 case "MOVE":
                     this.messageMove(data)
+                    console.log(data.gameBoard)
+                    this.#board = data.gameBoard;
                     break;
                 default:
                     console.log("its good")

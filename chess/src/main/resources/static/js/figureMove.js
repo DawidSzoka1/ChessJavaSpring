@@ -1,8 +1,9 @@
 import CustomWebSocket from "./connectionWithWebSocket.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const gameId = document.querySelector("#game").getAttribute('data-id')
-    let gameBoard = document.querySelector("#game").getAttribute("data-board")
+    const game = document.querySelector("#game")
+    const gameId = game.getAttribute('data-id')
+    let gameBoard = game.getAttribute("data-board")
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
@@ -53,6 +54,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 gameId: gameId,
                 board: JSON.parse(gameBoard)
             })
+        if(ws.board != null){
+            gameBoard = ws.board;
+            game.setAttribute("data-board", gameBoard);
+        }
         e.preventDefault()
     }
 
