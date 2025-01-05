@@ -34,14 +34,6 @@ public class GameHandleTextMessage {
         this.board = board;
     }
 
-    public GameService getGameService() {
-        return gameService;
-    }
-
-    public void setGameService(GameService gameService) {
-        this.gameService = gameService;
-    }
-
     public String getMessageType() {
         return messageType;
     }
@@ -54,17 +46,18 @@ public class GameHandleTextMessage {
         this.gameId = gameId;
     }
 
-    public String handleMessageMove() {
+    public MessageToJS handleMessageMove() {
         String[] moveDetails = message.substring(1).split("-");
         boolean valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)), board);
-        return "type:move, valid:" + valid;
+
+        return new MessageToJS("MOVE", message, valid);
     }
 
-    public String pongMessage() {
-        return "PONG";
+    public MessageToJS pongMessage() {
+        return new MessageToJS("PONG", "pong", true);
     }
 
-    public String handleMessage() {
+    public MessageToJS handleMessage() {
         return switch (messageType) {
             case "move" -> handleMessageMove();
             default -> pongMessage();

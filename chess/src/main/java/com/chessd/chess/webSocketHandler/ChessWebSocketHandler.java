@@ -36,7 +36,7 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
         gameHandleTextMessage.setGameId(gh.getGameId());
         gameHandleTextMessage.setMessage(gh.getMessage());
         gameHandleTextMessage.setMessageType(gh.getMessageType());
-        session.sendMessage(new TextMessage(gameHandleTextMessage.handleMessage()));
+        session.sendMessage(gameHandleTextMessage.handleMessage());
         System.out.println(gameHandleTextMessage);
     }
 
