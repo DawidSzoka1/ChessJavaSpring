@@ -5,7 +5,6 @@ import com.chessd.chess.repository.gameRepository.GameDao;
 import com.chessd.chess.repository.gameRepository.MoveDao;
 import com.chessd.chess.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.jetbrains.annotations.NotNull;
 
@@ -55,7 +54,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public boolean move(String gameId, String from, String to, String color, Figure[][] lastBoard) {
         Optional<Game> gameOpt = gameDao.getGameById(gameId);
-        if(gameOpt.isEmpty()){
+        if (gameOpt.isEmpty()) {
             //TODO throw error
             return false;
         }

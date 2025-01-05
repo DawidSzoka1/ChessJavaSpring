@@ -1,6 +1,5 @@
 package com.chessd.chess.repository.gameRepository;
 
-import com.chessd.chess.entity.User;
 import com.chessd.chess.entity.gameEntity.Figure;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -25,7 +24,7 @@ public class FigureDaoImpl implements FigureDao {
 
     @Override
     public Optional<Figure> getFigureByPosition(String position, String gameId) {
-        try{
+        try {
             TypedQuery<Figure> query = entityManager.createQuery(
                     "FROM Figure where position=:position and game.gameId=:gameId",
                     Figure.class
@@ -33,7 +32,7 @@ public class FigureDaoImpl implements FigureDao {
             query.setParameter("position", position);
             query.setParameter("gameId", gameId);
             return Optional.ofNullable(query.getSingleResult());
-        }catch (Exception e){
+        } catch (Exception e) {
             return Optional.empty();
         }
     }

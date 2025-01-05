@@ -12,17 +12,17 @@ public class FigureDeserializer extends JsonDeserializer<Figure> {
     @Override
     public Figure deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         JsonNode node = jsonParser.getCodec().readTree(jsonParser);
-        if(node.isNull()){
+        if (node.isNull()) {
             return null;
         }
         String type = node.get("name").asText();
-        return switch (type){
-            case "pawn" -> new Pawn(node.get("color"). asText(), node.get("position").asText());
-            case "bishop" -> new Bishop(node.get("color"). asText(), node.get("position").asText());
-            case "rook" -> new Rook(node.get("color"). asText(), node.get("position").asText());
-            case "knight" -> new Knight(node.get("color"). asText(), node.get("position").asText());
-            case "king" -> new King(node.get("color"). asText(), node.get("position").asText());
-            case "queen" -> new Queen(node.get("color"). asText(), node.get("position").asText());
+        return switch (type) {
+            case "pawn" -> new Pawn(node.get("color").asText(), node.get("position").asText());
+            case "bishop" -> new Bishop(node.get("color").asText(), node.get("position").asText());
+            case "rook" -> new Rook(node.get("color").asText(), node.get("position").asText());
+            case "knight" -> new Knight(node.get("color").asText(), node.get("position").asText());
+            case "king" -> new King(node.get("color").asText(), node.get("position").asText());
+            case "queen" -> new Queen(node.get("color").asText(), node.get("position").asText());
             default -> null;
         };
     }

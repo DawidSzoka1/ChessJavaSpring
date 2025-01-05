@@ -1,9 +1,7 @@
 package com.chessd.chess.entity;
 
 import jakarta.persistence.*;
-
 import java.util.Collection;
-
 
 @Entity
 @Table(name = "user")
@@ -24,9 +22,9 @@ public class User {
     private boolean enable;
 
 
-    @ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
-        joinColumns = @JoinColumn(name = "user_id"),
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
@@ -40,6 +38,7 @@ public class User {
         this.enable = enable;
         this.roles = roles;
     }
+
     public User(String userName, String password, boolean enabled) {
         this.userName = userName;
         this.password = password;
@@ -90,7 +89,6 @@ public class User {
     }
 
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -99,6 +97,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", enable=" + enable +
                 ", roles=" + roles
-                +'}';
+                + '}';
     }
 }

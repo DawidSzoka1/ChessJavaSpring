@@ -44,14 +44,4 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(@NotNull WebSocketSession session, @NotNull CloseStatus status) throws Exception {
         System.out.println("Connection closed: " + status.getReason());
     }
-
-//    @Scheduled(fixedRate= 30000)
-//    public void sendPing(WebSocketSession session) throws IOException {
-//        if(session.isOpen()){
-//            session.sendMessage(new TextMessage("PONG"));
-//        }else{
-//            System.out.println("Some error occurred");
-//        }
-//
-//    }
 }

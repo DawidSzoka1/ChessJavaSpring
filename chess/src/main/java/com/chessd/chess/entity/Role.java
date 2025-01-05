@@ -2,7 +2,6 @@ package com.chessd.chess.entity;
 
 import jakarta.persistence.*;
 
-
 @Entity
 @Table(name = "role")
 public class Role {

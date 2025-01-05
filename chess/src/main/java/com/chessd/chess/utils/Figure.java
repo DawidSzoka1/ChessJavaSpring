@@ -14,7 +14,9 @@ public abstract class Figure {
     private String imageName;
     private List<String> moves;
 
-    public Figure() {}
+    public Figure() {
+    }
+
     public Figure(String name, String color, String position) {
         this.name = name;
         // color must be this format for page to work
@@ -75,15 +77,17 @@ public abstract class Figure {
 
     public abstract List<String> availableMoves();
 
-    public boolean makeMove(String newPosition){
-        for(String move: availableMoves()){
-            if(move.equals(newPosition)){
+    public boolean makeMove(String newPosition) {
+        for (String move : availableMoves()) {
+            if (move.equals(newPosition)) {
                 this.position = newPosition;
                 return true;
             }
         }
         return false;
-    };
+    }
+
+    ;
 
     @Override
     public String toString() {

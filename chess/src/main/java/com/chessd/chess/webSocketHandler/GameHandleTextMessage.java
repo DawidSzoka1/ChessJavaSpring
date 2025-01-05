@@ -14,12 +14,14 @@ public class GameHandleTextMessage {
     private String gameId;
     private GameService gameService;
 
-    public GameHandleTextMessage(){}
+    public GameHandleTextMessage() {
+    }
 
     @Autowired
     public GameHandleTextMessage(GameService gameService) {
         this.gameService = gameService;
     }
+
     public void setMessage(String message) {
         this.message = message;
     }
@@ -52,16 +54,18 @@ public class GameHandleTextMessage {
         this.gameId = gameId;
     }
 
-    public String handleMessageMove(){
+    public String handleMessageMove() {
         String[] moveDetails = message.substring(1).split("-");
-        boolean valid = gameService.move(gameId, moveDetails[0], moveDetails[1],String.valueOf(message.charAt(0)), board);
+        boolean valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)), board);
         return "type:move, valid:" + valid;
     }
-    public String pongMessage(){
+
+    public String pongMessage() {
         return "PONG";
     }
-    public String handleMessage(){
-        return switch (messageType){
+
+    public String handleMessage() {
+        return switch (messageType) {
             case "move" -> handleMessageMove();
             default -> pongMessage();
         };

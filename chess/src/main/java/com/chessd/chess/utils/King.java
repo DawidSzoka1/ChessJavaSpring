@@ -6,7 +6,7 @@ import java.util.*;
 public class King extends Figure {
 
     //generic figure name and position
-    public King(String color){
+    public King(String color) {
         super("king", color, "e" + (color.startsWith("W") ? 1 : 8));
     }
 
