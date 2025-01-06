@@ -1,6 +1,5 @@
 package com.chessd.chess.webSocketHandler;
 
-import com.chessd.chess.utils.Figure;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

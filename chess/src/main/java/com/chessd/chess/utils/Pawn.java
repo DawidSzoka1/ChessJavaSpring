@@ -1,9 +1,13 @@
 package com.chessd.chess.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Figure {
+    private static final Logger log = LoggerFactory.getLogger(Pawn.class);
     private boolean first = true;
     private int direction;
 
@@ -37,6 +41,7 @@ public class Pawn extends Figure {
         if (this.first) {
             moves.add(String.valueOf(this.getPosition().charAt(0)) + (row + this.direction * 2));
         }
+        System.out.println(moves);
         return moves;
     }
 }

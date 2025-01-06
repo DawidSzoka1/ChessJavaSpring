@@ -66,6 +66,7 @@ public class GameServiceImpl implements GameService {
         Figure[][] board = game.getBoard();
         int col = Column.fromName(String.valueOf(from.charAt(0))).get().getIndex();
         int row = Integer.parseInt(String.valueOf(from.charAt(1))) - 1;
+        System.out.println("Test game Service impl");
         Figure figure = board[row][col];
         if (figure == null) {
             tab[1] = "there int any figure on this position";
@@ -76,17 +77,18 @@ public class GameServiceImpl implements GameService {
             tab[1] = "Invalid move";
             return tab;
         }
-        changeBoard(figure, to, board, col, row);
+        System.out.println(figure.getPosition());
         tab[0] = true;
-        tab[1] = board;
+        tab[1] = changeBoard(figure, to, board, col, row);
         return tab;
     }
 
-    public void changeBoard(Figure figure, String to, Figure[][] board, int colFrom, int rowFrom) {
+    public Figure[][] changeBoard(Figure figure, String to, Figure[][] board, int colFrom, int rowFrom) {
         int colTo = Column.fromName(String.valueOf(to.charAt(0))).get().getIndex();
         int rowTo = Integer.parseInt(String.valueOf(to.charAt(1))) - 1;
         board[rowTo][colTo] = figure;
         board[rowFrom][colFrom] = null;
+        return board;
     }
 
     @Override

@@ -61,11 +61,9 @@ export default class CustomWebSocket {
             switch (data.type) {
                 case "MOVE":
                     this.messageMove(data)
-                    console.log(data.gameBoard)
                     this.#board = data.gameBoard;
                     break;
                 default:
-                    console.log("its good")
                     this.messagePong()
             }
         }
@@ -85,6 +83,9 @@ export default class CustomWebSocket {
             console.log("invalid move")
             return null;
         }
+        const color = this.pieceToMove.id[0]
+        this.pieceToMove.id =   color + data.content;
+        console.log(this.pieceToMove.id)
         this.#eventForMove.target.appendChild(this.pieceToMove)
         console.log("Successful take")
     }

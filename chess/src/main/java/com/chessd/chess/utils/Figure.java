@@ -57,6 +57,7 @@ public abstract class Figure {
 
     public void setPosition(String position) {
         this.position = position;
+        this.setMoves(this.availableMoves());
     }
 
     public String getName() {
@@ -80,15 +81,12 @@ public abstract class Figure {
     public boolean makeMove(String newPosition) {
         for (String move : availableMoves()) {
             if (move.equals(newPosition)) {
-                this.position = newPosition;
-                this.availableMoves();
+                this.setPosition(newPosition);
                 return true;
             }
         }
         return false;
     }
-
-    ;
 
     @Override
     public String toString() {

@@ -53,7 +53,7 @@ public class GameHandleTextMessage {
         String[] moveDetails = message.substring(1).split("-");
         Object[] valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)), board);
         if((boolean) valid[0]){
-            return new MessageToJS("MOVE", message, true,objectMapper.writeValueAsString(valid[1]));
+            return new MessageToJS("MOVE", moveDetails[1], true,objectMapper.writeValueAsString(valid[1]));
         }
         return new MessageToJS("MOVE", (String) valid[1], false);
     }
