@@ -43,22 +43,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function dragLeave(e) {
     }
-
+    /**
+     * Handler for the "drop" event. Sends the move to the WebSocket server and updates the board state.
+     * @param {DragEvent} e - The drag event.
+     */
     function dragDrop(e) {
-        ws.eventForMove = e;
-        ws.setPieceToMove(selectedPiece)
-        ws.send(
-            {
-                message: `${selectedPiece.id}-${e.target.id}`,
-                messageType: "move",
-                gameId: gameId,
-                board: JSON.parse(gameBoard)
-            })
-        if(ws.board != null){
+        ws.eventForMove = e; // Set the event for the move
+        ws.setPieceToMove(selectedPiece); // Set the piece being moved
+
+        // Send the move message to the server
+        ws.send({
+            message: `${selectedPiece.id}-${e.target.id}`,
+            messageType: "move",
+            gameId: gameId,
+            board: JSON.parse(gameBoard)
+        });
+
+        // Update the game board if the server sends a new state
+        if (ws.board != null) {
             gameBoard = ws.board;
             game.setAttribute("data-board", gameBoard);
         }
-        e.preventDefault()
+
+        e.preventDefault();
     }
 
     function dragEnd(e) {
