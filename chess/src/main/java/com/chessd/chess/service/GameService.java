@@ -9,5 +9,5 @@ public interface GameService {
     Object[] move(String gameId, String from, String to, String color, Figure[][] lastBoard);
     void endGame(Game game);
     Optional<Game> getGameById(String gameId);
-    Optional<Figure> getFigureById(String position, String gameId);
+    Optional<Figure> getFigureByPosition(String position, Game game);
 }

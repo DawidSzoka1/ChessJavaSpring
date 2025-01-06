@@ -2,8 +2,6 @@ package com.chessd.chess.utils;
 
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
