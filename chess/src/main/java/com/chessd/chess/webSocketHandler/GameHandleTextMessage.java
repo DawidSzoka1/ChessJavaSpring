@@ -7,13 +7,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
+/**
+ * Handles WebSocket text messages related to chess game operations.
+ * This component processes messages received from the client, performs appropriate actions
+ * (e.g., handling moves, responding to pings), and returns a response to the client.
+ */
 @Component
 public class GameHandleTextMessage {
     private String message;
     private String messageType;
     private Figure[][] board;
     private String gameId;
+    /**
+     * The service used to manage chess game logic and state.
+     */
     private GameService gameService;
 
     public GameHandleTextMessage() {
@@ -48,20 +55,38 @@ public class GameHandleTextMessage {
         this.gameId = gameId;
     }
 
+    /**
+     * Processes a "move" message, validates the move, and updates the game state.
+     *
+     * @return a {@link MessageToJS} object representing the response to the client.
+     * @throws JsonProcessingException if serialization of the game state fails.
+     */
     public MessageToJS handleMessageMove() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String[] moveDetails = message.substring(1).split("-");
         Object[] valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)), board);
-        if((boolean) valid[0]){
-            return new MessageToJS("MOVE", moveDetails[1], true,objectMapper.writeValueAsString(valid[1]));
+        if ((boolean) valid[0]) {
+            return new MessageToJS("MOVE", moveDetails[1], true, objectMapper.writeValueAsString(valid[1]));
         }
         return new MessageToJS("MOVE", (String) valid[1], false);
     }
 
+    /**
+     * Constructs a "pong" message response to keep the WebSocket connection alive.
+     *
+     * @return a {@link MessageToJS} object representing the pong response.
+     */
     public MessageToJS pongMessage() {
         return new MessageToJS("PONG", "pong", true);
     }
 
+    /**
+     * Handles the received message based on its type.
+     * Delegates to appropriate handlers (e.g., move handling, pong response).
+     *
+     * @return a {@link MessageToJS} object representing the response to the client.
+     * @throws JsonProcessingException if serialization of the game state fails.
+     */
     public MessageToJS handleMessage() throws JsonProcessingException {
         return switch (messageType) {
             case "move" -> handleMessageMove();
