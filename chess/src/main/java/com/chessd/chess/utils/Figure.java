@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a generic chess figure (piece) with common properties and behaviors.
+ * This is an abstract class that must be extended by specific chess piece types.
+ */
 @JsonDeserialize(using = FigureDeserializer.class)
 public abstract class Figure {
     private String name;
@@ -17,12 +21,19 @@ public abstract class Figure {
     public Figure() {
     }
 
+    /**
+     * Constructs a {@code Figure} with the specified attributes.
+     *
+     * @param name     the name of the figure (e.g., "Pawn", "Knight").
+     * @param color    the color of the figure ("W" for white, "B" for black).
+     * @param position the initial position of the figure on the chessboard.
+     */
     public Figure(String name, String color, String position) {
         this.name = name;
-        // color must be this format for page to work
+        // Ensures the color is in the correct format ("W" or "B").
         this.color = color.toLowerCase().startsWith("w") ? "W" : "B";
         this.position = position;
-        this.moves = new ArrayList<>();
+        this.moves = this.availableMoves();
         this.setImageName();
     }
 
@@ -34,7 +45,9 @@ public abstract class Figure {
         this.imageName = imageName;
     }
 
-    //generic image name
+    /**
+     * Automatically sets the image name based on the figure's color and name.
+     */
     public void setImageName() {
         this.imageName = this.getColor() + "_" + this.name + ".png";
     }
@@ -47,14 +60,15 @@ public abstract class Figure {
         this.moves = moves;
     }
 
-    public void addMove(String move) {
-        this.moves.add(move);
-    }
-
     public String getPosition() {
         return position;
     }
 
+    /**
+     * Sets the position of the figure and updates its available moves.
+     *
+     * @param position the new position of the figure.
+     */
     public void setPosition(String position) {
         this.position = position;
         this.setMoves(this.availableMoves());
@@ -76,8 +90,20 @@ public abstract class Figure {
         this.color = color;
     }
 
+    /**
+     * Abstract method to calculate the available moves for the figure.
+     * Must be implemented by subclasses.
+     *
+     * @return a list of valid moves as strings.
+     */
     public abstract List<String> availableMoves();
 
+    /**
+     * Attempts to move the figure to a new position if the move is valid.
+     *
+     * @param newPosition the desired new position of the figure.
+     * @return {@code true} if the move is valid and successful, {@code false} otherwise.
+     */
     public boolean makeMove(String newPosition) {
         for (String move : availableMoves()) {
             if (move.equals(newPosition)) {
