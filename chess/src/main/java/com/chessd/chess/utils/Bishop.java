@@ -8,7 +8,7 @@ public class Bishop extends Figure {
     }
 
     @Override
-    public List<String> availableMoves() {
+    public List<String> availableMoves(Figure[][] board) {
         return List.of();
     }
 }

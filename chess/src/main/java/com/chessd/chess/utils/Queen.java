@@ -16,7 +16,7 @@ public class Queen extends Figure {
 
     //TODO: moves for Queen
     @Override
-    public List<String> availableMoves() {
+    public List<String> availableMoves(Figure[][] board) {
         return List.of();
     }
 

@@ -99,7 +99,7 @@ public class GameServiceImpl implements GameService {
             tab[1] = "there inst any figure on this position";
             return tab;
         }
-        boolean valid = figure.makeMove(to);
+        boolean valid = figure.makeMove(to, lastBoard);
         if (!valid) {
             tab[1] = "Invalid move";
             return tab;

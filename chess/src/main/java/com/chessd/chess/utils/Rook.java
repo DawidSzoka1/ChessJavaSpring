@@ -9,7 +9,7 @@ public class Rook extends Figure {
     }
 
     @Override
-    public List<String> availableMoves() {
+    public List<String> availableMoves(Figure[][] board) {
         ArrayList<String> moves = new ArrayList<>();
         int startRow = this.getPosition().charAt(1) - '0';
         char startCol = this.getPosition().charAt(0);
@@ -18,7 +18,7 @@ public class Rook extends Figure {
             char col = startCol;
             while (true) {
                 col += hor;
-                if (this.validPostion(startRow, col)) {
+                if (this.validPosition(startRow, col)) {
                     moves.add("" + col + startRow);
                 } else {
                     break;
@@ -30,7 +30,7 @@ public class Rook extends Figure {
             int row = startRow;
             while (true) {
                 row += ver;
-                if (this.validPostion(row, startCol)) {
+                if (this.validPosition(row, startCol)) {
                     moves.add("" + startCol + row);
                 } else {
                     break;

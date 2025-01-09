@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
-    let successfulMove;
 
     const ws = new CustomWebSocket(gameId, "ws://localhost:8080/chess");
     ws.connect();

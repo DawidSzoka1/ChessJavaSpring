@@ -31,7 +31,7 @@ public abstract class Figure {
         // Ensures the color is in the correct format ("W" or "B").
         this.color = color.toLowerCase().startsWith("w") ? "W" : "B";
         this.position = position;
-        this.moves = this.availableMoves();
+        this.moves = this.availableMoves(null);
         this.setImageName();
     }
 
@@ -67,9 +67,9 @@ public abstract class Figure {
      *
      * @param position the new position of the figure.
      */
-    public void setPosition(String position) {
+    public void setPosition(String position, Figure[][] board) {
         this.position = position;
-        this.setMoves(this.availableMoves());
+        this.setMoves(this.availableMoves(board));
     }
 
     public String getName() {
@@ -94,26 +94,25 @@ public abstract class Figure {
      *
      * @return a list of valid moves as strings.
      */
-    public abstract List<String> availableMoves();
-
+    public abstract List<String> availableMoves(Figure[][] board);
     /**
      * Attempts to move the figure to a new position if the move is valid.
      *
      * @param newPosition the desired new position of the figure.
      * @return {@code true} if the move is valid and successful, {@code false} otherwise.
      */
-    public boolean makeMove(String newPosition) {
+    public boolean makeMove(String newPosition, Figure[][] board) {
         System.out.println("Ruchy dla figury na pozycji " + position);
-        System.out.println(availableMoves());
-        for (String move : availableMoves()) {
+        System.out.println(availableMoves(board));
+        for (String move : availableMoves(board)) {
             if (move.equals(newPosition)) {
-                this.setPosition(newPosition);
+                this.setPosition(newPosition, board);
                 return true;
             }
         }
         return false;
     }
-    public boolean validPostion(int row, char col){
+    public boolean validPosition(int row, char col){
         return row >= 1 && row <= 8 && col >= 'a' && col <= 'h';
     }
 

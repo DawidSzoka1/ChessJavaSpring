@@ -34,7 +34,7 @@ public class King extends Figure {
     }
 
     @Override
-    public List<String> availableMoves() {
+    public List<String> availableMoves(Figure[][] board) {
         List<String> moves = new ArrayList<>();
         HashMap<Optional<Column>, Integer> directions = directions();
         // TODO: moves for king to finish

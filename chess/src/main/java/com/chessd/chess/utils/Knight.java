@@ -10,7 +10,7 @@ public class Knight extends Figure {
     }
 
     @Override
-    public List<String> availableMoves() {
+    public List<String> availableMoves(Figure[][] board) {
         ArrayList<String> moves = new ArrayList<>();
         int currentRow = this.getPosition().charAt(1) - '0';
         char currentCol = this.getPosition().charAt(0);
@@ -19,7 +19,7 @@ public class Knight extends Figure {
         for (int i = 0; i < rowPossibilities.length; i++) {
             int newRow = currentRow + rowPossibilities[i];
             char newCol = (char) (currentCol + colPossibilities[i]);
-            if (this.validPostion(newRow, newCol)) {
+            if (this.validPosition(newRow, newCol)) {
                 moves.add("" + newCol + newRow);
             }
         }
