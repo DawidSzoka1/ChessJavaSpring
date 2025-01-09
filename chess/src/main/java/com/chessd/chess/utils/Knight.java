@@ -19,7 +19,7 @@ public class Knight extends Figure {
         for (int i = 0; i < rowPossibilities.length; i++) {
             int newRow = currentRow + rowPossibilities[i];
             char newCol = (char) (currentCol + colPossibilities[i]);
-            if (newRow >= 1 && newRow <= 8 && newCol >= 'a' && newCol <= 'h') {
+            if (this.validPostion(newRow, newCol)) {
                 moves.add("" + newCol + newRow);
             }
         }

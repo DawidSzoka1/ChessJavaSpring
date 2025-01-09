@@ -103,6 +103,8 @@ public abstract class Figure {
      * @return {@code true} if the move is valid and successful, {@code false} otherwise.
      */
     public boolean makeMove(String newPosition) {
+        System.out.println("Ruchy dla figury na pozycji " + position);
+        System.out.println(availableMoves());
         for (String move : availableMoves()) {
             if (move.equals(newPosition)) {
                 this.setPosition(newPosition);
@@ -110,6 +112,9 @@ public abstract class Figure {
             }
         }
         return false;
+    }
+    public boolean validPostion(int row, char col){
+        return row >= 1 && row <= 8 && col >= 'a' && col <= 'h';
     }
 
     @Override
