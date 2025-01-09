@@ -2,6 +2,7 @@ package com.chessd.chess.utils;
 
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.List;
 
 /**
@@ -95,25 +96,30 @@ public abstract class Figure {
      * @return a list of valid moves as strings.
      */
     public abstract List<String> availableMoves(Figure[][] board);
+
     /**
      * Attempts to move the figure to a new position if the move is valid.
      *
      * @param newPosition the desired new position of the figure.
-     * @return {@code true} if the move is valid and successful, {@code false} otherwise.
      */
-    public boolean makeMove(String newPosition, Figure[][] board) {
-        System.out.println("Ruchy dla figury na pozycji " + position);
+    public void makeMove(String newPosition, Figure[][] board) {
+        this.setPosition(newPosition, board);
+        System.out.println("Ruchy dla figury po ruchu " + this.name + " " + this.position);
         System.out.println(availableMoves(board));
-        for (String move : availableMoves(board)) {
+
+    }
+
+    public boolean validPosition(int row, char col) {
+        return row >= 1 && row <= 8 && col >= 'a' && col <= 'h';
+    }
+
+    public boolean checkIfMoveIsValid(String newPosition, Figure[][] board) {
+        for (String move : this.availableMoves(board)) {
             if (move.equals(newPosition)) {
-                this.setPosition(newPosition, board);
                 return true;
             }
         }
         return false;
-    }
-    public boolean validPosition(int row, char col){
-        return row >= 1 && row <= 8 && col >= 'a' && col <= 'h';
     }
 
     @Override
