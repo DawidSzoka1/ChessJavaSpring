@@ -1,6 +1,5 @@
-package com.chessd.chess.entity.gameEntity;
+package com.chessd.chess.entity;
 
-import com.chessd.chess.entity.User;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;

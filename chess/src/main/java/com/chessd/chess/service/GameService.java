@@ -1,7 +1,7 @@
 package com.chessd.chess.service;
 
 import com.chessd.chess.utils.Figure;
-import com.chessd.chess.entity.gameEntity.Game;
+import com.chessd.chess.entity.Game;
 import java.util.Optional;
 
 public interface GameService {
@@ -10,4 +10,7 @@ public interface GameService {
     void endGame(Game game);
     Optional<Game> getGameById(String gameId);
     Optional<Figure> getFigureByPosition(String position, Game game);
+    void save(Game game);
+    void update(Game game);
+    void delete(Game game);
 }

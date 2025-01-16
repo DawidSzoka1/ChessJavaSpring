@@ -1,6 +1,6 @@
 package com.chessd.chess.controller;
 
-import com.chessd.chess.entity.gameEntity.Game;
+import com.chessd.chess.entity.Game;
 import com.chessd.chess.service.GameService;
 import com.chessd.chess.service.RandomUniqIdGenerator;
 import com.chessd.chess.utils.Column;
@@ -27,7 +27,8 @@ public class GameController {
 
     @GetMapping("/classic")
     public String classic(Model model) throws JsonProcessingException {
-        Game g = gameService.getGameById("0d259cc2-2492-4ee8-809f-3c1104d36808").get();
+        Game g = new Game(randomUniqIdGenerator.generateUniqId());
+        gameService.save(g);
         gameService.startGame(g);
         ObjectMapper objectMapper = new ObjectMapper();
         String boardJson = objectMapper.writeValueAsString(g.getBoard());

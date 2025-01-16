@@ -1,6 +1,6 @@
 package com.chessd.chess.repository.gameRepository;
 
-import com.chessd.chess.entity.gameEntity.Move;
+import com.chessd.chess.entity.Move;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;

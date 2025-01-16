@@ -1,6 +1,6 @@
 package com.chessd.chess.service;
 
-import com.chessd.chess.entity.gameEntity.Game;
+import com.chessd.chess.entity.Game;
 import com.chessd.chess.repository.gameRepository.GameDao;
 import com.chessd.chess.repository.gameRepository.MoveDao;
 import com.chessd.chess.utils.*;
@@ -144,5 +144,20 @@ public class GameServiceImpl implements GameService {
         int col = Column.fromName(String.valueOf(position.charAt(0))).get().getIndex();
         int row = Integer.parseInt(String.valueOf(position.charAt(1))) - 1;
         return Optional.of(game.getBoard()[row][col]);
+    }
+
+    @Override
+    public void save(Game game) {
+        gameDao.save(game);
+    }
+
+    @Override
+    public void update(Game game) {
+        gameDao.update(game);
+    }
+
+    @Override
+    public void delete(Game game) {
+        gameDao.delete(game);
     }
 }

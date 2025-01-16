@@ -1,6 +1,6 @@
 package com.chessd.chess.repository.gameRepository;
 
-import com.chessd.chess.entity.gameEntity.Game;
+import com.chessd.chess.entity.Game;
 
 import java.util.List;
 import java.util.Optional;

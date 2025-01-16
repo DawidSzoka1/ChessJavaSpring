@@ -1,6 +1,6 @@
 package com.chessd.chess.repository.gameRepository;
 
-import com.chessd.chess.entity.gameEntity.Game;
+import com.chessd.chess.entity.Game;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class GameDaoImpl implements GameDao {
     public List<Game> getGamesByPlayerId(String playerId) {
         TypedQuery<Game> query = entityManager.createQuery(
                 "FROM Game WHERE white = :playerId or black = :playerId " +
-                        "order by g.start", Game.class);
+                        "order by start", Game.class);
         query.setParameter("playerId", playerId);
         return query.getResultList();
     }

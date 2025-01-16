@@ -1,6 +1,6 @@
 package com.chessd.chess.repository.gameRepository;
 
-import com.chessd.chess.entity.gameEntity.Move;
+import com.chessd.chess.entity.Move;
 
 import java.util.List;
 
