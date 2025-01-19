@@ -134,7 +134,6 @@ export default class CustomWebSocket {
             switch (data.type) {
                 case "MOVE":
                     this.messageMove(data);
-                    this.#board = data.gameBoard;
                     break;
                 default:
                     this.messagePong();

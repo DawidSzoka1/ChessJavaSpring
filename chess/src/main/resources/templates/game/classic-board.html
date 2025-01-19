@@ -9,9 +9,9 @@
 
 </head>
 <body>
-<div hidden="hidden" id="game" th:data-id="${game.gameId}" th:data-board="${gameBoard}"></div>
+<div hidden="hidden" id="game" th:data-id="${game.gameId}"></div>
 <div id="chessboard" class="container">
-    <div th:each="row, statRow : ${game.board}" class="row g-0 chessboard">
+    <div th:each="row, statRow : ${gameBoard}" class="row g-0 chessboard">
         <div th:each="col, statCol : ${row}" class="col g-0">
             <div th:if="${statRow.even}">
                 <div th:class="${statCol.odd ? 'square black' : 'square white'}"

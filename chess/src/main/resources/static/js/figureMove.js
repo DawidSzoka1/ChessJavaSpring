@@ -3,7 +3,6 @@ import CustomWebSocket from "./connectionWithWebSocket.js";
 document.addEventListener("DOMContentLoaded", () => {
     const game = document.querySelector("#game")
     const gameId = game.getAttribute('data-id')
-    let gameBoard = game.getAttribute("data-board")
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
@@ -55,14 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
             message: `${selectedPiece.id}-${e.target.id}`,
             messageType: "move",
             gameId: gameId,
-            board: JSON.parse(gameBoard)
         });
-
-        // Update the game board if the server sends a new state
-        if (ws.board != null) {
-            gameBoard = ws.board;
-            game.setAttribute("data-board", gameBoard);
-        }
 
         e.preventDefault();
     }

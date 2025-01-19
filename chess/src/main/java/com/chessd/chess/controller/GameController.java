@@ -26,16 +26,14 @@ public class GameController {
     }
 
     @GetMapping("/classic")
-    public String classic(Model model) throws JsonProcessingException {
+    public String classic(Model model){
         Game g = new Game(randomUniqIdGenerator.generateUniqId());
         gameService.save(g);
         gameService.startGame(g);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String boardJson = objectMapper.writeValueAsString(g.getBoard());
         model
                 .addAttribute("columns", Column.values())
                 .addAttribute("game", g)
-                .addAttribute("gameBoard", boardJson)
+                .addAttribute("gameBoard", gameService.getBoard(g))
                 .addAttribute("gameService", gameService);
         return "game/classic-board";
     }
