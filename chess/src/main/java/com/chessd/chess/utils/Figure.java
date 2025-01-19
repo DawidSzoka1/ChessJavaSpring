@@ -80,11 +80,6 @@ public abstract class Figure {
     }
 
 
-    public void setPosition(int row, int col, Figure[][] board) {
-        this.col = col;
-        this.row = row;
-        this.setMoves(this.availableMoves(board));
-    }
     public static int[] convertStringPositionToRowColInt(String position){
         int[] tab = new int[2];
         tab[0] = position.charAt(1) - '0';
@@ -100,11 +95,11 @@ public abstract class Figure {
     public abstract List<String> availableMoves(Figure[][] board);
 
 
-    public void makeMove(String postion, Figure[][] board) {
-        int[] tab = convertStringPositionToRowColInt(postion);
-        int row = tab[0];
-        int col = tab[1];
-        this.setPosition(row, col, board);
+    public void makeMove(String position, Figure[][] board) {
+        int[] tab = convertStringPositionToRowColInt(position);
+        this.setRow(tab[0]);
+        this.setCol(tab[1]);
+        this.setMoves(this.availableMoves(board));
         System.out.println("Ruchy dla figury po ruchu " + this.name + " " + this.row + this.col);
         System.out.println(availableMoves(board));
 

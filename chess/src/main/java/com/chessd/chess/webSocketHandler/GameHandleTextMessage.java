@@ -4,6 +4,9 @@ import com.chessd.chess.service.GameService;
 import com.chessd.chess.utils.Figure;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Component;
  * (e.g., handling moves, responding to pings), and returns a response to the client.
  */
 @Component
+@Getter @Setter @NoArgsConstructor
 public class GameHandleTextMessage {
     private String message;
     private String messageType;
@@ -23,36 +27,9 @@ public class GameHandleTextMessage {
      */
     private GameService gameService;
 
-    public GameHandleTextMessage() {
-    }
-
     @Autowired
     public GameHandleTextMessage(GameService gameService) {
         this.gameService = gameService;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Figure[][] getBoard() {
-        return board;
-    }
-
-    public void setBoard(Figure[][] board) {
-        this.board = board;
-    }
-
-    public String getMessageType() {
-        return messageType;
-    }
-
-    public void setMessageType(String messageType) {
-        this.messageType = messageType;
-    }
-
-    public void setGameId(String gameId) {
-        this.gameId = gameId;
     }
 
     /**
@@ -64,7 +41,7 @@ public class GameHandleTextMessage {
     public MessageToJS handleMessageMove() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String[] moveDetails = message.substring(1).split("-");
-        Object[] valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)), board);
+        Object[] valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)));
         if ((boolean) valid[0]) {
             return new MessageToJS("MOVE", moveDetails[1], true, objectMapper.writeValueAsString(valid[1]));
         }
@@ -92,14 +69,6 @@ public class GameHandleTextMessage {
             case "move" -> handleMessageMove();
             default -> pongMessage();
         };
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getGameId() {
-        return gameId;
     }
 
     @Override
