@@ -29,6 +29,7 @@ public class GameController {
     public String classic(Model model){
         Game g = new Game(randomUniqIdGenerator.generateUniqId());
         gameService.save(g);
+
         gameService.startGame(g);
         model
                 .addAttribute("columns", Column.values())

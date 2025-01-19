@@ -36,13 +36,13 @@ public class GameServiceImpl implements GameService {
      * @return The created {@link Figure}.
      * @throws IllegalArgumentException if the figure name is invalid.
      */
-    public Figure putFigure(@NotNull String figureName, String color, String position) {
+    public Figure putFigure(@NotNull String figureName, String color, String position, Game game) {
         return switch (figureName) {
-            case "rook" -> new Rook(color, position);
-            case "bishop" -> new Bishop(color, position);
-            case "knight" -> new Knight(color, position);
-            case "king" -> new King(color, position);
-            case "queen" -> new Queen(color, position);
+            case "rook" -> new Rook(color, position, game);
+            case "bishop" -> new Bishop(color, position, game);
+            case "knight" -> new Knight(color, position, game);
+            case "king" -> new King(color, position, game);
+            case "queen" -> new Queen(color, position, game);
             default -> throw new IllegalArgumentException("Unknown figure name " + figureName);
         };
     }
@@ -59,12 +59,12 @@ public class GameServiceImpl implements GameService {
             Column colName = Column.fromIndex(i).orElseThrow();
 
             //Putting pawns on a2, b2, ..., h2 and a7, b7, ..., h7
-            figureDao.save(new Pawn("W", colName + "2"));
-            figureDao.save(new Pawn("B", colName + "7"));
+            figureDao.save(new Pawn("W", colName + "1", game));
+            figureDao.save(new Pawn("B", colName + "6", game));
 
             //Putting other figures on a1, b1, ..., h1 and a8, b8, ..., h8
-            figureDao.save(putFigure(this.figuresName[i], "W", colName + "1"));
-            figureDao.save(putFigure(this.figuresName[i], "B", colName + "8"));
+            figureDao.save(putFigure(this.figuresName[i], "W", colName + "0", game));
+            figureDao.save(putFigure(this.figuresName[i], "B", colName + "7", game));
         }
     }
 
@@ -81,6 +81,7 @@ public class GameServiceImpl implements GameService {
      */
     @Override
     public Object[] move(String gameId, String from, String to, String color) {
+        System.out.println("Metoda move");
         Optional<Game> gameOpt = gameDao.getGameById(gameId);
         Object[] tab = new Object[2];
         tab[0] = false;

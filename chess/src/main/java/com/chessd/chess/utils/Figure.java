@@ -28,7 +28,7 @@ public abstract class Figure {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "color", insertable = false, updatable = false)
+    @Column(name = "color")
     private String color;
 
     @Column(name = "`row`")
