@@ -8,6 +8,7 @@ import jakarta.persistence.Column;
 import lombok.*;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.util.List;
 
 /**
@@ -18,7 +19,9 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "name")
 @JsonDeserialize(using = FigureDeserializer.class)
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public abstract class Figure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,32 +47,37 @@ public abstract class Figure {
     @Column(name = "image_name")
     private String imageName;
 
+    @Column(name = "position")
+    private String position;
+
     @Column(name = "moves")
     @Convert(converter = MovesConverter.class)
     private List<String> moves;
 
-    public Figure(String name, String color, int row, int col) {
-        this.name = name;
-        this.color = color;
-        this.row = row;
-        this.col = col;
-        this.imageName = color.toUpperCase() + "_" + name + ".png";
-    }
-    public Figure(String name, String color, String position, String imageName) {
-        this.name = name;
-        this.color = color;
+    public Figure(String name, String color, String position, String imageName, Game game) {
         int[] tab = convertStringPositionToRowColInt(position);
+        this.name = name;
+        this.color = color;
+        this.position = position;
         this.row = tab[0];
         this.col = tab[1];
         this.imageName = imageName;
+        this.game = game;
+
     }
-    public Figure(String name, String color, String position){
-        this.name = name;
-        this.color = color;
-        int[] tab = convertStringPositionToRowColInt(position);
-        this.row = tab[0];
-        this.col = tab[1];
-        this.imageName = color.toUpperCase() + "_" + name + ".png";
+
+    public Figure(String name, String color, int row, int col, Game game) {
+        this(
+                name,
+                color,
+                com.chessd.chess.utils.Column.fromIndex(col).get().name() + row,
+                color.toUpperCase() + "_" + name + ".png",
+                game
+        );
+    }
+
+    public Figure(String name, String color, String position, Game game) {
+        this(name, color, position, color.toUpperCase() + "_" + name + ".png", game);
     }
 
     /**
@@ -80,12 +88,13 @@ public abstract class Figure {
     }
 
 
-    public static int[] convertStringPositionToRowColInt(String position){
+    public static int[] convertStringPositionToRowColInt(String position) {
         int[] tab = new int[2];
         tab[0] = position.charAt(1) - '0';
         tab[1] = com.chessd.chess.utils.Column.fromName(String.valueOf(position.charAt(0))).get().getIndex();
         return tab;
     }
+
     /**
      * Abstract method to calculate the available moves for the figure.
      * Must be implemented by subclasses.
@@ -120,7 +129,7 @@ public abstract class Figure {
 
     @Override
     public String toString() {
-        return  name + '\'' +
+        return name + '\'' +
                 row + ' ' + col;
     }
 }
