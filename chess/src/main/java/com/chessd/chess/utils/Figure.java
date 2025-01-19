@@ -1,47 +1,75 @@
 package com.chessd.chess.utils;
 
 
+import com.chessd.chess.entity.Game;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
+import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import lombok.*;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.List;
 
 /**
  * Represents a generic chess figure (piece) with common properties and behaviors.
  * This is an abstract class that must be extended by specific chess piece types.
  */
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "name")
 @JsonDeserialize(using = FigureDeserializer.class)
+@Getter @Setter @NoArgsConstructor
 public abstract class Figure {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "color")
     private String color;
-    private String position;
+
+    @Column(name = "row")
+    private int row;
+
+    @Column(name = "col")
+    private int col;
+
+    @ManyToOne
+    @JoinColumn(name = "game_id", referencedColumnName = "game_id", nullable = false)
+    private Game game;
+
+    @Column(name = "image_name")
     private String imageName;
+
+    @Column(name = "moves")
+    @Convert(converter = MovesConverter.class)
     private List<String> moves;
 
-    public Figure() {
-    }
-
-    /**
-     * Constructs a {@code Figure} with the specified attributes.
-     *
-     * @param name     the name of the figure (e.g., "Pawn", "Knight").
-     * @param color    the color of the figure ("W" for white, "B" for black).
-     * @param position the initial position of the figure on the chessboard.
-     */
-    public Figure(String name, String color, String position) {
+    public Figure(String name, String color, int row, int col) {
         this.name = name;
-        // Ensures the color is in the correct format ("W" or "B").
-        this.color = color.toLowerCase().startsWith("w") ? "W" : "B";
-        this.position = position;
-        this.moves = this.availableMoves(null);
-        this.setImageName();
+        this.color = color;
+        this.row = row;
+        this.col = col;
+        this.imageName = color.toUpperCase() + "_" + name + ".png";
     }
-
-    public List<String> getMoves() {
-        return moves;
-    }
-
-    public void setImageName(String imageName) {
+    public Figure(String name, String color, String position, String imageName) {
+        this.name = name;
+        this.color = color;
+        int[] tab = convertStringPositionToRowColInt(position);
+        this.row = tab[0];
+        this.col = tab[1];
         this.imageName = imageName;
+    }
+    public Figure(String name, String color, String position){
+        this.name = name;
+        this.color = color;
+        int[] tab = convertStringPositionToRowColInt(position);
+        this.row = tab[0];
+        this.col = tab[1];
+        this.imageName = color.toUpperCase() + "_" + name + ".png";
     }
 
     /**
@@ -51,44 +79,18 @@ public abstract class Figure {
         this.imageName = this.getColor() + "_" + this.name + ".png";
     }
 
-    public String getImageName() {
-        return imageName;
-    }
 
-    public void setMoves(List<String> moves) {
-        this.moves = moves;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    /**
-     * Sets the position of the figure and updates its available moves.
-     *
-     * @param position the new position of the figure.
-     */
-    public void setPosition(String position, Figure[][] board) {
-        this.position = position;
+    public void setPosition(int row, int col, Figure[][] board) {
+        this.col = col;
+        this.row = row;
         this.setMoves(this.availableMoves(board));
     }
-
-    public String getName() {
-        return name;
+    public static int[] convertStringPositionToRowColInt(String position){
+        int[] tab = new int[2];
+        tab[0] = position.charAt(1) - '0';
+        tab[1] = com.chessd.chess.utils.Column.fromName(String.valueOf(position.charAt(0))).get().getIndex();
+        return tab;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
     /**
      * Abstract method to calculate the available moves for the figure.
      * Must be implemented by subclasses.
@@ -97,20 +99,19 @@ public abstract class Figure {
      */
     public abstract List<String> availableMoves(Figure[][] board);
 
-    /**
-     * Attempts to move the figure to a new position if the move is valid.
-     *
-     * @param newPosition the desired new position of the figure.
-     */
-    public void makeMove(String newPosition, Figure[][] board) {
-        this.setPosition(newPosition, board);
-        System.out.println("Ruchy dla figury po ruchu " + this.name + " " + this.position);
+
+    public void makeMove(String postion, Figure[][] board) {
+        int[] tab = convertStringPositionToRowColInt(postion);
+        int row = tab[0];
+        int col = tab[1];
+        this.setPosition(row, col, board);
+        System.out.println("Ruchy dla figury po ruchu " + this.name + " " + this.row + this.col);
         System.out.println(availableMoves(board));
 
     }
 
-    public boolean validPosition(int row, char col) {
-        return row >= 1 && row <= 8 && col >= 'a' && col <= 'h';
+    public boolean validPosition(int row, int col) {
+        return row >= 1 && row <= 8 && col >= 1 && col <= 8;
     }
 
     public boolean checkIfMoveIsValid(String newPosition, Figure[][] board) {
@@ -124,9 +125,7 @@ public abstract class Figure {
 
     @Override
     public String toString() {
-        return "Figure{" +
-                "name='" + name + '\'' +
-                position +
-                '}';
+        return  name + '\'' +
+                row + ' ' + col;
     }
 }

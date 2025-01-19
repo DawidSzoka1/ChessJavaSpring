@@ -1,9 +1,19 @@
 package com.chessd.chess.utils;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Entity
+@DiscriminatorValue("pawn")
+@NoArgsConstructor
+@Getter @Setter
 public class Pawn extends Figure {
     private int direction;
 
@@ -11,23 +21,20 @@ public class Pawn extends Figure {
         super("pawn", color, position);
         direction = this.getColor().equals("W") ? 1 : -1;
     }
-
-    public int getDirection() {
-        return direction;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
+    public Pawn(String color, int row, int col){
+        super("pawn", color, row, col);
+        direction = this.getColor().equals("W") ? 1 : -1;
     }
 
     @Override
     public List<String> availableMoves(Figure[][] board) {
         ArrayList<String> moves = new ArrayList<>();
-        int row = Integer.parseInt(String.valueOf(this.getPosition().charAt(1)));
-        moves.add(String.valueOf(this.getPosition().charAt(0)) + (row + this.direction));
+        int row = this.getRow();
+        String col = Column.fromIndex(this.getCol()).get().name();
+        moves.add(col + (row + this.direction));
         if ((row == 2 && this.getColor().equals("W")) ||
                 (row == 7 && this.getColor().equals("B"))) {
-            moves.add(String.valueOf(this.getPosition().charAt(0)) + (row + this.direction * 2));
+            moves.add(col + (row + this.direction * 2));
         }
         if (board != null) {
             moves.addAll(availableTakes(board));
@@ -37,8 +44,8 @@ public class Pawn extends Figure {
 
     public List<String> availableTakes(Figure[][] board) {
         ArrayList<String> moves = new ArrayList<>();
-        int startRow =  Integer.parseInt(String.valueOf(this.getPosition().charAt(1)));
-        char startCol = this.getPosition().charAt(0);
+        int startRow =  this.getRow();
+        char startCol = Column.fromIndex(this.getCol()).get().name().charAt(0);
         for (int i = -1; i <= 1; i += 2) {
             int newRow = startRow + this.direction;
             char newCol = (char) (startCol + i);
@@ -50,7 +57,7 @@ public class Pawn extends Figure {
                     System.out.println(""+newCol+newRow);
                 }
                 if (figure != null && !figure.getColor().equals(this.getColor())) {
-                    moves.add(figure.getPosition());
+                    moves.add(Column.fromIndex(figure.getCol()).get().name() + figure.getRow());
                 }
             }
         }

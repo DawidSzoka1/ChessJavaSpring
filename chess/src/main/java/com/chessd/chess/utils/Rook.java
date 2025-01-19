@@ -1,18 +1,30 @@
 package com.chessd.chess.utils;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Entity
+@DiscriminatorValue("rook")
+@NoArgsConstructor
 public class Rook extends Figure {
     public Rook(String color, String position) {
         super("rook", color, position);
     }
 
+    public Rook(String color, int row, int col) {
+        super("rook", color, row, col);
+    }
+
     @Override
     public List<String> availableMoves(Figure[][] board) {
         ArrayList<String> moves = new ArrayList<>();
-        int startRow = this.getPosition().charAt(1) - '0';
-        char startCol = this.getPosition().charAt(0);
+        int startRow = this.getRow();
+        char startCol = Column.fromIndex(this.getCol()).get().name().charAt(0);
         //moving horizontally
         for (int hor = -1; hor <= 1; hor += 2) {
             char col = startCol;

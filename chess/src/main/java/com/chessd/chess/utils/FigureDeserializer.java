@@ -44,12 +44,12 @@ public class FigureDeserializer extends JsonDeserializer<Figure> {
 
         // Use a switch expression to create the appropriate chess piece based on the "name"
         return switch (type) {
-            case "pawn" -> new Pawn(node.get("color").asText(), node.get("position").asText());
-            case "bishop" -> new Bishop(node.get("color").asText(), node.get("position").asText());
-            case "rook" -> new Rook(node.get("color").asText(), node.get("position").asText());
-            case "knight" -> new Knight(node.get("color").asText(), node.get("position").asText());
-            case "king" -> new King(node.get("color").asText(), node.get("position").asText());
-            case "queen" -> new Queen(node.get("color").asText(), node.get("position").asText());
+            case "pawn" -> new Pawn(node.get("color").asText(), node.get("row").asInt(), node.get("col").asInt());
+            case "bishop" -> new Bishop(node.get("color").asText(), node.get("row").asInt(), node.get("col").asInt());
+            case "rook" -> new Rook(node.get("color").asText(), node.get("row").asInt(), node.get("col").asInt());
+            case "knight" -> new Knight(node.get("color").asText(), node.get("row").asInt(), node.get("col").asInt());
+            case "king" -> new King(node.get("color").asText(), node.get("row").asInt(), node.get("col").asInt());
+            case "queen" -> new Queen(node.get("color").asText(), node.get("row").asInt(), node.get("col").asInt());
             default -> null; // Return null if the piece name is not recognized
         };
 

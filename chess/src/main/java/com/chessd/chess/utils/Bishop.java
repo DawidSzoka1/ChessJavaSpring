@@ -7,6 +7,10 @@ public class Bishop extends Figure {
         super("bishop", color, position);
     }
 
+    public Bishop(String color, int row, int col) {
+        super("bishop", color, row, col);
+    }
+
     @Override
     public List<String> availableMoves(Figure[][] board) {
         return List.of();

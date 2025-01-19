@@ -1,23 +1,26 @@
 package com.chessd.chess.utils;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
+
+
 import java.util.*;
 
-
+@Entity
+@DiscriminatorValue("king")
+@NoArgsConstructor
 public class King extends Figure {
-
-    //generic figure name and position
-    public King(String color) {
-        super("king", color, "e" + (color.startsWith("W") ? 1 : 8));
+    public King(String color, int row, int col) {
+        super("king", color, row, col);
     }
-
-    public King(String color, String position) {
+    public King(String color, String position){
         super("king", color, position);
     }
-
     HashMap<Optional<Column>, Integer> directions() {
         HashMap<Optional<Column>, Integer> dire = new HashMap<>();
-        Optional<Column> colO = Column.fromName(String.valueOf((this.getPosition().charAt(0))));
-        int row = Integer.parseInt(String.valueOf(this.getPosition().charAt(1)));
+        Optional<Column> colO = Column.fromIndex(this.getCol());
+        int row = this.getRow();
         Column col;
         if (colO.isPresent()) {
             col = colO.get();
