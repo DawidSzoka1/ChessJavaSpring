@@ -1,5 +1,6 @@
 package com.chessd.chess.utils;
 
+import com.chessd.chess.entity.Game;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -8,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("knight")
 @NoArgsConstructor
 public class Knight extends Figure {
-    public Knight(String color, int row, int col) {
-        super("knight", color, row, col);
+    public Knight(String color, int row, int col, Game game) {
+        super("knight", color, row, col, game);
     }
-    public Knight(String color, String position){
-        super("knight",  color, position);
+    public Knight(String color, String position, Game game){
+        super("knight",  color, position, game);
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.chessd.chess.utils;
 
 
 import com.chessd.chess.entity.Game;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import lombok.*;
@@ -17,8 +16,6 @@ import java.util.List;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "name")
-@JsonDeserialize(using = FigureDeserializer.class)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,10 +28,10 @@ public abstract class Figure {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "color")
+    @Column(name = "color", insertable = false, updatable = false)
     private String color;
 
-    @Column(name = "row")
+    @Column(name = "`row`")
     private int row;
 
     @Column(name = "col")
@@ -79,14 +76,6 @@ public abstract class Figure {
     public Figure(String name, String color, String position, Game game) {
         this(name, color, position, color.toUpperCase() + "_" + name + ".png", game);
     }
-
-    /**
-     * Automatically sets the image name based on the figure's color and name.
-     */
-    public void setImageName() {
-        this.imageName = this.getColor() + "_" + this.name + ".png";
-    }
-
 
     public static int[] convertStringPositionToRowColInt(String position) {
         int[] tab = new int[2];

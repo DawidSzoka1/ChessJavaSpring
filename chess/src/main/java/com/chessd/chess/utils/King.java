@@ -1,5 +1,6 @@
 package com.chessd.chess.utils;
 
+import com.chessd.chess.entity.Game;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
@@ -8,14 +9,13 @@ import lombok.NoArgsConstructor;
 import java.util.*;
 
 @Entity
-@DiscriminatorValue("king")
 @NoArgsConstructor
 public class King extends Figure {
-    public King(String color, int row, int col) {
-        super("king", color, row, col);
+    public King(String color, int row, int col, Game game) {
+        super("king", color, row, col, game);
     }
-    public King(String color, String position){
-        super("king", color, position);
+    public King(String color, String position, Game game){
+        super("king", color, position, game);
     }
     HashMap<Optional<Column>, Integer> directions() {
         HashMap<Optional<Column>, Integer> dire = new HashMap<>();

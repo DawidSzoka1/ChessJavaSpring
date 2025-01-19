@@ -1,28 +1,27 @@
 package com.chessd.chess.utils;
 
-import jakarta.persistence.DiscriminatorValue;
+import com.chessd.chess.entity.Game;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue("pawn")
 @NoArgsConstructor
 @Getter @Setter
 public class Pawn extends Figure {
+    @jakarta.persistence.Column(name = "direction")
     private int direction;
 
-    public Pawn(String color, String position) {
-        super("pawn", color, position);
+    public Pawn(String color, String position, Game game) {
+        super("pawn", color, position, game);
         direction = this.getColor().equals("W") ? 1 : -1;
     }
-    public Pawn(String color, int row, int col){
-        super("pawn", color, row, col);
+    public Pawn(String color, int row, int col, Game game){
+        super("pawn", color, row, col, game);
         direction = this.getColor().equals("W") ? 1 : -1;
     }
 
