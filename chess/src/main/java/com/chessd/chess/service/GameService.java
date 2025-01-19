@@ -6,10 +6,10 @@ import java.util.Optional;
 
 public interface GameService {
     void startGame(Game game);
-    Object[] move(String gameId, String from, String to, String color, Figure[][] lastBoard);
+    Object[] move(String gameId, String from, String to, String color);
     void endGame(Game game);
     Optional<Game> getGameById(String gameId);
-    Optional<Figure> getFigureByPosition(String position, Game game);
+    Figure getFigureByPosition(String position, Game game);
     void save(Game game);
     void update(Game game);
     void delete(Game game);
