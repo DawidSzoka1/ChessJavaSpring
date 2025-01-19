@@ -40,7 +40,7 @@ public class GameServiceImpl implements GameService {
             case "rook" -> new Rook(color, position);
             case "bishop" -> new Bishop(color, position);
             case "knight" -> new Knight(color, position);
-            case "king" -> new King(color);
+            case "king" -> new King(color, position);
             case "queen" -> new Queen(color);
             default -> throw new IllegalArgumentException("Unknown figure name " + figureName);
         };
@@ -159,5 +159,10 @@ public class GameServiceImpl implements GameService {
     @Override
     public void delete(Game game) {
         gameDao.delete(game);
+    }
+
+    @Override
+    public Figure[][] getBoard(Game game) {
+        return gameDao.getBoard(game);
     }
 }

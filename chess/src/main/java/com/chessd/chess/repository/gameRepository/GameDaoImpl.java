@@ -1,8 +1,10 @@
 package com.chessd.chess.repository.gameRepository;
 
 import com.chessd.chess.entity.Game;
+import com.chessd.chess.utils.Figure;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class GameDaoImpl implements GameDao {
     private EntityManager entityManager;
@@ -65,5 +68,16 @@ public class GameDaoImpl implements GameDao {
     @Transactional
     public void delete(Game game) {
         entityManager.remove(game);
+    }
+
+    @Override
+    public Figure[][] getBoard(Game game) {
+        TypedQuery<Figure> query = entityManager.createQuery("SELECT f from Figure f where f.game =:game",Figure.class);
+        query.setParameter("game", game);
+        Figure[][] board = new Figure[8][8];
+        for(Figure figure: query.getResultList()){
+            board[figure.getRow()][figure.getCol()] = figure;
+        }
+        return board;
     }
 }
