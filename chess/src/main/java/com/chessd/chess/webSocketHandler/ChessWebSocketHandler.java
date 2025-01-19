@@ -47,7 +47,6 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
         GameHandleTextMessage gh = objectMapper.readValue(payload, GameHandleTextMessage.class);
 
         // Update the game state in the handler
-        gameHandleTextMessage.setBoard(gh.getBoard());
         gameHandleTextMessage.setGameId(gh.getGameId());
         gameHandleTextMessage.setMessage(gh.getMessage());
         gameHandleTextMessage.setMessageType(gh.getMessageType());

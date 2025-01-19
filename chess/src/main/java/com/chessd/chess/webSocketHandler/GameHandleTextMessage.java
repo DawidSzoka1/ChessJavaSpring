@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 public class GameHandleTextMessage {
     private String message;
     private String messageType;
-    private Figure[][] board;
     private String gameId;
     /**
      * The service used to manage chess game logic and state.

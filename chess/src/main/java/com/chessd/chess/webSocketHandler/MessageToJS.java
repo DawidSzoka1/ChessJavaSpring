@@ -2,62 +2,26 @@ package com.chessd.chess.webSocketHandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Represents a message object for communication between the backend and JavaScript (frontend).
  * This class supports serialization and deserialization of JSON messages using Jackson.
  */
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class MessageToJS {
     private String type;
     private String content;
     private boolean valid;
     private String gameBoard;
 
-    public MessageToJS() {
-    }
 
     public MessageToJS(String type, String content, boolean valid) {
         this.type = type;
         this.content = content;
-        this.valid = valid;
-    }
-
-    public MessageToJS(String type, String content, boolean valid, String gameBoard) {
-        this.type = type;
-        this.content = content;
-        this.valid = valid;
-        this.gameBoard = gameBoard;
-    }
-
-    public String getGameBoard() {
-        return gameBoard;
-    }
-
-    public void setGameBoard(String gameBoard) {
-        this.gameBoard = gameBoard;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public boolean isValid() {
-        return valid;
-    }
-
-    public void setValid(boolean valid) {
         this.valid = valid;
     }
 
