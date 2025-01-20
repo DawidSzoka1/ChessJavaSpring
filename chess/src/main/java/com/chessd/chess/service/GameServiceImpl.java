@@ -92,14 +92,12 @@ public class GameServiceImpl implements GameService {
         }
         Game game = gameOpt.get();
         Figure[][] board = gameDao.getBoard(game);
-        System.out.println("Figura na pozycji " + from);
-        System.out.println("Idzie na pozycje " + to);
         Figure figure = this.getFigureByPosition(from, game);
-        System.out.println(figure);
         if (figure == null) {
             tab[1] = "there inst any figure on this position";
             return tab;
         }
+        figure.setMoves(figure.availableMoves(board));
         boolean valid = figure.checkIfMoveIsValid(to, board);
         if (!valid) {
             tab[1] = "Invalid move";

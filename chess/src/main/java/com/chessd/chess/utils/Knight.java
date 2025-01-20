@@ -29,7 +29,7 @@ public class Knight extends Figure {
             int newRow = currentRow + rowPossibilities[i];
             int newCol = currentCol + colPossibilities[i];
             if (this.validPosition(newRow, newCol)) {
-                moves.add("" + newCol + newRow);
+                moves.add(Column.fromIndex(newCol).get().name() + newRow);
             }
         }
         return moves;
