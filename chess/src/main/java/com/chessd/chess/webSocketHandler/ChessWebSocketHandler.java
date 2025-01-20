@@ -44,6 +44,7 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
         // Deserialize the message into a GameHandleTextMessage object
+        System.out.println(payload);
         GameHandleTextMessage gh = objectMapper.readValue(payload, GameHandleTextMessage.class);
 
         // Update the game state in the handler

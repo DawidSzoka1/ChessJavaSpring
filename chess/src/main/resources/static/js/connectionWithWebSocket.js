@@ -163,6 +163,7 @@ export default class CustomWebSocket {
         }
         if (!data.valid) {
             console.log("Invalid move");
+            console.log(data)
             return null;
         }
         const color = this.pieceToMove.id[0];
@@ -202,7 +203,6 @@ export default class CustomWebSocket {
                             message: "Sending ping",
                             messageType: "PING",
                             gameId: "",
-                            board: ""
                         }));
                     }
                 }

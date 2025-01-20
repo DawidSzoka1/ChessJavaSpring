@@ -92,7 +92,10 @@ public class GameServiceImpl implements GameService {
         }
         Game game = gameOpt.get();
         Figure[][] board = gameDao.getBoard(game);
+        System.out.println("Figura na pozycji " + from);
+        System.out.println("Idzie na pozycje " + to);
         Figure figure = this.getFigureByPosition(from, game);
+        System.out.println(figure);
         if (figure == null) {
             tab[1] = "there inst any figure on this position";
             return tab;
@@ -103,7 +106,7 @@ public class GameServiceImpl implements GameService {
             return tab;
         }
         figure.makeMove(to, board);
-        figureDao.save(figure);
+        figureDao.update(figure);
         tab[0] = true;
         tab[1] = gameDao.getBoard(game);
         return tab;
@@ -123,7 +126,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public Figure getFigureByPosition(String position, Game game) {
         int col = Column.fromName(String.valueOf(position.charAt(0))).get().getIndex();
-        int row = Integer.parseInt(String.valueOf(position.charAt(1))) - 1;
+        int row = Integer.parseInt(String.valueOf(position.charAt(1)));
         return this.getBoard(game)[row][col];
     }
 

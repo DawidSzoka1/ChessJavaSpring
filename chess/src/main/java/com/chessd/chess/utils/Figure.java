@@ -95,6 +95,7 @@ public abstract class Figure {
 
     public void makeMove(String position, Figure[][] board) {
         int[] tab = convertStringPositionToRowColInt(position);
+        this.setPosition(position);
         this.setRow(tab[0]);
         this.setCol(tab[1]);
         this.setMoves(this.availableMoves(board));
@@ -119,6 +120,6 @@ public abstract class Figure {
     @Override
     public String toString() {
         return name + '\'' +
-                row + ' ' + col;
+                row + ' ' + col + " " + id;
     }
 }

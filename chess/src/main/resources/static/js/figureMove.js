@@ -50,6 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ws.setPieceToMove(selectedPiece); // Set the piece being moved
 
         // Send the move message to the server
+        console.log("drag drop debug")
+        console.log(selectedPiece.id)
+        console.log(e.target.id)
         ws.send({
             message: `${selectedPiece.id}-${e.target.id}`,
             messageType: "move",
