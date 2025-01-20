@@ -31,8 +31,8 @@ public class Pawn extends Figure {
         int row = this.getRow();
         String col = Column.fromIndex(this.getCol()).get().name();
         moves.add(col + (row + this.direction));
-        if ((row == 2 && this.getColor().equals("W")) ||
-                (row == 7 && this.getColor().equals("B"))) {
+        if ((row == 1 && this.getColor().equals("W")) ||
+                (row == 6 && this.getColor().equals("B"))) {
             moves.add(col + (row + this.direction * 2));
         }
         if (board != null) {

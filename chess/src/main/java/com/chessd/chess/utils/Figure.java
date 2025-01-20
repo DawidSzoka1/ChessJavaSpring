@@ -60,7 +60,6 @@ public abstract class Figure {
         this.col = tab[1];
         this.imageName = imageName;
         this.game = game;
-
     }
 
     public Figure(String name, String color, int row, int col, Game game) {
@@ -99,13 +98,10 @@ public abstract class Figure {
         this.setRow(tab[0]);
         this.setCol(tab[1]);
         this.setMoves(this.availableMoves(board));
-        System.out.println("Ruchy dla figury po ruchu " + this.name + " " + this.row + this.col);
-        System.out.println(availableMoves(board));
-
     }
 
     public boolean validPosition(int row, int col) {
-        return row >= 1 && row <= 8 && col >= 1 && col <= 8;
+        return row >= 0 && row <= 7 && col >= 0 && col <= 7;
     }
 
     public boolean checkIfMoveIsValid(String newPosition, Figure[][] board) {

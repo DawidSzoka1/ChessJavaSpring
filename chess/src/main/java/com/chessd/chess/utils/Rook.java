@@ -19,35 +19,37 @@ public class Rook extends Figure {
         super("rook", color, row, col, game);
     }
 
+    public List<String> moveHorVer(int startRow, int startCol, boolean hor) {
+        ArrayList<String> moves = new ArrayList<>();
+
+        for (int direction = -1; direction <= 1; direction += 2) {
+            int col = startCol;
+            int row = startRow;
+            while (true) {
+                if (hor) {
+                    col += direction;
+                } else {
+                    row += direction;
+                }
+                if (this.validPosition(row, col)) {
+                    moves.add(Column.fromIndex(col).get().name() + row);
+                } else {
+                    break;
+                }
+            }
+        }
+        return moves;
+    }
+
     @Override
     public List<String> availableMoves(Figure[][] board) {
         ArrayList<String> moves = new ArrayList<>();
         int startRow = this.getRow();
-        char startCol = Column.fromIndex(this.getCol()).get().name().charAt(0);
+        int startCol = this.getCol();
         //moving horizontally
-        for (int hor = -1; hor <= 1; hor += 2) {
-            char col = startCol;
-            while (true) {
-                col += hor;
-                if (this.validPosition(startRow, col)) {
-                    moves.add("" + col + startRow);
-                } else {
-                    break;
-                }
-            }
-        }
-        //moving vertically
-        for (int ver = -1; ver <= 1; ver += 2) {
-            int row = startRow;
-            while (true) {
-                row += ver;
-                if (this.validPosition(row, startCol)) {
-                    moves.add("" + startCol + row);
-                } else {
-                    break;
-                }
-            }
-        }
+        moves.addAll(moveHorVer(startRow, startCol, true));
+        //moving diagonally
+        moves.addAll(moveHorVer(startRow, startCol, false));
         return moves;
     }
 }
