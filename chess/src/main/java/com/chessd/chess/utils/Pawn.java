@@ -44,19 +44,14 @@ public class Pawn extends Figure {
     public List<String> availableTakes(Figure[][] board) {
         ArrayList<String> moves = new ArrayList<>();
         int startRow =  this.getRow();
-        char startCol = Column.fromIndex(this.getCol()).get().name().charAt(0);
+        int startCol = this.getCol();
         for (int i = -1; i <= 1; i += 2) {
             int newRow = startRow + this.direction;
-            char newCol = (char) (startCol + i);
+            int newCol =  startCol + i;
             if (this.validPosition(newRow, newCol)) {
-                Figure figure = board[newRow-2][Column.fromName(String.valueOf(newCol)).get().getIndex()];
-                if(startCol == 'e'){
-                    System.out.println(Arrays.deepToString(board));
-                    System.out.println(Column.fromName("d").get());
-                    System.out.println(""+newCol+newRow);
-                }
-                if (figure != null && !figure.getColor().equals(this.getColor())) {
-                    moves.add(Column.fromIndex(figure.getCol()).get().name() + figure.getRow());
+                Figure toTake = board[newRow][newCol];
+                if(toTake != null && !toTake.getColor().equals(this.getColor())){
+                    moves.add(toTake.getPosition());
                 }
             }
         }

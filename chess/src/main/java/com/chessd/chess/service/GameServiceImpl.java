@@ -123,9 +123,15 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Figure getFigureByPosition(String position, Game game) {
-        int col = Column.fromName(String.valueOf(position.charAt(0))).get().getIndex();
-        int row = Integer.parseInt(String.valueOf(position.charAt(1)));
-        return this.getBoard(game)[row][col];
+        Optional<Column> c = Column.fromName(String.valueOf(position.charAt(0)));
+        if(c.isEmpty()){
+            System.out.println("pozycja: " + position);
+            return null;
+        }else {
+            int col = c.get().getIndex();
+            int row = Integer.parseInt(String.valueOf(position.charAt(1)));
+            return this.getBoard(game)[row][col];
+        }
     }
 
     @Override

@@ -20,7 +20,7 @@
                         <th:block th:if="${col != null}">
                             <!--white pawns and black back rows -->
                             <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure" class="piece"
-                                 draggable="true" th:id="${col.color+col.position}">
+                                 draggable="true" th:id="${col.position}">
                         </th:block>
 
                     </div>
@@ -33,7 +33,7 @@
                         <th:block th:if="${col != null}">
                             <!--white back rows and black pawns -->
                             <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure" class="piece"
-                                 draggable="true" th:id="${col.color+col.position}">
+                                 draggable="true" th:id="${col.position}">
                         </th:block>
                     </div>
                 </div>

@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 /**
  * Handles WebSocket text messages related to chess game operations.
  * This component processes messages received from the client, performs appropriate actions
@@ -38,8 +40,10 @@ public class GameHandleTextMessage {
      * @throws JsonProcessingException if serialization of the game state fails.
      */
     public MessageToJS handleMessageMove() throws JsonProcessingException {
+        System.out.println("Handle message move: " + message);
         ObjectMapper objectMapper = new ObjectMapper();
-        String[] moveDetails = message.substring(1).split("-");
+        String[] moveDetails = message.split("-");
+        System.out.println("sdfg : " + Arrays.toString(moveDetails));
         Object[] valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)));
         if ((boolean) valid[0]) {
             return new MessageToJS("MOVE", moveDetails[1], true, objectMapper.writeValueAsString(valid[1]));
