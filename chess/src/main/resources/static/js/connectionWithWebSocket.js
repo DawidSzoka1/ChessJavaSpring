@@ -152,6 +152,18 @@ export default class CustomWebSocket {
         this.isPongReceived = true;
         return "received";
     }
+    validData(data){
+        if (!this.#eventForMove) {
+            console.warn("No event for move.");
+            return false;
+        }
+        if (!data.valid) {
+            console.log("Invalid move");
+            console.log(data)
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Handles "MOVE" messages to update the piece's position on the game board.
@@ -160,33 +172,24 @@ export default class CustomWebSocket {
      * @param {string} data.content - The new position for the piece.
      */
     messageMove(data) {
-        if (!this.#eventForMove) {
-            console.warn("No event for move.");
-            return null;
-        }
-        if (!data.valid) {
-            console.log("Invalid move");
-            console.log(data)
+        if(!this.validData(data)){
             return null;
         }
         this.pieceToMove.id = data.content;
         console.log(this.pieceToMove.id);
         this.#eventForMove.target.appendChild(this.pieceToMove);
-        console.log("Successful take");
+        console.log("Successful move");
     }
 
     messageTake(data){
-        if (!this.#eventForMove) {
-            console.warn("No event for move.");
+        if(!this.validData(data)){
             return null;
         }
-        if (!data.valid) {
-            console.log("Invalid move");
-            console.log(data)
-            return null;
-        }
-
-
+        const pieceToRemove = document.getElementById(data.content);
+        this.pieceToMove.id = data.content;
+        this.#eventForMove.target.removeChild(pieceToRemove);
+        this.#eventForMove.target.appendChild(this.pieceToMove);
+        console.log("successful take")
     }
 
     /**

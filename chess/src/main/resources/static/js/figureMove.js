@@ -51,10 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ws.setPieceToMove(selectedPiece); // Set the piece being moved
 
         // Send the move message to the server
-
         ws.send({
-            message: `${selectedPiece.id}-${e.target.id}`,
-            messageType: e.target.tagName === 'DIV' ? 'MOVE' : 'TAKE',
+            message: `${selectedPiece.id}-${e.target.id.split('-')[0]}`,
+            messageType: e.target.tagName === 'DIV' ? 'move' : 'take',
             gameId: gameId,
         });
 
