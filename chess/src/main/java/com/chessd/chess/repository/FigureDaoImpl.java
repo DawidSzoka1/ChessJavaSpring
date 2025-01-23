@@ -1,5 +1,6 @@
 package com.chessd.chess.repository;
 
+import com.chessd.chess.entity.Game;
 import com.chessd.chess.utils.Figure;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,16 @@ public class FigureDaoImpl implements FigureDao{
     @Override
     @Transactional
     public void delete(Figure figure) {
-        entityManager.remove(figure);
+        Figure managedFigure = entityManager.find(Figure.class, figure.getId());
+        if (managedFigure != null) {
+            try {
+                entityManager.remove(managedFigure);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }else{
+            throw new IllegalArgumentException("Figure with Id" + figure.getId() + " does not exist");
+        }
     }
 
     @Override

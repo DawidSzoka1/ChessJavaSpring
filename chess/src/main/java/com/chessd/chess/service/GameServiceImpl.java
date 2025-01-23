@@ -111,7 +111,6 @@ public class GameServiceImpl implements GameService {
                 tab[1] = "Cant take king";
                 return tab;
             }
-            figureDao.update(taken);
             figureDao.delete(taken);
         }
         figure.makeMove(to, board);
