@@ -19,9 +19,8 @@ public class Rook extends Figure {
         super("rook", color, row, col, game);
     }
 
-    public List<String> moveHorVer(int startRow, int startCol, boolean hor) {
+    public List<String> moveHorVer(int startRow, int startCol, boolean hor, Figure[][] board) {
         ArrayList<String> moves = new ArrayList<>();
-
         for (int direction = -1; direction <= 1; direction += 2) {
             int col = startCol;
             int row = startRow;
@@ -31,11 +30,18 @@ public class Rook extends Figure {
                 } else {
                     row += direction;
                 }
-                if (this.validPosition(row, col)) {
-                    moves.add(Column.fromIndex(col).get().name() + row);
-                } else {
+                if (!this.validPosition(row, col)) {
                     break;
                 }
+                Figure posibleFigure = board[row][col];
+                if(posibleFigure != null && posibleFigure.getColor().equals(this.getColor())){
+                    break;
+                }
+                if(posibleFigure != null){
+                    moves.add(Column.fromIndex(col).get().name() + row);
+                    break;
+                }
+                moves.add(Column.fromIndex(col).get().name() + row);
             }
         }
         return moves;
@@ -47,9 +53,9 @@ public class Rook extends Figure {
         int startRow = this.getRow();
         int startCol = this.getCol();
         //moving horizontally
-        moves.addAll(moveHorVer(startRow, startCol, true));
+        moves.addAll(moveHorVer(startRow, startCol, true, board));
         //moving diagonally
-        moves.addAll(moveHorVer(startRow, startCol, false));
+        moves.addAll(moveHorVer(startRow, startCol, false, board));
         return moves;
     }
 }
