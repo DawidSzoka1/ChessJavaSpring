@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function dragLeave(e) {
     }
+
     /**
      * Handler for the "drop" event. Sends the move to the WebSocket server and updates the board state.
      * @param {DragEvent} e - The drag event.
@@ -50,14 +51,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ws.setPieceToMove(selectedPiece); // Set the piece being moved
 
         // Send the move message to the server
-        console.log("drag drop debug")
-        console.log(selectedPiece.id)
-        console.log(e.target.id)
+
         ws.send({
             message: `${selectedPiece.id}-${e.target.id}`,
-            messageType: "move",
+            messageType: e.target.tagName === 'DIV' ? 'MOVE' : 'TAKE',
             gameId: gameId,
         });
+
 
         e.preventDefault();
     }

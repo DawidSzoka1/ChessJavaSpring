@@ -135,6 +135,9 @@ export default class CustomWebSocket {
                 case "MOVE":
                     this.messageMove(data);
                     break;
+                case "TAKE":
+                    this.messageTake(data);
+                    break;
                 default:
                     this.messagePong();
             }
@@ -166,11 +169,24 @@ export default class CustomWebSocket {
             console.log(data)
             return null;
         }
-        const color = this.pieceToMove.id[0];
-        this.pieceToMove.id = color + data.content;
+        this.pieceToMove.id = data.content;
         console.log(this.pieceToMove.id);
         this.#eventForMove.target.appendChild(this.pieceToMove);
         console.log("Successful take");
+    }
+
+    messageTake(data){
+        if (!this.#eventForMove) {
+            console.warn("No event for move.");
+            return null;
+        }
+        if (!data.valid) {
+            console.log("Invalid move");
+            console.log(data)
+            return null;
+        }
+
+
     }
 
     /**
