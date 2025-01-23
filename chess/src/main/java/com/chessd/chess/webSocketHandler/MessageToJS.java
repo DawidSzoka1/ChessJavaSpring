@@ -16,14 +16,6 @@ public class MessageToJS {
     private String type;
     private String content;
     private boolean valid;
-    private String gameBoard;
-
-
-    public MessageToJS(String type, String content, boolean valid) {
-        this.type = type;
-        this.content = content;
-        this.valid = valid;
-    }
 
     /**
      * Converts the current object to its JSON representation.

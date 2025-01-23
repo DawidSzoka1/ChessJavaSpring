@@ -67,7 +67,11 @@ public class GameServiceImpl implements GameService {
             figureDao.save(putFigure(this.figuresName[i], "B", colName + "7", game));
         }
     }
-
+    public Game getGameIfExists(String gameId){
+        Optional<Game> gameOpt = gameDao.getGameById(gameId);
+        //TODO throw error custom
+        return gameOpt.orElse(null);
+    }
     /**
      * Handles the move of a figure from one position to another on the game board.
      * Verifies the move's validity, updates the game board, and returns the updated board.
@@ -80,17 +84,15 @@ public class GameServiceImpl implements GameService {
      * and the second element contains a success message or an error message.
      */
     @Override
-    public Object[] move(String gameId, String from, String to, String color) {
-        System.out.println("Metoda move");
-        Optional<Game> gameOpt = gameDao.getGameById(gameId);
+    public Object[] move(String gameId, String from, String to, String color, boolean take) {
+        System.out.println("Metoda move albo take");
         Object[] tab = new Object[2];
         tab[0] = false;
-        if (gameOpt.isEmpty()) {
-            //TODO throw error
-            tab[1] = "board is empty";
+        Game game = getGameIfExists(gameId);
+        if(game == null){
+            tab[1] = "Game is null";
             return tab;
         }
-        Game game = gameOpt.get();
         Figure[][] board = gameDao.getBoard(game);
         Figure figure = this.getFigureByPosition(from, game);
         if (figure == null) {
@@ -102,6 +104,15 @@ public class GameServiceImpl implements GameService {
         if (!valid) {
             tab[1] = "Invalid move";
             return tab;
+        }
+        if(take){
+            Figure taken = this.getFigureByPosition(to, game);
+            if(taken.getName().equals("king")){
+                tab[1] = "Cant take king";
+                return tab;
+            }
+            figureDao.update(taken);
+            figureDao.delete(taken);
         }
         figure.makeMove(to, board);
         figureDao.update(figure);

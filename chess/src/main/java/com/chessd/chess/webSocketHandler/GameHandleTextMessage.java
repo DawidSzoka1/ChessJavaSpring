@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 /**
  * Handles WebSocket text messages related to chess game operations.
@@ -37,18 +38,19 @@ public class GameHandleTextMessage {
      * Processes a "move" message, validates the move, and updates the game state.
      *
      * @return a {@link MessageToJS} object representing the response to the client.
-     * @throws JsonProcessingException if serialization of the game state fails.
      */
-    public MessageToJS handleMessageMove() throws JsonProcessingException {
-        System.out.println("Handle message move: " + message);
-        ObjectMapper objectMapper = new ObjectMapper();
+    public MessageToJS handleMessageMove() {
+        System.out.println("Handle message " + messageType + ": " + message);
         String[] moveDetails = message.split("-");
-        System.out.println("sdfg : " + Arrays.toString(moveDetails));
-        Object[] valid = gameService.move(gameId, moveDetails[0], moveDetails[1], String.valueOf(message.charAt(0)));
+        Object[] valid = gameService.move(gameId,
+                moveDetails[0],
+                moveDetails[1],
+                String.valueOf(message.charAt(0)),
+                messageType.equals("take"));
         if ((boolean) valid[0]) {
-            return new MessageToJS("MOVE", moveDetails[1], true, objectMapper.writeValueAsString(valid[1]));
+            return new MessageToJS(messageType.toUpperCase(), moveDetails[1], true);
         }
-        return new MessageToJS("MOVE", (String) valid[1], false);
+        return new MessageToJS(messageType.toUpperCase(), (String) valid[1], false);
     }
 
     /**
@@ -65,11 +67,10 @@ public class GameHandleTextMessage {
      * Delegates to appropriate handlers (e.g., move handling, pong response).
      *
      * @return a {@link MessageToJS} object representing the response to the client.
-     * @throws JsonProcessingException if serialization of the game state fails.
      */
-    public MessageToJS handleMessage() throws JsonProcessingException {
+    public MessageToJS handleMessage()  {
         return switch (messageType) {
-            case "move" -> handleMessageMove();
+            case "move", "take" -> handleMessageMove();
             default -> pongMessage();
         };
     }
