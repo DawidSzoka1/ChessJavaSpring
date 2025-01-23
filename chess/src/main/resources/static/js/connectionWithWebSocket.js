@@ -186,9 +186,10 @@ export default class CustomWebSocket {
             return null;
         }
         const pieceToRemove = document.getElementById(data.content);
+        const contentSquare = document.getElementById(data.content + '-')
         this.pieceToMove.id = data.content;
-        this.#eventForMove.target.removeChild(pieceToRemove);
-        this.#eventForMove.target.appendChild(this.pieceToMove);
+        contentSquare.removeChild(pieceToRemove);
+        contentSquare.appendChild(this.pieceToMove);
         console.log("successful take")
     }
 

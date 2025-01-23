@@ -29,7 +29,7 @@
             <div th:if="${statRow.odd}">
                 <div th:class="${statCol.even ? 'square black' : 'square white'}"
                      th:id="figure">
-                    <div th:class="square-content" th:id="${columns[statCol.index] + '' + (statRow.index)}">
+                    <div th:class="square-content" th:id="${columns[statCol.index] + '' + (statRow.index) + '-'}">
                         <th:block th:if="${col != null}">
                             <!--white back rows and black pawns -->
                             <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure" class="piece"
