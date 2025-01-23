@@ -111,6 +111,10 @@ public class GameServiceImpl implements GameService {
                 tab[1] = "Cant take king";
                 return tab;
             }
+            if(taken.getColor().equals(figure.getColor())){
+                tab[1] = "Cant take your own figure";
+                return tab;
+            }
             figureDao.delete(taken);
         }
         figure.makeMove(to, board);
