@@ -1,11 +1,17 @@
 package com.chessd.chess.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "move")
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class Move {
     @Id
     @Column(name = "move_id")
@@ -27,64 +33,6 @@ public class Move {
 
     @Column(name = "time")
     private Timestamp time;
-
-    public Move(){}
-    public Move(String moveId, User user, Game game, String startPosition, String endPosition, Timestamp time) {
-        this.moveId = moveId;
-        this.user = user;
-        this.game = game;
-        this.startPosition = startPosition;
-        this.endPosition = endPosition;
-        this.time = time;
-    }
-
-    public String getMoveId() {
-        return moveId;
-    }
-
-    public void setMoveId(String moveId) {
-        this.moveId = moveId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    public String getStartPosition() {
-        return startPosition;
-    }
-
-    public void setStartPosition(String startPosition) {
-        this.startPosition = startPosition;
-    }
-
-    public String getEndPosition() {
-        return endPosition;
-    }
-
-    public void setEndPosition(String endPosition) {
-        this.endPosition = endPosition;
-    }
-
-    public Timestamp getTime() {
-        return time;
-    }
-
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
 
     @Override
     public String toString() {

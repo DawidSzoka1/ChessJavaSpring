@@ -2,8 +2,6 @@ package com.chessd.chess.entity;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
-import java.util.Arrays;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
