@@ -8,6 +8,7 @@ import lombok.*;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -91,6 +92,42 @@ public abstract class Figure {
      */
     public abstract List<String> availableMoves(Figure[][] board);
 
+    public String[] validMove(int row, int col, Figure[][] board) {
+        String[] tab = new String[2];
+        tab[0] = "break";
+        if (!this.validPosition(row, col)) {
+            return tab;
+        }
+        Figure posibleFigure = board[row][col];
+        if (posibleFigure != null && posibleFigure.getColor().equals(this.getColor())) {
+            return tab;
+        }
+        tab[0] = "break and add";
+        if (posibleFigure == null) {
+            tab[0] = "continue";
+        }
+        tab[1] = com.chessd.chess.utils.Column.fromIndex(col).get().name() + row;
+        return tab;
+    }
+
+    public List<String> generateMoves(int startRow, int startCol, int rowStep, int colStep, Figure[][] board){
+        ArrayList<String> moves = new ArrayList<>();
+        int newRow = startRow;
+        int newCol = startCol;
+        while (true) {
+            newCol += colStep;
+            newRow += rowStep;
+            String[] check = this.validMove(newRow, newCol, board);
+            if(check[0].equals("break")){
+                break;
+            }
+            moves.add(check[1]);
+            if(check[0].equals("break and add")){
+                break;
+            }
+        }
+        return moves;
+    }
 
     public void makeMove(String position, Figure[][] board) {
         int[] tab = convertStringPositionToRowColInt(position);
