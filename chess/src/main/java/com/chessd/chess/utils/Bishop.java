@@ -4,7 +4,6 @@ import com.chessd.chess.entity.Game;
 import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,14 +19,6 @@ public class Bishop extends Figure {
 
     @Override
     public List<String> availableMoves(Figure[][] board) {
-        ArrayList<String> moves = new ArrayList<>();
-        int[] horizontal = {-1, 1};
-        int[] vertical = {-1, 1};
-        for (int h : horizontal) {
-            for (int v : vertical) {
-                moves.addAll(generateMoves(this.getRow(), this.getCol(), v, h, board));
-            }
-        }
-        return moves;
+        return MovesPattern.diagonalMoves(this, board);
     }
 }
