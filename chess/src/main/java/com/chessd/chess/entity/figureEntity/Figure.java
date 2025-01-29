@@ -1,7 +1,8 @@
-package com.chessd.chess.utils;
+package com.chessd.chess.entity.figureEntity;
 
 
 import com.chessd.chess.entity.Game;
+import com.chessd.chess.utils.MovesConverter;
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import lombok.*;

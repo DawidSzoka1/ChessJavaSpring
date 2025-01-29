@@ -1,6 +1,6 @@
 package com.chessd.chess.service;
 
-import com.chessd.chess.utils.Figure;
+import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.entity.Game;
 import java.util.Optional;
 

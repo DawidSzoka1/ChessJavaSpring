@@ -1,9 +1,9 @@
 package com.chessd.chess.service;
 
+import com.chessd.chess.entity.figureEntity.*;
 import com.chessd.chess.entity.Game;
 import com.chessd.chess.repository.FigureDao;
 import com.chessd.chess.repository.gameRepository.GameDao;
-import com.chessd.chess.repository.gameRepository.MoveDao;
 import com.chessd.chess.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

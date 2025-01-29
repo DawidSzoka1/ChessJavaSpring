@@ -1,7 +1,7 @@
 package com.chessd.chess.repository.gameRepository;
 
 import com.chessd.chess.entity.Game;
-import com.chessd.chess.utils.Figure;
+import com.chessd.chess.entity.figureEntity.Figure;
 
 import java.util.List;
 import java.util.Optional;

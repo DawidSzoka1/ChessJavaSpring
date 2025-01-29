@@ -1,7 +1,6 @@
 package com.chessd.chess.repository;
 
-import com.chessd.chess.entity.Game;
-import com.chessd.chess.utils.Figure;
+import com.chessd.chess.entity.figureEntity.Figure;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

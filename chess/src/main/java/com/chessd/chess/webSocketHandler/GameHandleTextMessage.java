@@ -1,17 +1,11 @@
 package com.chessd.chess.webSocketHandler;
 
 import com.chessd.chess.service.GameService;
-import com.chessd.chess.utils.Figure;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.Locale;
 
 /**
  * Handles WebSocket text messages related to chess game operations.

@@ -1,5 +1,7 @@
 package com.chessd.chess.utils;
 
+import com.chessd.chess.entity.figureEntity.Figure;
+
 import java.util.ArrayList;
 import java.util.List;
 
