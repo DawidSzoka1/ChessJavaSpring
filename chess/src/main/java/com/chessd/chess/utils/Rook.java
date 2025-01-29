@@ -22,27 +22,9 @@ public class Rook extends Figure {
     public List<String> moveHorVer(int startRow, int startCol, boolean hor, Figure[][] board) {
         ArrayList<String> moves = new ArrayList<>();
         for (int direction = -1; direction <= 1; direction += 2) {
-            int col = startCol;
-            int row = startRow;
-            while (true) {
-                if (hor) {
-                    col += direction;
-                } else {
-                    row += direction;
-                }
-                if (!this.validPosition(row, col)) {
-                    break;
-                }
-                Figure posibleFigure = board[row][col];
-                if(posibleFigure != null && posibleFigure.getColor().equals(this.getColor())){
-                    break;
-                }
-                if(posibleFigure != null){
-                    moves.add(Column.fromIndex(col).get().name() + row);
-                    break;
-                }
-                moves.add(Column.fromIndex(col).get().name() + row);
-            }
+            int rowStep = hor ? 0 : direction;
+            int colStep = hor ? direction : 0;
+            moves.addAll(generateMoves(startRow, startCol, rowStep, colStep, board));
         }
         return moves;
     }
