@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+
 /**
  * Service implementation for managing chess game logic, including starting a game,
  * processing moves, and interacting with the game board.
@@ -25,26 +26,6 @@ public class GameServiceImpl implements GameService {
     public GameServiceImpl(GameDao gameDao, FigureDao figureDao) {
         this.gameDao = gameDao;
         this.figureDao = figureDao;
-    }
-
-    /**
-     * Creates a specific {@link Figure} based on the given figure name, color, and position.
-     *
-     * @param figureName The name of the figure (e.g., "rook", "knight", etc.).
-     * @param color      The color of the figure ("W" for white, "B" for black).
-     * @param position   The position of the figure on the chess board (e.g., "a1", "b2").
-     * @return The created {@link Figure}.
-     * @throws IllegalArgumentException if the figure name is invalid.
-     */
-    public Figure putFigure(@NotNull String figureName, String color, String position, Game game) {
-        return switch (figureName) {
-            case "rook" -> new Rook(color, position, game);
-            case "bishop" -> new Bishop(color, position, game);
-            case "knight" -> new Knight(color, position, game);
-            case "king" -> new King(color, position, game);
-            case "queen" -> new Queen(color, position, game);
-            default -> throw new IllegalArgumentException("Unknown figure name " + figureName);
-        };
     }
 
     /**
@@ -63,8 +44,8 @@ public class GameServiceImpl implements GameService {
             figureDao.save(new Pawn("B", colName + "6", game));
 
             //Putting other figures on a1, b1, ..., h1 and a8, b8, ..., h8
-            figureDao.save(putFigure(this.figuresName[i], "W", colName + "0", game));
-            figureDao.save(putFigure(this.figuresName[i], "B", colName + "7", game));
+            figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "W", colName + "0", game));
+            figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "B", colName + "7", game));
         }
     }
     public Game getGameIfExists(String gameId){
@@ -87,43 +68,59 @@ public class GameServiceImpl implements GameService {
     public Object[] move(String gameId, String from, String to, String color, boolean take) {
         Object[] tab = new Object[2];
         tab[0] = false;
+
         Game game = getGameIfExists(gameId);
-        if(game == null){
+        if (game == null) {
             tab[1] = "Game is null";
             return tab;
         }
-        Figure[][] board = gameDao.getBoard(game);
-        Figure figure = this.getFigureByPosition(from, game);
+        Figure figure = getFigureByPosition(from, game);
         if (figure == null) {
-            tab[1] = "there inst any figure on this position";
+            tab[1] = "There is no figure on this position";
             return tab;
         }
-        figure.setMoves(figure.availableMoves(board));
-        boolean valid = figure.checkIfMoveIsValid(to, board);
-        if (!valid) {
+        if (!isMoveValid(figure, to, game)) {
             tab[1] = "Invalid move";
             return tab;
         }
-        if(take){
-            Figure taken = this.getFigureByPosition(to, game);
-            if(taken.getName().equals("king")){
-                tab[1] = "Cant take king";
-                return tab;
-            }
-            if(taken.getColor().equals(figure.getColor())){
-                tab[1] = "Cant take your own figure";
-                return tab;
-            }
-            figureDao.delete(taken);
+        if (take && !handleTakingFigure(to, figure, game)) {
+            tab[1] = "Invalid take operation";
+            return tab;
         }
-        figure.makeMove(to, board);
-        figureDao.update(figure);
-        game.setNextMove(game.getNextMove().equals("w") ? "b" : "w");
-        gameDao.update(game);
+        executeMove(figure, to, game);
         tab[0] = true;
         tab[1] = gameDao.getBoard(game);
         return tab;
     }
+
+    private boolean isMoveValid(Figure figure, String to, Game game) {
+        figure.setMoves(figure.availableMoves(gameDao.getBoard(game)));
+        return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
+    }
+
+    private boolean handleTakingFigure(String to, Figure figure, Game game) {
+        Figure taken = getFigureByPosition(to, game);
+        if (taken == null) return false;
+
+        if (taken.getName().equals("king")) {
+            return false; // Can't take king
+        }
+        if (taken.getColor().equals(figure.getColor())) {
+            return false; // Can't take your own figure
+        }
+        figureDao.delete(taken);
+        return true;
+    }
+
+    private void executeMove(Figure figure, String to, Game game) {
+        figure.makeMove(to, gameDao.getBoard(game));
+        figureDao.update(figure);
+
+        // Toggle the next player's turn
+        game.setNextMove(game.getNextMove().equals("w") ? "b" : "w");
+        gameDao.update(game);
+    }
+
 
     @Override
     public void endGame(Game game) {

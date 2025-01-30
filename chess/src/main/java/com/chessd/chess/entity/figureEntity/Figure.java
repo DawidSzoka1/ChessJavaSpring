@@ -138,18 +138,6 @@ public abstract class Figure {
         this.setRow(tab[0]);
         this.setCol(tab[1]);
         this.setMoves(this.availableMoves(board));
-        Figure lookingForKing;
-        for(String move: this.getMoves()){
-            tab = convertStringPositionToRowColInt(move);
-            lookingForKing = board[tab[0]][tab[1]];
-            if(lookingForKing instanceof  King){
-                if(!this.getColor().equals(lookingForKing.getColor())){
-                    this.getGame().setCheckStatus(
-                            lookingForKing.getColor()
-                    );
-                }
-            }
-        }
     }
 
     public boolean validRowCol(int row, int col) {
