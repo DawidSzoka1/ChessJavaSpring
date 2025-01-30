@@ -30,7 +30,7 @@ public class King extends Figure {
             for(int col: horizontal){
                 newRow = this.getRow() + row;
                 newCol = this.getCol() + col;
-                if(this.validPosition(newRow, newCol)){
+                if(this.validRowCol(newRow, newCol)){
                     moves.add(Column.fromIndex(newCol).get().name() + newRow);
                 }
             }

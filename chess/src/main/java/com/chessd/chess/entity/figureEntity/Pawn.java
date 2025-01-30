@@ -48,7 +48,7 @@ public class Pawn extends Figure {
         for (int i = -1; i <= 1; i += 2) {
             int newRow = startRow + this.direction;
             int newCol =  startCol + i;
-            if (this.validPosition(newRow, newCol)) {
+            if (this.validRowCol(newRow, newCol)) {
                 Figure toTake = board[newRow][newCol];
                 if(toTake != null && !toTake.getColor().equals(this.getColor())){
                     moves.add(toTake.getPosition());

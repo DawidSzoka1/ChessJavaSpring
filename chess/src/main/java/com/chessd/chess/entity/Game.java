@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "game")
@@ -27,11 +28,15 @@ public class Game {
     @JoinColumn(name = "black", referencedColumnName = "id")
     private User black;
 
-    @Column(name = "start")
+    @Column(name = "start", nullable = false, updatable = false)
+    @CreationTimestamp
     private Timestamp start;
 
     @Column(name = "end")
     private Timestamp end;
+
+    @Column(name = "check_status", columnDefinition = "number check (check_status in (1, 2, 0))")
+    private int checkStatus;
 
     public Game(String gameId) {
         this.gameId = gameId;

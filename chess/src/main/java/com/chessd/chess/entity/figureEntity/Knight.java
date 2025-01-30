@@ -28,7 +28,7 @@ public class Knight extends Figure {
         for (int i = 0; i < rowPossibilities.length; i++) {
             int newRow = currentRow + rowPossibilities[i];
             int newCol = currentCol + colPossibilities[i];
-            if (this.validPosition(newRow, newCol)) {
+            if (this.validRowCol(newRow, newCol)) {
                 moves.add(Column.fromIndex(newCol).get().name() + newRow);
             }
         }

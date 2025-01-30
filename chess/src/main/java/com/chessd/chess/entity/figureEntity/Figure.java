@@ -96,7 +96,7 @@ public abstract class Figure {
     public String[] validMove(int row, int col, Figure[][] board) {
         String[] tab = new String[2];
         tab[0] = "break";
-        if (!this.validPosition(row, col)) {
+        if (!this.validRowCol(row, col)) {
             return tab;
         }
         Figure posibleFigure = board[row][col];
@@ -136,14 +136,28 @@ public abstract class Figure {
         this.setRow(tab[0]);
         this.setCol(tab[1]);
         this.setMoves(this.availableMoves(board));
+        Figure lookingForKing;
+        for(String move: this.getMoves()){
+            tab = convertStringPositionToRowColInt(move);
+            lookingForKing = board[tab[0]][tab[1]];
+            if(!this.getColor().equals(lookingForKing.getColor())){
+                this.getGame().setCheckStatus(
+                        1
+                );
+            }
+        }
     }
 
-    public boolean validPosition(int row, int col) {
+    public boolean validRowCol(int row, int col) {
         return row >= 0 && row <= 7 && col >= 0 && col <= 7;
     }
 
     public boolean checkIfMoveIsValid(String newPosition, Figure[][] board) {
-        for (String move : this.availableMoves(board)) {
+        List<String> moves = this.getMoves();
+        if(moves.isEmpty()){
+            moves = this.availableMoves(board);
+        }
+        for (String move : moves) {
             if (move.equals(newPosition)) {
                 return true;
             }
