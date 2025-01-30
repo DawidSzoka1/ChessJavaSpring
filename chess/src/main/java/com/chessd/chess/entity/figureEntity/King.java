@@ -17,31 +17,24 @@ public class King extends Figure {
     public King(String color, String position, Game game){
         super("king", color, position, game);
     }
-    HashMap<Optional<Column>, Integer> directions() {
-        HashMap<Optional<Column>, Integer> dire = new HashMap<>();
-        Optional<Column> colO = Column.fromIndex(this.getCol());
-        int row = this.getRow();
-        Column col;
-        if (colO.isPresent()) {
-            col = colO.get();
-        } else {
-            return null;
-        }
-        for (int i = 0; i < 3; i++) {
-            double v = col.getIndex() + (i * Math.pow(-1, i));
-            dire.put(Column.fromIndex((int) v), row + 1);
-            dire.put(Column.fromIndex((int) v), row);
-            dire.put(Column.fromIndex((int) v), row - 1);
-        }
-        return dire;
-    }
+
 
     @Override
     public List<String> availableMoves(Figure[][] board) {
         List<String> moves = new ArrayList<>();
-        HashMap<Optional<Column>, Integer> directions = directions();
-        // TODO: moves for king to finish
-
+        int[] horizontal = {1, 0, -1};
+        int[] vertical = {1, 0, -1};
+        int newRow;
+        int newCol;
+        for(int row: vertical){
+            for(int col: horizontal){
+                newRow = this.getRow() + row;
+                newCol = this.getCol() + col;
+                if(this.validPosition(newRow, newCol)){
+                    moves.add(Column.fromIndex(newCol).get().name() + newRow);
+                }
+            }
+        }
         return moves;
     }
 }
