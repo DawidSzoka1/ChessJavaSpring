@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Table(name = "game")
@@ -35,8 +36,11 @@ public class Game {
     @Column(name = "end")
     private Timestamp end;
 
-    @Column(name = "check_status", columnDefinition = "number check (check_status in (1, 2, 0))")
-    private int checkStatus;
+    @Column(name = "check_status", columnDefinition = "varchar(1) check (check_status in ('w', 'b', 'n'))")
+    private String checkStatus;
+
+    @Column(name = "next_move", columnDefinition = "varchar(1) check(next_move in ('w', 'b'))")
+    private String nextMove = "w";
 
     public Game(String gameId) {
         this.gameId = gameId;

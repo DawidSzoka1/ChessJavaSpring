@@ -8,6 +8,7 @@ import jakarta.persistence.Column;
 import lombok.*;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  * Represents a generic chess figure (piece) with common properties and behaviors.
  * This is an abstract class that must be extended by specific chess piece types.
  */
+@Slf4j
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Getter
@@ -30,13 +32,13 @@ public abstract class Figure {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "color")
+    @Column(name = "color", columnDefinition = "varchar(1) check (color in ('w', 'b'))")
     private String color;
 
-    @Column(name = "`row`")
+    @Column(name = "`row`", columnDefinition = "number check(`row` between 0 and 7)")
     private int row;
 
-    @Column(name = "col")
+    @Column(name = "col", columnDefinition = "number check(col between 0 and 7)")
     private int col;
 
     @ManyToOne
@@ -140,10 +142,12 @@ public abstract class Figure {
         for(String move: this.getMoves()){
             tab = convertStringPositionToRowColInt(move);
             lookingForKing = board[tab[0]][tab[1]];
-            if(!this.getColor().equals(lookingForKing.getColor())){
-                this.getGame().setCheckStatus(
-                        1
-                );
+            if(lookingForKing instanceof  King){
+                if(!this.getColor().equals(lookingForKing.getColor())){
+                    this.getGame().setCheckStatus(
+                            lookingForKing.getColor()
+                    );
+                }
             }
         }
     }
@@ -153,6 +157,9 @@ public abstract class Figure {
     }
 
     public boolean checkIfMoveIsValid(String newPosition, Figure[][] board) {
+        if(!this.getColor().equalsIgnoreCase(this.getGame().getNextMove())){
+            return false;
+        }
         List<String> moves = this.getMoves();
         if(moves.isEmpty()){
             moves = this.availableMoves(board);

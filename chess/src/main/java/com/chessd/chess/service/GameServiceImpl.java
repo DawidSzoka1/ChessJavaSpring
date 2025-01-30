@@ -85,7 +85,6 @@ public class GameServiceImpl implements GameService {
      */
     @Override
     public Object[] move(String gameId, String from, String to, String color, boolean take) {
-        System.out.println("Metoda move albo take");
         Object[] tab = new Object[2];
         tab[0] = false;
         Game game = getGameIfExists(gameId);
@@ -119,6 +118,8 @@ public class GameServiceImpl implements GameService {
         }
         figure.makeMove(to, board);
         figureDao.update(figure);
+        game.setNextMove(game.getNextMove().equals("w") ? "b" : "w");
+        gameDao.update(game);
         tab[0] = true;
         tab[1] = gameDao.getBoard(game);
         return tab;
