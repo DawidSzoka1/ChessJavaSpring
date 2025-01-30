@@ -112,6 +112,11 @@ public class GameServiceImpl implements GameService {
         return true;
     }
 
+    private void lookForChecks(Game game, Figure figure){
+        Figure enemyKing = gameDao.getKing(game, figure.getColor().equals("W") ? "B" : "W");
+
+    }
+
     private void executeMove(Figure figure, String to, Game game) {
         figure.makeMove(to, gameDao.getBoard(game));
         figureDao.update(figure);
