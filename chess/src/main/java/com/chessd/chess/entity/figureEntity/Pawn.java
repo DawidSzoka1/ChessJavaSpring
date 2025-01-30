@@ -30,14 +30,15 @@ public class Pawn extends Figure {
         ArrayList<String> moves = new ArrayList<>();
         int row = this.getRow();
         String col = Column.fromIndex(this.getCol()).get().name();
-        moves.add(col + (row + this.direction));
+        Figure possibleBlock = board[row + this.direction][this.getCol()];
+        if(possibleBlock == null) {
+            moves.add(col + (row + this.direction));
+        }
         if ((row == 1 && this.getColor().equals("W")) ||
                 (row == 6 && this.getColor().equals("B"))) {
             moves.add(col + (row + this.direction * 2));
         }
-        if (board != null) {
-            moves.addAll(availableTakes(board));
-        }
+        moves.addAll(availableTakes(board));
         return moves;
     }
 
