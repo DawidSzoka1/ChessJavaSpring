@@ -52,7 +52,7 @@ public abstract class Figure {
     private String position;
 
     @Column(name = "moves")
-    @Convert(converter = MovesConverter.class)
+    @ElementCollection
     private List<String> moves;
 
     public Figure(String name, String color, String position, String imageName, Game game) {

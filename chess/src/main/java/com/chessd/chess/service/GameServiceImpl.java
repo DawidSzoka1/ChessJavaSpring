@@ -48,19 +48,21 @@ public class GameServiceImpl implements GameService {
             figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "B", colName + "7", game));
         }
     }
-    public Game getGameIfExists(String gameId){
+
+    public Game getGameIfExists(String gameId) {
         Optional<Game> gameOpt = gameDao.getGameById(gameId);
         //TODO throw error custom
         return gameOpt.orElse(null);
     }
+
     /**
      * Handles the move of a figure from one position to another on the game board.
      * Verifies the move's validity, updates the game board, and returns the updated board.
      *
-     * @param gameId    The ID of the game in which the move is made.
-     * @param from      The starting position of the move (e.g., "a2").
-     * @param to        The target position of the move (e.g., "a3").
-     * @param color     The color of the player making the move.
+     * @param gameId The ID of the game in which the move is made.
+     * @param from   The starting position of the move (e.g., "a2").
+     * @param to     The target position of the move (e.g., "a3").
+     * @param color  The color of the player making the move.
      * @return An array where the first element indicates if the move was successful,
      * and the second element contains a success message or an error message.
      */
@@ -69,37 +71,47 @@ public class GameServiceImpl implements GameService {
         Object[] tab = new Object[2];
         tab[0] = false;
 
-        Game game = getGameIfExists(gameId);
+        Game game = this.getGameIfExists(gameId);
         if (game == null) {
             tab[1] = "Game is null";
             return tab;
         }
-        Figure figure = getFigureByPosition(from, game);
+        Figure figure = this.getFigureByPosition(from, game);
         if (figure == null) {
             tab[1] = "There is no figure on this position";
             return tab;
         }
-        if (!isMoveValid(figure, to, game)) {
+        if (!this.isMoveValid(figure, to, game)) {
             tab[1] = "Invalid move";
             return tab;
         }
-        if (take && !handleTakingFigure(to, figure, game)) {
+        if (take && !this.handleTakingFigure(to, figure, game)) {
             tab[1] = "Invalid take operation";
             return tab;
         }
-        executeMove(figure, to, game);
+        this.executeMove(figure, to, game);
         tab[0] = true;
-        tab[1] = gameDao.getBoard(game);
+        tab[1] = "very good move";
         return tab;
     }
 
     private boolean isMoveValid(Figure figure, String to, Game game) {
         figure.setMoves(figure.availableMoves(gameDao.getBoard(game)));
+        if (figure.getName().equals("king")) {
+           return this.validKingMove(figure, to, game);
+        }
         return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
     }
-
+    private boolean validKingMove(Figure figure, String to, Game game){
+        Optional<Figure> check = figureDao
+                .getFigureByPossibleMovesAndColor(game, figure.getColor().equals("W") ? "B" : "W", to);
+        if(check.isPresent()){
+            return false;
+        }
+        return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
+    }
     private boolean handleTakingFigure(String to, Figure figure, Game game) {
-        Figure taken = getFigureByPosition(to, game);
+        Figure taken = this.getFigureByPosition(to, game);
         if (taken == null) return false;
 
         if (taken.getName().equals("king")) {
@@ -112,9 +124,7 @@ public class GameServiceImpl implements GameService {
         return true;
     }
 
-    private void lookForChecks(Game game, Figure figure){
-        Figure enemyKing = gameDao.getKing(game, figure.getColor().equals("W") ? "B" : "W");
-
+    private void lookForChecks(Game game, Figure figure) {
     }
 
     private void executeMove(Figure figure, String to, Game game) {
@@ -141,10 +151,9 @@ public class GameServiceImpl implements GameService {
     @Override
     public Figure getFigureByPosition(String position, Game game) {
         Optional<Column> c = Column.fromName(String.valueOf(position.charAt(0)));
-        if(c.isEmpty()){
-            System.out.println("pozycja: " + position);
+        if (c.isEmpty()) {
             return null;
-        }else {
+        } else {
             int col = c.get().getIndex();
             int row = Integer.parseInt(String.valueOf(position.charAt(1)));
             return this.getBoard(game)[row][col];
