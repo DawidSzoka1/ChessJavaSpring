@@ -20,12 +20,16 @@ import java.util.*;
 public class GameServiceImpl implements GameService {
     private GameDao gameDao;
     private FigureDao figureDao;
+    private MoveService moveService;
+    private CheckService checkService;
     private final String[] figuresName = {"rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"};
 
     @Autowired
-    public GameServiceImpl(GameDao gameDao, FigureDao figureDao) {
+    public GameServiceImpl(GameDao gameDao, FigureDao figureDao, MoveService moveService, CheckService checkService) {
         this.gameDao = gameDao;
         this.figureDao = figureDao;
+        this.moveService = moveService;
+        this.checkService = checkService;
     }
 
     /**
@@ -71,74 +75,36 @@ public class GameServiceImpl implements GameService {
         Game game = this.getGameIfExists(gameId);
         if (game == null) return createResponse(false, "Game is null");
 
-        Figure figure = this.getFigureByPosition(from, game);
+        Figure figure = figureDao.getFigureByPosition(from, game);
         if (figure == null) return createResponse(false, "There is no figure on this position");
 
-        if (!this.isMoveValid(figure, to, game)) return createResponse(false, "Invalid move");
+        if (!moveService.isMoveValid(figure, to, game)) return createResponse(false, "Invalid move");
 
-        if (take && !this.handleTakingFigure(to, figure, game)) return createResponse(false, "Invalid take operation");
+        if (take && !moveService.handleTakingFigure(figure, to, game))
+            return createResponse(false, "Invalid take operation");
 
-        this.executeMove(figure, to, game);
+        if (!game.getCheckStatus().equals("N")) {
+            return this.processCheckMove(game, figure, to);
+        }
 
+        this.afterSuccessMove(game, figure, to);
         return createResponse(true, "Valid move");
+    }
+
+    private Object[] processCheckMove(Game game, Figure figure, String to) {
+
+        this.afterSuccessMove(game, figure, to);
+        return createResponse(true, "Valid move");
+    }
+
+    private void afterSuccessMove(Game game, Figure figure, String to) {
+        moveService.executeMove(figure, to, game);
+        checkService.lookForChecks(game);
     }
 
     public Object[] createResponse(boolean result, String message) {
         return new Object[]{result, message};
     }
-
-    private boolean isMoveValid(Figure figure, String to, Game game) {
-        figure.setMoves(figure.availableMoves(gameDao.getBoard(game)));
-        if (figure.getName().equals("king")) {
-            return this.validKingMove(figure, to, game);
-        }
-        return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
-    }
-
-    private boolean validKingMove(Figure figure, String to, Game game) {
-        Optional<Figure> check = figureDao
-                .getFigureByPossibleMovesAndColor(game, figure.getOpponent(), to);
-        if (check.isPresent()) {
-            return false;
-        }
-        return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
-    }
-
-    private boolean handleTakingFigure(String to, Figure figure, Game game) {
-        Figure taken = this.getFigureByPosition(to, game);
-        if (taken == null) return false;
-
-        if (taken.getName().equals("king")) {
-            return false; // Can't take king
-        }
-        if (taken.getColor().equals(figure.getColor())) {
-            return false; // Can't take your own figure
-        }
-        figureDao.delete(taken);
-        return true;
-    }
-
-    private boolean lookForChecks(Game game) {
-        Figure king = figureDao.getKing(game, game.getNextMove());
-        Optional<Figure> attacker = figureDao
-                .getFigureByPossibleMovesAndColor(game, king.getOpponent(), king.getPosition());
-        if (attacker.isEmpty()) {
-            return false;
-        }
-        game.setCheckStatus(king.getColor());
-        gameDao.update(game);
-        return true;
-    }
-
-    private void executeMove(Figure figure, String to, Game game) {
-        figure.makeMove(to, gameDao.getBoard(game));
-        figureDao.update(figure);
-
-        // Toggle the next player's turn
-        game.setNextMove(game.getNextMove().equals("W") ? "B" : "W");
-        gameDao.update(game);
-    }
-
 
     @Override
     public void endGame(Game game) {
@@ -150,18 +116,6 @@ public class GameServiceImpl implements GameService {
         return gameDao.getGameById(gameId);
     }
 
-
-    @Override
-    public Figure getFigureByPosition(String position, Game game) {
-        Optional<Column> c = Column.fromName(String.valueOf(position.charAt(0)));
-        if (c.isEmpty()) {
-            return null;
-        } else {
-            int col = c.get().getIndex();
-            int row = Integer.parseInt(String.valueOf(position.charAt(1)));
-            return this.getBoard(game)[row][col];
-        }
-    }
 
     @Override
     public void save(Game game) {
