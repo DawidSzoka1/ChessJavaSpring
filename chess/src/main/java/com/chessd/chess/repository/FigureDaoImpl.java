@@ -63,4 +63,13 @@ public class FigureDaoImpl implements FigureDao {
         }
         return Optional.of(figures.getFirst());
     }
+    @Override
+    public Figure getKing(Game game, String color) {
+        TypedQuery<Figure> query = entityManager.createQuery(
+                "select f from Figure f where f.game=:game and f.name='king' and lower(f.color) =:color",
+                Figure.class);
+        query.setParameter("game", game);
+        query.setParameter("color", color.toLowerCase());
+        return query.getSingleResult();
+    }
 }

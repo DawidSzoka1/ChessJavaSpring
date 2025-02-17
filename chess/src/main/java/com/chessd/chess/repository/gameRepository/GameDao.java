@@ -14,5 +14,4 @@ public interface GameDao {
     void update(Game game);
     void delete(Game game);
     Figure[][] getBoard(Game game);
-    Figure getKing(Game game, String color);
 }
