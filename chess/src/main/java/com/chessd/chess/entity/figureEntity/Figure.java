@@ -55,6 +55,9 @@ public abstract class Figure {
     @ElementCollection
     private List<String> moves;
 
+    @Column(name = "opponent", columnDefinition = "Color of enemy figures")
+    private String opponent;
+
     public Figure(String name, String color, String position, String imageName, Game game) {
         int[] tab = convertStringPositionToRowColInt(position);
         this.name = name;
@@ -64,6 +67,7 @@ public abstract class Figure {
         this.col = tab[1];
         this.imageName = imageName;
         this.game = game;
+        this.opponent = color.equals("W") ? "B" : "W";
     }
 
     public Figure(String name, String color, int row, int col, Game game) {
