@@ -36,11 +36,12 @@ public class Game {
     @Column(name = "end")
     private Timestamp end;
 
-    @Column(name = "check_status", columnDefinition = "varchar(1) check (check_status in ('w', 'b', 'n'))")
+    @Column(name = "check_status", columnDefinition = "varchar(1) check (check_status in ('W', 'B', 'N'))")
     private String checkStatus;
 
-    @Column(name = "next_move", columnDefinition = "varchar(1) check(next_move in ('w', 'b'))")
-    private String nextMove = "w";
+    @Column(name = "next_move", columnDefinition = "varchar(1) check(next_move in ('W', 'B'))")
+    private String nextMove = "W";
+
 
     public Game(String gameId) {
         this.gameId = gameId;

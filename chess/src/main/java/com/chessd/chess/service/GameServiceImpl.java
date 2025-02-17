@@ -68,48 +68,42 @@ public class GameServiceImpl implements GameService {
      */
     @Override
     public Object[] move(String gameId, String from, String to, String color, boolean take) {
-        Object[] tab = new Object[2];
-        tab[0] = false;
-
         Game game = this.getGameIfExists(gameId);
-        if (game == null) {
-            tab[1] = "Game is null";
-            return tab;
-        }
+        if (game == null) return createResponse(false, "Game is null");
+
         Figure figure = this.getFigureByPosition(from, game);
-        if (figure == null) {
-            tab[1] = "There is no figure on this position";
-            return tab;
-        }
-        if (!this.isMoveValid(figure, to, game)) {
-            tab[1] = "Invalid move";
-            return tab;
-        }
-        if (take && !this.handleTakingFigure(to, figure, game)) {
-            tab[1] = "Invalid take operation";
-            return tab;
-        }
+        if (figure == null) return createResponse(false, "There is no figure on this position");
+
+        if (!this.isMoveValid(figure, to, game)) return createResponse(false, "Invalid move");
+
+        if (take && !this.handleTakingFigure(to, figure, game)) return createResponse(false, "Invalid take operation");
+
         this.executeMove(figure, to, game);
-        tab[0] = true;
-        tab[1] = "very good move";
-        return tab;
+
+        return createResponse(true, "Valid move");
+    }
+
+    public Object[] createResponse(boolean result, String message) {
+        return new Object[]{result, message};
     }
 
     private boolean isMoveValid(Figure figure, String to, Game game) {
         figure.setMoves(figure.availableMoves(gameDao.getBoard(game)));
         if (figure.getName().equals("king")) {
-           return this.validKingMove(figure, to, game);
+            return this.validKingMove(figure, to, game);
         }
         return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
     }
-    private boolean validKingMove(Figure figure, String to, Game game){
+
+    private boolean validKingMove(Figure figure, String to, Game game) {
         Optional<Figure> check = figureDao
-                .getFigureByPossibleMovesAndColor(game, figure.getColor().equals("W") ? "B" : "W", to);
-        if(check.isPresent()){
+                .getFigureByPossibleMovesAndColor(game, figure.getOpponent(), to);
+        if (check.isPresent()) {
             return false;
         }
         return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
     }
+
     private boolean handleTakingFigure(String to, Figure figure, Game game) {
         Figure taken = this.getFigureByPosition(to, game);
         if (taken == null) return false;
@@ -124,7 +118,16 @@ public class GameServiceImpl implements GameService {
         return true;
     }
 
-    private void lookForChecks(Game game, Figure figure) {
+    private boolean lookForChecks(Game game) {
+        Figure king = figureDao.getKing(game, game.getNextMove());
+        Optional<Figure> attacker = figureDao
+                .getFigureByPossibleMovesAndColor(game, king.getOpponent(), king.getPosition());
+        if (attacker.isEmpty()) {
+            return false;
+        }
+        game.setCheckStatus(king.getColor());
+        gameDao.update(game);
+        return true;
     }
 
     private void executeMove(Figure figure, String to, Game game) {
@@ -132,7 +135,7 @@ public class GameServiceImpl implements GameService {
         figureDao.update(figure);
 
         // Toggle the next player's turn
-        game.setNextMove(game.getNextMove().equals("w") ? "b" : "w");
+        game.setNextMove(game.getNextMove().equals("W") ? "B" : "W");
         gameDao.update(game);
     }
 
