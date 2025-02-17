@@ -72,4 +72,14 @@ public class FigureDaoImpl implements FigureDao {
         query.setParameter("color", color.toLowerCase());
         return query.getSingleResult();
     }
+
+    @Override
+    public Figure getFigureByPosition(String to, Game game) {
+        TypedQuery<Figure> query = entityManager.createQuery(
+                "SELECT f from Figure f where f.game=:game and f.position like :to", Figure.class
+        );
+        query.setParameter("game", game);
+        query.setParameter("to", to);
+        return query.getSingleResult();
+    }
 }
