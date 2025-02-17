@@ -3,6 +3,7 @@ package com.chessd.chess.repository;
 import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FigureDao {
@@ -12,4 +13,5 @@ public interface FigureDao {
     Optional<Figure> getFigureByPossibleMovesAndColor(Game game, String color, String move);
     Figure getKing(Game game, String color);
     Figure getFigureByPosition(String to, Game game);
+    List<Figure> getAllFiguresByColor(Game game, String color);
 }

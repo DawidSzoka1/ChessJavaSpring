@@ -92,7 +92,9 @@ public class GameServiceImpl implements GameService {
     }
 
     private Object[] processCheckMove(Game game, Figure figure, String to) {
-
+        if(!checkService.isMoveEscapingCheck(figure, to, game)){
+            return createResponse(false, "Doesnt escape check");
+        }
         this.afterSuccessMove(game, figure, to);
         return createResponse(true, "Valid move");
     }
@@ -115,7 +117,6 @@ public class GameServiceImpl implements GameService {
     public Optional<Game> getGameById(String gameId) {
         return gameDao.getGameById(gameId);
     }
-
 
     @Override
     public void save(Game game) {
