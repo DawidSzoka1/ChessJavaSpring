@@ -7,6 +7,7 @@ import com.chessd.chess.repository.gameRepository.GameDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,9 +29,48 @@ public class CheckServiceImpl implements CheckService{
 
         if (attacker.isPresent()) {
             game.setCheckStatus(king.getColor());
+            this.restrictMovesInCheck(game, king);
         } else {
             game.setCheckStatus("N");
         }
         gameDao.update(game);
+    }
+
+    @Override
+    public boolean isMoveEscapingCheck(Figure figure, String move, Game game) {
+        Figure king = figureDao.getKing(game, figure.getColor());
+        Figure[][] board = gameDao.getBoard(game);
+        int figCol = figure.getCol();
+        int figRow = figure.getRow();
+        board[figRow][figCol] = null;
+        int[] intPosition = Figure.convertStringPositionToRowColInt(move);
+        figure.makeMove(move, board);
+        board[intPosition[0]][intPosition[1]] = figure;
+
+        return !isKingUnderAttack(king, board);
+    }
+
+    @Override
+    public void restrictMovesInCheck(Game game, Figure king){
+        List<Figure> figures = figureDao.getAllFiguresByColor(game, king.getColor());
+        for(Figure figure: figures){
+            List<String> legalMoves = figure.availableMoves(gameDao.getBoard(game));
+            legalMoves.removeIf(move -> !this.isMoveEscapingCheck(figure, move, game));
+            figure.setMoves(legalMoves);
+            figureDao.update(figure);
+        }
+    }
+
+    private boolean isKingUnderAttack(Figure king, Figure[][] board) {
+        if (king == null) return false;
+        for (Figure[] row : board) {
+            for (Figure f : row) {
+                if (f != null && f.getColor().equals(king.getOpponent())
+                        && f.checkIfMoveIsValid(king.getPosition(), board)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

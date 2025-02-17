@@ -39,7 +39,6 @@ public class MoveServiceImpl implements MoveService {
         // Toggle the next player's turn
         game.setNextMove(game.getNextMove().equals("W") ? "B" : "W");
         gameDao.update(game);
-        checkService.lookForChecks(game);
     }
 
     @Override
@@ -62,30 +61,4 @@ public class MoveServiceImpl implements MoveService {
         return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
     }
 
-    @Override
-    public boolean isMoveEscapingChecK(Figure figure, String move, Game game) {
-        Figure king = figureDao.getKing(game, figure.getColor());
-        Figure[][] board = gameDao.getBoard(game);
-        int figCol = figure.getCol();
-        int figRow = figure.getRow();
-        board[figRow][figCol] = null;
-        int[] intPosition = Figure.convertStringPositionToRowColInt(move);
-        figure.makeMove(move, board);
-        board[intPosition[0]][intPosition[1]] = figure;
-
-        return !isKingUnderAttack(king, board);
-    }
-
-    private boolean isKingUnderAttack(Figure king, Figure[][] board) {
-        if (king == null) return false;
-        for (Figure[] row : board) {
-            for (Figure f : row) {
-                if (f != null && f.getColor().equals(king.getOpponent())
-                        && f.checkIfMoveIsValid(king.getPosition(), board)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }

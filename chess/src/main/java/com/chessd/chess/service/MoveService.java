@@ -8,5 +8,4 @@ public interface MoveService {
     void executeMove(Figure figure, String to, Game game);
     boolean handleTakingFigure(Figure figure, String to, Game game);
     boolean validKingMove(Figure figure, String to, Game game);
-    boolean isMoveEscapingChecK(Figure figure, String move, Game game);
 }
