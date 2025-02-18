@@ -4,14 +4,16 @@ import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.repository.FigureDao;
 import com.chessd.chess.repository.gameRepository.GameDao;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CheckServiceImpl implements CheckService{
+public class CheckServiceImpl implements CheckService {
     private FigureDao figureDao;
     private GameDao gameDao;
 
@@ -29,7 +31,7 @@ public class CheckServiceImpl implements CheckService{
 
         if (attacker.isPresent()) {
             game.setCheckStatus(king.getColor());
-            this.restrictMovesInCheck(game, king);
+//            this.restrictMovesInCheck(game, king);
         } else {
             game.setCheckStatus("N");
         }
@@ -39,6 +41,9 @@ public class CheckServiceImpl implements CheckService{
     @Override
     public boolean isMoveEscapingCheck(Figure figure, String move, Game game) {
         Figure king = figureDao.getKing(game, figure.getColor());
+        if (figure.getName().equals("king")) {
+            figure = king;
+        }
         Figure[][] board = gameDao.getBoard(game);
         int figCol = figure.getCol();
         int figRow = figure.getRow();
@@ -46,14 +51,13 @@ public class CheckServiceImpl implements CheckService{
         int[] intPosition = Figure.convertStringPositionToRowColInt(move);
         figure.makeMove(move, board);
         board[intPosition[0]][intPosition[1]] = figure;
-
         return !isKingUnderAttack(king, board);
     }
 
     @Override
-    public void restrictMovesInCheck(Game game, Figure king){
+    public void restrictMovesInCheck(Game game, Figure king) {
         List<Figure> figures = figureDao.getAllFiguresByColor(game, king.getColor());
-        for(Figure figure: figures){
+        for (Figure figure : figures) {
             List<String> legalMoves = figure.availableMoves(gameDao.getBoard(game));
             legalMoves.removeIf(move -> !this.isMoveEscapingCheck(figure, move, game));
             figure.setMoves(legalMoves);
@@ -66,8 +70,11 @@ public class CheckServiceImpl implements CheckService{
         for (Figure[] row : board) {
             for (Figure f : row) {
                 if (f != null && f.getColor().equals(king.getOpponent())
-                        && f.checkIfMoveIsValid(king.getPosition(), board)) {
-                    return true;
+                        && f.checkIfMoveInAvailableMoves(king.getPosition(), board)) {
+                    f.setMoves(f.availableMoves(board));
+                    if (f.checkIfMoveInAvailableMoves(king.getPosition(), board)) {
+                        return true;
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ public interface FigureDao {
     void delete(Figure figure);
     void update(Figure figure);
     Optional<Figure> getFigureByPossibleMovesAndColor(Game game, String color, String move);
+    List<Figure> getAllFiguresByPossibleMoveAndColor(Game game, String color, String move);
     Figure getKing(Game game, String color);
     Figure getFigureByPosition(String to, Game game);
     List<Figure> getAllFiguresByColor(Game game, String color);

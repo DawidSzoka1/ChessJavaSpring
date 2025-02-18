@@ -27,10 +27,10 @@ public class GameController {
 
     @GetMapping("/classic")
     public String classic(Model model){
-//        Game g = gameService.getGameById("fc30a806-6fff-4b0c-9e3e-786d577a9ba4").get();
-        Game g = new Game(randomUniqIdGenerator.generateUniqId());
-        gameService.save(g);
-        gameService.startGame(g);
+        Game g = gameService.getGameById("38c6582c-0328-4aed-bee6-40c19be3ed77").get();
+//        Game g = new Game(randomUniqIdGenerator.generateUniqId());
+//        gameService.save(g);
+//        gameService.startGame(g);
         model
                 .addAttribute("columns", Column.values())
                 .addAttribute("game", g)

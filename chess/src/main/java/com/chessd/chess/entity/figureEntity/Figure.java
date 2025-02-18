@@ -2,7 +2,6 @@ package com.chessd.chess.entity.figureEntity;
 
 
 import com.chessd.chess.entity.Game;
-import com.chessd.chess.utils.MovesConverter;
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import lombok.*;
@@ -32,7 +31,7 @@ public abstract class Figure {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "color", columnDefinition = "varchar(1) check (color in ('w', 'b'))")
+    @Column(name = "color", columnDefinition = "varchar(1) check (color in ('W', 'B'))")
     private String color;
 
     @Column(name = "`row`", columnDefinition = "number check(`row` between 0 and 7)")
@@ -52,10 +51,11 @@ public abstract class Figure {
     private String position;
 
     @Column(name = "moves")
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "figure_moves", joinColumns = @JoinColumn(name = "figure_id"))
     private List<String> moves;
 
-    @Column(name = "opponent", columnDefinition = "Color of enemy figures")
+    @Column(name = "opponent", columnDefinition = "varchar(1) check(opponent in ('W', 'B'))")
     private String opponent;
 
     public Figure(String name, String color, String position, String imageName, Game game) {
@@ -152,18 +152,15 @@ public abstract class Figure {
         if(!this.getColor().equalsIgnoreCase(this.getGame().getNextMove())){
             return false;
         }
+        return this.checkIfMoveInAvailableMoves(newPosition, board);
+    }
+    public boolean checkIfMoveInAvailableMoves(String newPosition, Figure[][] board){
         List<String> moves = this.getMoves();
-        if(moves.isEmpty()){
+        if(moves == null || moves.isEmpty()){
             moves = this.availableMoves(board);
         }
-        for (String move : moves) {
-            if (move.equals(newPosition)) {
-                return true;
-            }
-        }
-        return false;
+        return moves.contains(newPosition);
     }
-
     @Override
     public String toString() {
         return name + '\'' +

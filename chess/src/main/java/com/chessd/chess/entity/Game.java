@@ -37,7 +37,7 @@ public class Game {
     private Timestamp end;
 
     @Column(name = "check_status", columnDefinition = "varchar(1) check (check_status in ('W', 'B', 'N'))")
-    private String checkStatus;
+    private String checkStatus = "N";
 
     @Column(name = "next_move", columnDefinition = "varchar(1) check(next_move in ('W', 'B'))")
     private String nextMove = "W";

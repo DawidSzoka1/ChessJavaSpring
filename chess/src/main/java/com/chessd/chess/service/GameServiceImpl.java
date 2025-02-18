@@ -72,6 +72,7 @@ public class GameServiceImpl implements GameService {
      */
     @Override
     public Object[] move(String gameId, String from, String to, String color, boolean take) {
+
         Game game = this.getGameIfExists(gameId);
         if (game == null) return createResponse(false, "Game is null");
 
@@ -82,7 +83,6 @@ public class GameServiceImpl implements GameService {
 
         if (take && !moveService.handleTakingFigure(figure, to, game))
             return createResponse(false, "Invalid take operation");
-
         if (!game.getCheckStatus().equals("N")) {
             return this.processCheckMove(game, figure, to);
         }
