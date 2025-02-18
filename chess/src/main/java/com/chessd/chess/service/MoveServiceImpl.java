@@ -24,7 +24,11 @@ public class MoveServiceImpl implements MoveService {
 
     @Override
     public boolean isMoveValid(Figure figure, String to, Game game) {
-        figure.setMoves(figure.availableMoves(gameDao.getBoard(game)));
+        if(!checkService.isKingSafeAfterMove(figure, to, game)){
+            return false;
+        }
+        System.out.println(figure.getPosition());
+        System.out.println(figure.getMoves());
         if (figure.getName().equals("king")) {
             return this.validKingMove(figure, to, game);
         }

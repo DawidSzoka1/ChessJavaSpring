@@ -5,6 +5,6 @@ import com.chessd.chess.entity.figureEntity.Figure;
 
 public interface CheckService {
     void lookForChecks(Game game);
-    boolean isMoveEscapingCheck(Figure figure, String move, Game game);
+    boolean isKingSafeAfterMove(Figure figure, String move, Game game);
     void restrictMovesInCheck(Game game, Figure king);
 }

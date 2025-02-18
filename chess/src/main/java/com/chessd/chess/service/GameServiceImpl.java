@@ -92,7 +92,7 @@ public class GameServiceImpl implements GameService {
     }
 
     private Object[] processCheckMove(Game game, Figure figure, String to) {
-        if(!checkService.isMoveEscapingCheck(figure, to, game)){
+        if(!checkService.isKingSafeAfterMove(figure, to, game)){
             return createResponse(false, "Doesnt escape check");
         }
         this.afterSuccessMove(game, figure, to);
