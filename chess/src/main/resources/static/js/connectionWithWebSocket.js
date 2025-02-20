@@ -138,12 +138,18 @@ export default class CustomWebSocket {
                 case "TAKE":
                     this.messageTake(data);
                     break;
+                case "ERROR":
+                    this.messageError(data);
+                    break;
                 default:
                     this.messagePong();
             }
         };
     }
 
+    messageError(data){
+        console.log(data.content)
+    }
     /**
      * Handles "PONG" messages to keep the WebSocket connection alive.
      * @returns {string} A confirmation string indicating receipt of the "PONG".

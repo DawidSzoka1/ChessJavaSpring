@@ -36,15 +36,16 @@ public class GameHandleTextMessage {
     public MessageToJS handleMessageMove() {
         System.out.println("Handle message " + messageType + ": " + message);
         String[] moveDetails = message.split("-");
-        Object[] valid = gameService.move(gameId,
-                moveDetails[0],
-                moveDetails[1],
-                String.valueOf(message.charAt(0)),
-                messageType.equals("take"));
-        if ((boolean) valid[0]) {
-            return new MessageToJS(messageType.toUpperCase(), moveDetails[1], true);
+        try {
+            gameService.move(gameId,
+                    moveDetails[0],
+                    moveDetails[1],
+                    String.valueOf(message.charAt(0)),
+                    messageType.equals("take"));
+        }catch (Exception e){
+            return new MessageToJS("ERROR", e.getMessage(), false);
         }
-        return new MessageToJS(messageType.toUpperCase(), (String) valid[1], false);
+        return new MessageToJS(messageType.toUpperCase(), moveDetails[1], true);
     }
 
     /**
