@@ -4,8 +4,6 @@ import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.event.LookForCheckEvent;
 import com.chessd.chess.event.ProcessMoveEvent;
-import com.chessd.chess.repository.FigureDao;
-import com.chessd.chess.repository.gameRepository.GameDao;
 import com.chessd.chess.service.MoveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -29,7 +27,7 @@ public class ProcessMoveListener {
         Figure figure = event.getFigure();
         String to = event.getTo();
         Game game = event.getGame();
-        if(event.getTypeOfMove().equals("take")){
+        if (event.getTypeOfMove().equals("take")) {
             moveService.handleTakingFigure(figure, to, game);
         }
         moveService.executeMove(figure, to, game);

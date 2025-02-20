@@ -4,7 +4,7 @@ import lombok.Getter;
 
 
 @Getter
-public class LookForCheckEvent  extends BaseChessEvent {
+public class LookForCheckEvent extends BaseChessEvent {
     public LookForCheckEvent(BaseChessEvent event) {
         super(event);
     }

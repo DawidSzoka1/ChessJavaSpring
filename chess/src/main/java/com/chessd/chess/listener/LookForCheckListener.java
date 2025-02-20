@@ -18,7 +18,7 @@ public class LookForCheckListener {
 
 
     @EventListener
-    public void lookForCheck(LookForCheckEvent event){
+    public void lookForCheck(LookForCheckEvent event) {
         checkService.lookForChecks(event.getGame());
     }
 }

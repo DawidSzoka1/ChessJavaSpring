@@ -1,10 +1,7 @@
 package com.chessd.chess.listener;
 
-import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.event.KingSafetyEvent;
-import com.chessd.chess.event.ProcessMoveEvent;
 import com.chessd.chess.event.ValidateMoveEvent;
-import com.chessd.chess.repository.FigureDao;
 import com.chessd.chess.service.MoveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;

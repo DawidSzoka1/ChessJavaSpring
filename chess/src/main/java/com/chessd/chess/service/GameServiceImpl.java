@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-
 /**
  * Service implementation for managing chess game logic, including starting a game,
  * processing moves, and interacting with the game board.
@@ -59,15 +58,6 @@ public class GameServiceImpl implements GameService {
         return gameOpt.orElse(null);
     }
 
-    /**
-     * Handles the move of a figure from one position to another on the game board.
-     * Verifies the move's validity, updates the game board, and returns the updated board.
-     *
-     * @param gameId The ID of the game in which the move is made.
-     * @param from   The starting position of the move (e.g., "a2").
-     * @param to     The target position of the move (e.g., "a3").
-     * @param color  The color of the player making the move.
-     */
     @Override
     public void move(String gameId, String from, String to, String color, boolean take) throws Exception {
         Game game = this.getGameIfExists(gameId);
@@ -80,14 +70,12 @@ public class GameServiceImpl implements GameService {
                         game,
                         gameDao.getBoard(game),
                         take ? "take" : "move"
-                        )
+                )
         );
     }
 
-
     @Override
     public void endGame(Game game) {
-
     }
 
     @Override

@@ -24,7 +24,7 @@ public abstract class BaseChessEvent extends ApplicationEvent {
         this.typeOfMove = typeOfMove;
     }
 
-    public BaseChessEvent(BaseChessEvent event){
+    public BaseChessEvent(BaseChessEvent event) {
         this(event.getSource(), event.getFigure(), event.getFrom(), event.getTo(), event.getGame(), event.getBoard(), event.getTypeOfMove());
     }
 }
