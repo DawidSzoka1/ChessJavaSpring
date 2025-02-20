@@ -2,10 +2,12 @@ package com.chessd.chess.service;
 
 import com.chessd.chess.entity.figureEntity.*;
 import com.chessd.chess.entity.Game;
+import com.chessd.chess.event.ValidateMoveEvent;
 import com.chessd.chess.repository.FigureDao;
 import com.chessd.chess.repository.gameRepository.GameDao;
 import com.chessd.chess.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,16 +22,14 @@ import java.util.*;
 public class GameServiceImpl implements GameService {
     private GameDao gameDao;
     private FigureDao figureDao;
-    private MoveService moveService;
-    private CheckService checkService;
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final String[] figuresName = {"rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"};
 
     @Autowired
-    public GameServiceImpl(GameDao gameDao, FigureDao figureDao, MoveService moveService, CheckService checkService) {
+    public GameServiceImpl(GameDao gameDao, FigureDao figureDao, ApplicationEventPublisher applicationEventPublisher) {
         this.gameDao = gameDao;
         this.figureDao = figureDao;
-        this.moveService = moveService;
-        this.checkService = checkService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     /**
@@ -67,46 +67,23 @@ public class GameServiceImpl implements GameService {
      * @param from   The starting position of the move (e.g., "a2").
      * @param to     The target position of the move (e.g., "a3").
      * @param color  The color of the player making the move.
-     * @return An array where the first element indicates if the move was successful,
-     * and the second element contains a success message or an error message.
      */
     @Override
-    public Object[] move(String gameId, String from, String to, String color, boolean take) {
-
+    public void move(String gameId, String from, String to, String color, boolean take) throws Exception {
         Game game = this.getGameIfExists(gameId);
-        if (game == null) return createResponse(false, "Game is null");
-
         Figure figure = figureDao.getFigureByPosition(from, game);
-        if (figure == null) return createResponse(false, "There is no figure on this position");
-
-        if (!moveService.isMoveValid(figure, to, game)) return createResponse(false, "Invalid move");
-
-        if (take && !moveService.handleTakingFigure(figure, to, game))
-            return createResponse(false, "Invalid take operation");
-        if (!game.getCheckStatus().equals("N")) {
-            return this.processCheckMove(game, figure, to);
-        }
-
-        this.afterSuccessMove(game, figure, to);
-        return createResponse(true, "Valid move");
+        applicationEventPublisher.publishEvent(
+                new ValidateMoveEvent(this,
+                        figure,
+                        from,
+                        to,
+                        game,
+                        gameDao.getBoard(game),
+                        take ? "take" : "move"
+                        )
+        );
     }
 
-    private Object[] processCheckMove(Game game, Figure figure, String to) {
-        if(!checkService.isKingSafeAfterMove(figure, to, game)){
-            return createResponse(false, "Doesnt escape check");
-        }
-        this.afterSuccessMove(game, figure, to);
-        return createResponse(true, "Valid move");
-    }
-
-    private void afterSuccessMove(Game game, Figure figure, String to) {
-        moveService.executeMove(figure, to, game);
-        checkService.lookForChecks(game);
-    }
-
-    public Object[] createResponse(boolean result, String message) {
-        return new Object[]{result, message};
-    }
 
     @Override
     public void endGame(Game game) {

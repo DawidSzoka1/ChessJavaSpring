@@ -23,16 +23,13 @@ public class MoveServiceImpl implements MoveService {
     }
 
     @Override
-    public boolean isMoveValid(Figure figure, String to, Game game) {
+    public void isMoveValid(Figure figure, String to, Game game) throws Exception{
         if(!checkService.isKingSafeAfterMove(figure, to, game)){
-            return false;
+            throw new Exception("King in check after move");
         }
-        System.out.println(figure.getPosition());
-        System.out.println(figure.getMoves());
-        if (figure.getName().equals("king")) {
-            return this.validKingMove(figure, to, game);
+        if(!figure.checkIfMoveIsValid(to, gameDao.getBoard(game))){
+            throw new Exception("Invalid move");
         }
-        return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
     }
 
     @Override
@@ -46,13 +43,12 @@ public class MoveServiceImpl implements MoveService {
     }
 
     @Override
-    public boolean handleTakingFigure(Figure figure, String to, Game game) {
+    public void handleTakingFigure(Figure figure, String to, Game game) throws Exception {
         Figure taken = figureDao.getFigureByPosition(to, game);
         if (taken == null || taken.getColor().equals(figure.getColor()) || taken.getName().equals("king")) {
-            return false;
+            throw new Exception("Cant take that figure");
         }
         figureDao.delete(taken);
-        return true;
     }
 
     @Override

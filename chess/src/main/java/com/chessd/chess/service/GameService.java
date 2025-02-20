@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface GameService {
     void startGame(Game game);
-    Object[] move(String gameId, String from, String to, String color, boolean take);
+    void move(String gameId, String from, String to, String color, boolean take) throws Exception;
     void endGame(Game game);
     Optional<Game> getGameById(String gameId);
     void save(Game game);

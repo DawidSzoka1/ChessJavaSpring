@@ -4,8 +4,8 @@ import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
 
 public interface MoveService {
-    boolean isMoveValid(Figure figure, String to, Game game);
+    void isMoveValid(Figure figure, String to, Game game) throws Exception;
     void executeMove(Figure figure, String to, Game game);
-    boolean handleTakingFigure(Figure figure, String to, Game game);
+    void handleTakingFigure(Figure figure, String to, Game game) throws Exception;
     boolean validKingMove(Figure figure, String to, Game game);
 }
