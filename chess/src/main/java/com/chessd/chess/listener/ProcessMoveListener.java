@@ -2,7 +2,7 @@ package com.chessd.chess.listener;
 
 import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
-import com.chessd.chess.event.LookForCheckEvent;
+import com.chessd.chess.event.AfterMoveEvent;
 import com.chessd.chess.event.ProcessMoveEvent;
 import com.chessd.chess.service.MoveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,6 @@ public class ProcessMoveListener {
             moveService.handleTakingFigure(figure, to, game);
         }
         moveService.executeMove(figure, to, game);
-        applicationEventPublisher.publishEvent(new LookForCheckEvent(event));
+        applicationEventPublisher.publishEvent(new AfterMoveEvent(event));
     }
-
-
 }

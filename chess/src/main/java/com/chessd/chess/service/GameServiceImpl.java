@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.jetbrains.annotations.NotNull;
-
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -52,7 +53,7 @@ public class GameServiceImpl implements GameService {
         }
     }
 
-    public Game getGameIfExists(String gameId) {
+    public Game getGameIfExists(String gameId){
         Optional<Game> gameOpt = gameDao.getGameById(gameId);
         //TODO throw error custom
         return gameOpt.orElse(null);
@@ -61,6 +62,10 @@ public class GameServiceImpl implements GameService {
     @Override
     public void move(String gameId, String from, String to, String color, boolean take) throws Exception {
         Game game = this.getGameIfExists(gameId);
+        System.out.println("Status gry: " + game.getResult().name());
+        if(!game.getResult().name().equals("ONGOING")){
+            throw new Exception("Game is over");
+        }
         Figure figure = figureDao.getFigureByPosition(from, game);
         applicationEventPublisher.publishEvent(
                 new ValidateMoveEvent(this,
@@ -75,7 +80,10 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void endGame(Game game) {
+    public void endGame(Game game, GameResult result) {
+        game.setEnd(Timestamp.from(Instant.now()));
+        game.setResult(result);
+        gameDao.update(game);
     }
 
     @Override

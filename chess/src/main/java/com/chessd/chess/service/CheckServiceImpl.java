@@ -26,10 +26,9 @@ public class CheckServiceImpl implements CheckService {
         Figure king = figureDao.getKing(game, game.getNextMove());
         Optional<Figure> attacker = figureDao
                 .getFigureByPossibleMovesAndColor(game, king.getOpponent(), king.getPosition());
-
         if (attacker.isPresent()) {
             game.setCheckStatus(king.getColor());
-//            this.restrictMovesInCheck(game, king);
+            this.restrictMovesInCheck(game, king);
         } else {
             game.setCheckStatus("N");
         }

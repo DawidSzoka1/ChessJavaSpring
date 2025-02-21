@@ -51,7 +51,7 @@ public class FigureDaoImpl implements FigureDao {
     @Override
     public Optional<Figure> getFigureByPossibleMovesAndColor(Game game, String color, String move) {
         List<Figure> figures = this.getAllFiguresByPossibleMoveAndColor(game, color, move);
-        if(figures.isEmpty()){
+        if (figures.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(figures.getFirst());
@@ -93,9 +93,30 @@ public class FigureDaoImpl implements FigureDao {
     @Override
     public List<Figure> getAllFiguresByColor(Game game, String color) {
         TypedQuery<Figure> query = entityManager.createQuery(
-          "select f from Figure f where f.game=:game and f.color=:color", Figure.class
+                "select f from Figure f where f.game=:game and f.color=:color", Figure.class
         );
         query.setParameter("color", color);
+        query.setParameter("game", game);
+        return query.getResultList();
+    }
+
+    @Override
+    public boolean possibleMoveByColor(Game game, String color) {
+        TypedQuery<Figure> query = entityManager.createQuery(
+                "select f from Figure f where f.game=:game and f.color=:color and size(f.moves) > 0",
+                Figure.class
+        );
+        query.setParameter("game", game);
+        query.setParameter("color", color);
+        return !query.getResultList().isEmpty();
+    }
+
+    @Override
+    public List<Figure> getAllFigureByGame(Game game) {
+        TypedQuery<Figure> query = entityManager.createQuery(
+                "select f from Figure f where f.game=:game",
+                Figure.class
+        );
         query.setParameter("game", game);
         return query.getResultList();
     }

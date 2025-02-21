@@ -7,6 +7,7 @@ import com.chessd.chess.repository.gameRepository.GameDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,6 +60,16 @@ public class MoveServiceImpl implements MoveService {
             return false;
         }
         return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
+    }
+
+    @Override
+    public void updateFiguresMove(Game game) {
+        Figure[][] board = gameDao.getBoard(game);
+        List<Figure> figures = figureDao.getAllFigureByGame(game);
+        for(Figure figure: figures){
+            figure.setMoves(figure.availableMoves(board));
+            figureDao.update(figure);
+        }
     }
 
 }

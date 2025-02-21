@@ -15,4 +15,6 @@ public interface FigureDao {
     Figure getKing(Game game, String color);
     Figure getFigureByPosition(String to, Game game);
     List<Figure> getAllFiguresByColor(Game game, String color);
+    boolean possibleMoveByColor(Game game, String color);
+    List<Figure> getAllFigureByGame(Game game);
 }
