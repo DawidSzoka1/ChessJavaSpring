@@ -1,11 +1,14 @@
 package com.chessd.chess.utils;
 
+import lombok.Getter;
+
 import java.util.Optional;
 
 /**
  * Represents the columns of a chessboard, from 'a' to 'h'.
  * Each column is associated with a zero-based index.
  */
+@Getter
 public enum Column {
     a(0), b(1), c(2), d(3), e(4), f(5), g(6), h(7);
 
@@ -13,10 +16,6 @@ public enum Column {
 
     Column(int index) {
         this.index = index;
-    }
-
-    public int getIndex() {
-        return index;
     }
 
     /**
