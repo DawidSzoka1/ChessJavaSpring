@@ -1,5 +1,6 @@
 package com.chessd.chess.entity;
 
+import com.chessd.chess.utils.GameResult;
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,9 @@ public class Game {
     @Column(name = "game_id")
     private String gameId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "result")
-    private int result;
+    private GameResult result = GameResult.ONGOING;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "white", referencedColumnName = "id")
