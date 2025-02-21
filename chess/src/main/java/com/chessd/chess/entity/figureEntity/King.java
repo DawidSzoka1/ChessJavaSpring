@@ -31,7 +31,10 @@ public class King extends Figure {
                 newRow = this.getRow() + row;
                 newCol = this.getCol() + col;
                 if(this.validRowCol(newRow, newCol)){
-                    moves.add(Column.fromIndex(newCol).get().name() + newRow);
+                    Figure potentialF = board[newRow][newCol];
+                    if(potentialF == null || potentialF.getOpponent().equals(this.getColor())){
+                        moves.add(Column.fromIndex(newCol).get().name() + newRow);
+                    }
                 }
             }
         }
