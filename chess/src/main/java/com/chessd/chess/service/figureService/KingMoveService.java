@@ -4,9 +4,11 @@ import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.repository.FigureDao;
 import com.chessd.chess.service.MoveService;
 import com.chessd.chess.utils.Column;
+import com.chessd.chess.utils.Position;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -20,9 +22,8 @@ public class KingMoveService implements FigureMoveService {
     }
 
     @Override
-    public List<String> getAvaibleMoves(Figure figure, List<Figure> board) {
-        List<String> moves = new ArrayList<>();
+    public List<String> getAvaibleMoves(Figure figure, HashMap<Position, Figure> board) {
 
-        return moves;
+        return List.of();
     }
 }

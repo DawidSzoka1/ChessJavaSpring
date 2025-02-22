@@ -4,9 +4,11 @@ import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.repository.FigureDao;
 import com.chessd.chess.repository.gameRepository.GameDao;
+import com.chessd.chess.utils.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,14 +43,12 @@ public class CheckServiceImpl implements CheckService {
         if (figure.getName().equals("king")) {
             figure = king;
         }
-        Figure[][] board = gameDao.getBoard(game);
-        String positionRem = figure.getPosition();
-        int figCol = figure.getCol();
-        int figRow = figure.getRow();
-        board[figRow][figCol] = null;
-        int[] intPosition = Figure.convertStringPositionToRowColInt(move);
+        HashMap<Position, Figure> board = gameDao.getBoard(game);
+        Position positionRem = figure.getPosition();
+        board.remove(positionRem);
+
         figure.makeMove(move, board);
-        board[intPosition[0]][intPosition[1]] = figure;
+        board.put(figure.getPosition(),figure);
         boolean check = isKingUnderAttack(king, board);
         figure.makeMove(positionRem, gameDao.getBoard(game));
         return !check;
@@ -65,7 +65,7 @@ public class CheckServiceImpl implements CheckService {
         }
     }
 
-    private boolean isKingUnderAttack(Figure king, Figure[][] board) {
+    private boolean isKingUnderAttack(Figure king, HashMap<Position, Figure> board) {
         if (king == null) return false;
         for (Figure[] row : board) {
             for (Figure f : row) {

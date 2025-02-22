@@ -4,9 +4,13 @@ import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.repository.FigureDao;
 import com.chessd.chess.repository.gameRepository.GameDao;
+import com.chessd.chess.service.figureService.FigureMoveService;
+import com.chessd.chess.service.figureService.FigureMoveServiceFactory;
+import com.chessd.chess.utils.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,27 +19,36 @@ public class MoveServiceImpl implements MoveService {
     private FigureDao figureDao;
     private GameDao gameDao;
     private CheckService checkService;
+    private final FigureMoveServiceFactory figureMoveServiceFactory;
 
     @Autowired
-    public MoveServiceImpl(FigureDao figureDao, GameDao gameDao, CheckService checkService) {
+    public MoveServiceImpl(FigureDao figureDao, GameDao gameDao, CheckService checkService, FigureMoveServiceFactory figureMoveServiceFactory) {
         this.figureDao = figureDao;
         this.gameDao = gameDao;
         this.checkService = checkService;
+        this.figureMoveServiceFactory = figureMoveServiceFactory;
     }
 
     @Override
-    public void isMoveValid(Figure figure, String to, Game game) throws Exception{
-        if(!checkService.isKingSafeAfterMove(figure, to, game)){
-            throw new Exception("King in check after move");
+    public boolean isMoveValid(Figure figure, String to, Game game) throws Exception{
+        if(!figure.getColor().equalsIgnoreCase(game.getNextMove())){
+            throw new Exception("Not this turn");
         }
-        if(!figure.checkIfMoveIsValid(to, gameDao.getBoard(game))){
-            throw new Exception("Invalid move");
+        return this.checkIfMoveInAvailableMoves(figure, to, gameDao.getBoard(game));
+
+    }
+    private boolean checkIfMoveInAvailableMoves(Figure figure, String newPosition, HashMap<Position, Figure> board){
+        FigureMoveService moveService = figureMoveServiceFactory.getMoveService(figure.getName());
+        List<String> moves = figure.getMoves();
+        if(moves == null || moves.isEmpty()){
+            moves = moveService.getAvaibleMoves(figure, board);
         }
+        return moves.contains(newPosition);
     }
 
     @Override
     public void executeMove(Figure figure, String to, Game game) {
-        figure.makeMove(to, gameDao.getBoard(game));
+        this.makeMove(figure, to, gameDao.getBoard(game));
         figureDao.update(figure);
 
         // Toggle the next player's turn
@@ -53,23 +66,33 @@ public class MoveServiceImpl implements MoveService {
     }
 
     @Override
-    public boolean validKingMove(Figure figure, String to, Game game) {
+    public boolean validKingMove(Figure figure, String to, Game game) throws Exception {
         Optional<Figure> check = figureDao
                 .getFigureByPossibleMovesAndColor(game, figure.getOpponent(), to);
         if (check.isPresent()) {
             return false;
         }
-        return figure.checkIfMoveIsValid(to, gameDao.getBoard(game));
+        return this.isMoveValid(figure, to, game);
     }
 
     @Override
     public void updateFiguresMove(Game game) {
-        Figure[][] board = gameDao.getBoard(game);
+        FigureMoveService figureMoveService;
+        HashMap<Position, Figure> board = gameDao.getBoard(game);
         List<Figure> figures = figureDao.getAllFigureByGame(game);
         for(Figure figure: figures){
-            figure.setMoves(figure.availableMoves(board));
+            figureMoveService = figureMoveServiceFactory.getMoveService(figure.getName());
+            figure.setMoves(figureMoveService.getAvaibleMoves(figure, board));
             figureDao.update(figure);
         }
+    }
+
+    @Override
+    public void makeMove(Figure figure, String move, HashMap<Position, Figure> board) {
+        FigureMoveService figureMoveService = figureMoveServiceFactory.getMoveService(figure.getName());
+        figure.setPosition(Position.fromString(move).get());
+        figure.setMoves(figureMoveService.getAvaibleMoves(figure, board));
+        figureDao.update(figure);
     }
 
 }

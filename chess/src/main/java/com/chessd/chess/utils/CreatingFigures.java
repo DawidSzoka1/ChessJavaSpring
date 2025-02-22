@@ -14,7 +14,7 @@ public class CreatingFigures {
      * @return The created {@link Figure}.
      * @throws IllegalArgumentException if the figure name is invalid.
      */
-    public static Figure putFigure(@NotNull String figureName, String color, String position, Game game) {
+    public static Figure putFigure(@NotNull String figureName, String color, Position position, Game game) {
         return switch (figureName) {
             case "rook" -> new Rook(color, position, game);
             case "bishop" -> new Bishop(color, position, game);

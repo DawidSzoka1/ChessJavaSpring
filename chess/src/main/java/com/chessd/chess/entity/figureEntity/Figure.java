@@ -2,6 +2,7 @@ package com.chessd.chess.entity.figureEntity;
 
 
 import com.chessd.chess.entity.Game;
+import com.chessd.chess.utils.Position;
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import lombok.*;
@@ -34,12 +35,6 @@ public abstract class Figure {
     @Column(name = "color", columnDefinition = "varchar(1) check (color in ('W', 'B'))")
     private String color;
 
-    @Column(name = "`row`", columnDefinition = "number check(`row` between 0 and 7)")
-    private int row;
-
-    @Column(name = "col", columnDefinition = "number check(col between 0 and 7)")
-    private int col;
-
     @ManyToOne
     @JoinColumn(name = "game_id", referencedColumnName = "game_id", nullable = false)
     private Game game;
@@ -48,7 +43,7 @@ public abstract class Figure {
     private String imageName;
 
     @Column(name = "position")
-    private String position;
+    private Position position;
 
     @Column(name = "moves")
     @ElementCollection(fetch = FetchType.EAGER)
@@ -58,13 +53,10 @@ public abstract class Figure {
     @Column(name = "opponent", columnDefinition = "varchar(1) check(opponent in ('W', 'B'))")
     private String opponent;
 
-    public Figure(String name, String color, String position, String imageName, Game game) {
-        int[] tab = convertStringPositionToRowColInt(position);
+    public Figure(String name, String color, Position position, String imageName, Game game) {
         this.name = name;
         this.color = color;
         this.position = position;
-        this.row = tab[0];
-        this.col = tab[1];
         this.imageName = imageName;
         this.game = game;
         this.opponent = color.equals("W") ? "B" : "W";
@@ -74,96 +66,94 @@ public abstract class Figure {
         this(
                 name,
                 color,
-                com.chessd.chess.utils.Column.fromIndex(col).get().name() + row,
+                Position.fromRowCol(row, col).get(),
                 color.toUpperCase() + "_" + name + ".png",
                 game
         );
     }
 
-    public Figure(String name, String color, String position, Game game) {
+    public Figure(String name, String color, Position position, Game game) {
         this(name, color, position, color.toUpperCase() + "_" + name + ".png", game);
     }
 
-    public static int[] convertStringPositionToRowColInt(String position) {
-        int[] tab = new int[2];
-        tab[0] = position.charAt(1) - '0';
-        tab[1] = com.chessd.chess.utils.Column.fromName(String.valueOf(position.charAt(0))).get().getIndex();
-        return tab;
-    }
+//    public static int[] convertStringPositionToRowColInt(String position) {
+//        int[] tab = new int[2];
+//        tab[0] = position.charAt(1) - '0';
+//        tab[1] = com.chessd.chess.utils.Column.fromName(String.valueOf(position.charAt(0))).get().getIndex();
+//        return tab;
+//    }
+//
+//
+//    public String[] validMove(int row, int col, Figure[][] board) {
+//        String[] tab = new String[2];
+//        tab[0] = "break";
+//        if (!this.validRowCol(row, col)) {
+//            return tab;
+//        }
+//        Figure posibleFigure = board[row][col];
+//        if (posibleFigure != null && posibleFigure.getColor().equals(this.getColor())) {
+//            return tab;
+//        }
+//        tab[0] = "break and add";
+//        if (posibleFigure == null) {
+//            tab[0] = "continue";
+//        }
+//        tab[1] = com.chessd.chess.utils.Column.fromIndex(col).get().name() + row;
+//        return tab;
+//    }
+//
+//    public List<String> generateMoves(int startRow, int startCol, int rowStep, int colStep, Figure[][] board){
+//        ArrayList<String> moves = new ArrayList<>();
+//        int newRow = startRow;
+//        int newCol = startCol;
+//        while (true) {
+//            newCol += colStep;
+//            newRow += rowStep;
+//            String[] check = this.validMove(newRow, newCol, board);
+//            if(check[0].equals("break")){
+//                break;
+//            }
+//            moves.add(check[1]);
+//            if(check[0].equals("break and add")){
+//                break;
+//            }
+//        }
+//        return moves;
+//    }
+//
+//    public void makeMove(Position position, Figure[][] board) {
+//        this.setPosition(position);
+//        this.setMoves(this.availableMoves(board));
+//    }
+//
+//    public boolean validRowCol(int row, int col) {
+//        return row >= 0 && row <= 7 && col >= 0 && col <= 7;
+//    }
+//
+//    public boolean checkIfMoveIsValid(String newPosition, Figure[][] board) {
+//        if(!this.getColor().equalsIgnoreCase(this.getGame().getNextMove())){
+//            return false;
+//        }
+//        return this.checkIfMoveInAvailableMoves(newPosition, board);
+//    }
+//    public boolean checkIfMoveInAvailableMoves(String newPosition, Figure[][] board){
+//        List<String> moves = this.getMoves();
+//        if(moves == null || moves.isEmpty()){
+//            moves = this.availableMoves(board);
+//        }
+//        return moves.contains(newPosition);
+//    }
 
-    /**
-     * Abstract method to calculate the available moves for the figure.
-     * Must be implemented by subclasses.
-     *
-     * @return a list of valid moves as strings.
-     */
-    public abstract List<String> availableMoves(Figure[][] board);
-
-    public String[] validMove(int row, int col, Figure[][] board) {
-        String[] tab = new String[2];
-        tab[0] = "break";
-        if (!this.validRowCol(row, col)) {
-            return tab;
-        }
-        Figure posibleFigure = board[row][col];
-        if (posibleFigure != null && posibleFigure.getColor().equals(this.getColor())) {
-            return tab;
-        }
-        tab[0] = "break and add";
-        if (posibleFigure == null) {
-            tab[0] = "continue";
-        }
-        tab[1] = com.chessd.chess.utils.Column.fromIndex(col).get().name() + row;
-        return tab;
-    }
-
-    public List<String> generateMoves(int startRow, int startCol, int rowStep, int colStep, Figure[][] board){
-        ArrayList<String> moves = new ArrayList<>();
-        int newRow = startRow;
-        int newCol = startCol;
-        while (true) {
-            newCol += colStep;
-            newRow += rowStep;
-            String[] check = this.validMove(newRow, newCol, board);
-            if(check[0].equals("break")){
-                break;
-            }
-            moves.add(check[1]);
-            if(check[0].equals("break and add")){
-                break;
-            }
-        }
-        return moves;
-    }
-
-    public void makeMove(String position, Figure[][] board) {
-        int[] tab = convertStringPositionToRowColInt(position);
-        this.setPosition(position);
-        this.setRow(tab[0]);
-        this.setCol(tab[1]);
-        this.setMoves(this.availableMoves(board));
-    }
-
-    public boolean validRowCol(int row, int col) {
-        return row >= 0 && row <= 7 && col >= 0 && col <= 7;
-    }
-
-    public boolean checkIfMoveIsValid(String newPosition, Figure[][] board) {
-        if(!this.getColor().equalsIgnoreCase(this.getGame().getNextMove())){
-            return false;
-        }
-        return this.checkIfMoveInAvailableMoves(newPosition, board);
-    }
-    public boolean checkIfMoveInAvailableMoves(String newPosition, Figure[][] board){
-        List<String> moves = this.getMoves();
-        if(moves == null || moves.isEmpty()){
-            moves = this.availableMoves(board);
-        }
-        return moves.contains(newPosition);
-    }
     @Override
     public String toString() {
         return name + '\'' +
-                row + ' ' + col + " " + id;
+                position + " " + id;
+    }
+
+    public int getRow() {
+        return position.getRow();
+    }
+    public int getCol(){
+        return position.getCol();
     }
 }
