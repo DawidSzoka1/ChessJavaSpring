@@ -73,7 +73,7 @@ public class GameServiceImpl implements GameService {
                         from,
                         to,
                         game,
-                        gameDao.getBoard(game),
+                        this.getBoard(game),
                         take ? "take" : "move"
                 )
         );
@@ -107,7 +107,12 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Figure[][] getBoard(Game game) {
+    public HashMap<Position, Figure> getBoard(Game game) {
         return gameDao.getBoard(game);
+    }
+
+    @Override
+    public Figure[][] getBoardAsTable(Game game) {
+        return gameDao.getBoardAsTable(game);
     }
 }

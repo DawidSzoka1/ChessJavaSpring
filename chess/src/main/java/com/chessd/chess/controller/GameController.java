@@ -34,7 +34,7 @@ public class GameController {
         model
                 .addAttribute("columns", Column.values())
                 .addAttribute("game", g)
-                .addAttribute("gameBoard", gameService.getBoard(g))
+                .addAttribute("gameBoard", gameService.getBoardAsTable(g))
                 .addAttribute("gameService", gameService);
         return "game/classic-board";
     }

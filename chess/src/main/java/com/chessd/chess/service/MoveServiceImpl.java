@@ -3,7 +3,6 @@ package com.chessd.chess.service;
 import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.repository.FigureDao;
-import com.chessd.chess.repository.gameRepository.GameDao;
 import com.chessd.chess.service.figureService.FigureMoveService;
 import com.chessd.chess.service.figureService.FigureMoveServiceFactory;
 import com.chessd.chess.utils.Position;
@@ -16,17 +15,15 @@ import java.util.Optional;
 
 @Service
 public class MoveServiceImpl implements MoveService {
+    private final GameService gameService;
     private FigureDao figureDao;
-    private GameDao gameDao;
-    private CheckService checkService;
     private final FigureMoveServiceFactory figureMoveServiceFactory;
 
     @Autowired
-    public MoveServiceImpl(FigureDao figureDao, GameDao gameDao, CheckService checkService, FigureMoveServiceFactory figureMoveServiceFactory) {
+    public MoveServiceImpl(FigureDao figureDao, FigureMoveServiceFactory figureMoveServiceFactory, GameService gameService) {
         this.figureDao = figureDao;
-        this.gameDao = gameDao;
-        this.checkService = checkService;
         this.figureMoveServiceFactory = figureMoveServiceFactory;
+        this.gameService = gameService;
     }
 
     @Override
@@ -34,10 +31,11 @@ public class MoveServiceImpl implements MoveService {
         if(!figure.getColor().equalsIgnoreCase(game.getNextMove())){
             throw new Exception("Not this turn");
         }
-        return this.checkIfMoveInAvailableMoves(figure, to, gameDao.getBoard(game));
+        return this.checkIfMoveInAvailableMoves(figure, to, gameService.getBoard(game));
 
     }
-    private boolean checkIfMoveInAvailableMoves(Figure figure, String newPosition, HashMap<Position, Figure> board){
+    @Override
+    public boolean checkIfMoveInAvailableMoves(Figure figure, String newPosition, HashMap<Position, Figure> board){
         FigureMoveService moveService = figureMoveServiceFactory.getMoveService(figure.getName());
         List<String> moves = figure.getMoves();
         if(moves == null || moves.isEmpty()){
@@ -48,12 +46,12 @@ public class MoveServiceImpl implements MoveService {
 
     @Override
     public void executeMove(Figure figure, String to, Game game) {
-        this.makeMove(figure, to, gameDao.getBoard(game));
+        this.makeMove(figure, to, gameService.getBoard(game));
         figureDao.update(figure);
 
         // Toggle the next player's turn
         game.setNextMove(game.getNextMove().equals("W") ? "B" : "W");
-        gameDao.update(game);
+        gameService.update(game);
     }
 
     @Override
@@ -78,7 +76,7 @@ public class MoveServiceImpl implements MoveService {
     @Override
     public void updateFiguresMove(Game game) {
         FigureMoveService figureMoveService;
-        HashMap<Position, Figure> board = gameDao.getBoard(game);
+        HashMap<Position, Figure> board = gameService.getBoard(game);
         List<Figure> figures = figureDao.getAllFigureByGame(game);
         for(Figure figure: figures){
             figureMoveService = figureMoveServiceFactory.getMoveService(figure.getName());
@@ -92,7 +90,6 @@ public class MoveServiceImpl implements MoveService {
         FigureMoveService figureMoveService = figureMoveServiceFactory.getMoveService(figure.getName());
         figure.setPosition(Position.fromString(move).get());
         figure.setMoves(figureMoveService.getAvaibleMoves(figure, board));
-        figureDao.update(figure);
     }
 
 }

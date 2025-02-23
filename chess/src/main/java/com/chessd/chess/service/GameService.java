@@ -3,7 +3,9 @@ package com.chessd.chess.service;
 import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.entity.Game;
 import com.chessd.chess.utils.GameResult;
+import com.chessd.chess.utils.Position;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 public interface GameService {
@@ -14,5 +16,6 @@ public interface GameService {
     void save(Game game);
     void update(Game game);
     void delete(Game game);
-    Figure[][] getBoard(Game game);
+    HashMap<Position, Figure> getBoard(Game game);
+    Figure[][] getBoardAsTable(Game game);
 }

@@ -1,13 +1,11 @@
 package com.chessd.chess.service;
 
 import com.chessd.chess.entity.Game;
-import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.repository.FigureDao;
 import com.chessd.chess.utils.GameResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class EndGameServiceImpl implements EndGameService {

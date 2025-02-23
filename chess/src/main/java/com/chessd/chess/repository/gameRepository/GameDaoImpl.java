@@ -82,4 +82,15 @@ public class GameDaoImpl implements GameDao {
         }
         return board;
     }
+
+    @Override
+    public Figure[][] getBoardAsTable(Game game) {
+        TypedQuery<Figure> query = entityManager.createQuery("SELECT f from Figure f where f.game =:game", Figure.class);
+        query.setParameter("game", game);
+        Figure[][] board = new Figure[8][8];
+        for (Figure figure : query.getResultList()) {
+            board[figure.getRow()][figure.getCol()] = figure;
+        }
+        return board;
+    }
 }
