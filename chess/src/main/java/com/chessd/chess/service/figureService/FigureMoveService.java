@@ -8,5 +8,5 @@ import java.util.List;
 
 
 public interface FigureMoveService {
-    List<String> getAvaibleMoves(Figure figure, HashMap<Position, Figure> board);
+    List<String> getAvailableMoves(Figure figure, HashMap<Position, Figure> board);
 }
