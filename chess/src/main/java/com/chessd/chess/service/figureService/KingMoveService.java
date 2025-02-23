@@ -22,7 +22,7 @@ public class KingMoveService implements FigureMoveService {
     }
 
     @Override
-    public List<String> getAvaibleMoves(Figure figure, HashMap<Position, Figure> board) {
+    public List<String> getAvailableMoves(Figure figure, HashMap<Position, Figure> board) {
 
         return List.of();
     }

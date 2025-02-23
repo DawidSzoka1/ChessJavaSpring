@@ -3,7 +3,6 @@ package com.chessd.chess.service;
 import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.repository.FigureDao;
-import com.chessd.chess.repository.gameRepository.GameDao;
 import com.chessd.chess.service.figureService.FigureMoveService;
 import com.chessd.chess.service.figureService.FigureMoveServiceFactory;
 import com.chessd.chess.utils.Position;
@@ -67,7 +66,7 @@ public class CheckServiceImpl implements CheckService {
         List<Figure> figures = figureDao.getAllFiguresByColor(game, king.getColor());
         for (Figure figure : figures) {
             figureMoveService = serviceFactory.getMoveService(figure.getName());
-            List<String> legalMoves = figureMoveService.getAvaibleMoves(figure, gameService.getBoard(game));
+            List<String> legalMoves = figureMoveService.getAvailableMoves(figure, gameService.getBoard(game));
             legalMoves.removeIf(move -> !this.isKingSafeAfterMove(figure, move, game));
             figure.setMoves(legalMoves);
             figureDao.update(figure);
@@ -79,7 +78,7 @@ public class CheckServiceImpl implements CheckService {
         FigureMoveService figureMoveService;
         for (Figure f : enemyFigures) {
             figureMoveService = serviceFactory.getMoveService(f.getName());
-            f.setMoves(figureMoveService.getAvaibleMoves(f, board));
+            f.setMoves(figureMoveService.getAvailableMoves(f, board));
             if (moveService.checkIfMoveInAvailableMoves(f, king.getPosition().toString(), board)) {
                 return true;
             }

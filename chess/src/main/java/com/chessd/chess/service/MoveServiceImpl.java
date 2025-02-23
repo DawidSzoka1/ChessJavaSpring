@@ -39,7 +39,7 @@ public class MoveServiceImpl implements MoveService {
         FigureMoveService moveService = figureMoveServiceFactory.getMoveService(figure.getName());
         List<String> moves = figure.getMoves();
         if(moves == null || moves.isEmpty()){
-            moves = moveService.getAvaibleMoves(figure, board);
+            moves = moveService.getAvailableMoves(figure, board);
         }
         return moves.contains(newPosition);
     }
@@ -80,7 +80,7 @@ public class MoveServiceImpl implements MoveService {
         List<Figure> figures = figureDao.getAllFigureByGame(game);
         for(Figure figure: figures){
             figureMoveService = figureMoveServiceFactory.getMoveService(figure.getName());
-            figure.setMoves(figureMoveService.getAvaibleMoves(figure, board));
+            figure.setMoves(figureMoveService.getAvailableMoves(figure, board));
             figureDao.update(figure);
         }
     }
@@ -89,7 +89,7 @@ public class MoveServiceImpl implements MoveService {
     public void makeMove(Figure figure, String move, HashMap<Position, Figure> board) {
         FigureMoveService figureMoveService = figureMoveServiceFactory.getMoveService(figure.getName());
         figure.setPosition(Position.fromString(move).get());
-        figure.setMoves(figureMoveService.getAvaibleMoves(figure, board));
+        figure.setMoves(figureMoveService.getAvailableMoves(figure, board));
     }
 
 }
