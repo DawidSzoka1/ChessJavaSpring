@@ -45,6 +45,11 @@ public class MoveServiceImpl implements MoveService {
     }
 
     @Override
+    public boolean validRowCol(int row, int col) {
+        return row >= 0 && row <= 7 && col >= 0 && col <= 7;
+    }
+
+    @Override
     public void executeMove(Figure figure, String to, Game game) {
         this.makeMove(figure, to, gameService.getBoard(game));
         figureDao.update(figure);

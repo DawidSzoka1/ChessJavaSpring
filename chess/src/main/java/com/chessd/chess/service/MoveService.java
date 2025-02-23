@@ -10,7 +10,7 @@ public interface MoveService {
     boolean isMoveValid(Figure figure, String to, Game game) throws Exception;
 
     boolean checkIfMoveInAvailableMoves(Figure figure, String newPosition, HashMap<Position, Figure> board);
-
+    boolean validRowCol(int row, int col);
     void executeMove(Figure figure, String to, Game game);
     void handleTakingFigure(Figure figure, String to, Game game) throws Exception;
     boolean validKingMove(Figure figure, String to, Game game) throws Exception;
