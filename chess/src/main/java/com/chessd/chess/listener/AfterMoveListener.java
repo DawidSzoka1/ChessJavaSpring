@@ -4,6 +4,7 @@ import com.chessd.chess.event.AfterMoveEvent;
 import com.chessd.chess.event.EndGameEvent;
 import com.chessd.chess.service.CheckService;
 import com.chessd.chess.service.MoveService;
+import com.chessd.chess.service.MoveUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
@@ -14,12 +15,14 @@ import org.springframework.stereotype.Component;
 public class AfterMoveListener {
     private final CheckService checkService;
     private final MoveService moveService;
+    private final MoveUpdateService moveUpdateService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public AfterMoveListener(CheckService checkService, MoveService moveService, ApplicationEventPublisher applicationEventPublisher) {
+    public AfterMoveListener(CheckService checkService, MoveService moveService, MoveUpdateService moveUpdateService, ApplicationEventPublisher applicationEventPublisher) {
         this.checkService = checkService;
         this.moveService = moveService;
+        this.moveUpdateService = moveUpdateService;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -27,9 +30,7 @@ public class AfterMoveListener {
     @EventListener
     public void lookForCheck(AfterMoveEvent event) {
         checkService.lookForChecks(event.getGame());
-        if(event.getGame().getCheckStatus().equals("N")){
-            moveService.updateFiguresMove(event.getGame());
-        }
+        moveUpdateService.updateAffectedFigures(event.getFigure(), event.getBoard(), event.getFrom());
         applicationEventPublisher.publishEvent(new EndGameEvent(event));
     }
 }
