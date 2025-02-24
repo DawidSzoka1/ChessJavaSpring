@@ -43,6 +43,7 @@ public abstract class Figure {
     private String imageName;
 
     @Column(name = "position")
+    @Enumerated(EnumType.STRING)
     private Position position;
 
     @Column(name = "moves")
@@ -66,7 +67,7 @@ public abstract class Figure {
         this(
                 name,
                 color,
-                Position.fromRowCol(row, col).get(),
+                Position.fromRowCol(row, col).orElseThrow(),
                 color.toUpperCase() + "_" + name + ".png",
                 game
         );

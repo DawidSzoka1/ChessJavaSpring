@@ -2,6 +2,7 @@ package com.chessd.chess.repository;
 
 import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
+import com.chessd.chess.utils.Position;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,7 @@ public class FigureDaoImpl implements FigureDao {
     }
 
     @Override
-    public Figure getFigureByPosition(String position, Game game) {
+    public Figure getFigureByPosition(Position position, Game game) {
         TypedQuery<Figure> query = entityManager.createQuery(
                 "SELECT f from Figure f where f.game=:game and f.position =:position", Figure.class
         );

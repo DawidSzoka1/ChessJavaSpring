@@ -36,10 +36,10 @@ public class MoveServiceImpl implements MoveService {
     }
     @Override
     public boolean checkIfMoveInAvailableMoves(Figure figure, String newPosition, HashMap<Position, Figure> board){
-        FigureMoveService moveService = figureMoveServiceFactory.getMoveService(figure.getName());
+        FigureMoveService figureMoveService = figureMoveServiceFactory.getMoveService(figure.getName());
         List<String> moves = figure.getMoves();
         if(moves == null || moves.isEmpty()){
-            moves = moveService.getAvailableMoves(figure, board);
+            moves = figureMoveService.getAvailableMoves(figure, board);
         }
         return moves.contains(newPosition);
     }
@@ -61,7 +61,7 @@ public class MoveServiceImpl implements MoveService {
 
     @Override
     public void handleTakingFigure(Figure figure, String to, Game game) throws Exception {
-        Figure taken = figureDao.getFigureByPosition(to, game);
+        Figure taken = figureDao.getFigureByPosition(Position.fromString(to).orElseThrow(), game);
         if (taken == null || taken.getColor().equals(figure.getColor()) || taken.getName().equals("king")) {
             throw new Exception("Cant take that figure");
         }
@@ -93,7 +93,7 @@ public class MoveServiceImpl implements MoveService {
     @Override
     public void makeMove(Figure figure, String move, HashMap<Position, Figure> board) {
         FigureMoveService figureMoveService = figureMoveServiceFactory.getMoveService(figure.getName());
-        figure.setPosition(Position.fromString(move).get());
+        figure.setPosition(Position.fromString(move).orElseThrow());
         figure.setMoves(figureMoveService.getAvailableMoves(figure, board));
     }
 

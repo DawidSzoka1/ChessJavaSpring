@@ -15,7 +15,14 @@ import lombok.Setter;
 public class MessageToJS {
     private String type;
     private String content;
+    private String errorMessage;
     private boolean valid;
+
+    public MessageToJS(String content, String type, boolean valid) {
+        this.content = content;
+        this.type = type;
+        this.valid = valid;
+    }
 
     /**
      * Converts the current object to its JSON representation.

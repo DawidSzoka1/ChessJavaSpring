@@ -1,27 +1,16 @@
 package com.chessd.chess.service.figureService;
 
 import com.chessd.chess.entity.figureEntity.Figure;
-import com.chessd.chess.repository.FigureDao;
-import com.chessd.chess.service.CheckService;
 import com.chessd.chess.utils.Position;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GenericMoveService {
-    private final CheckService checkService;
-    private final FigureDao figureDao;
-
-    @Autowired
-    public GenericMoveService(CheckService checkService, FigureDao figureDao) {
-        this.checkService = checkService;
-        this.figureDao = figureDao;
-    }
-
 
     public List<String> generateMoves(
             Figure figure,
@@ -33,16 +22,16 @@ public class GenericMoveService {
         ArrayList<String> moves = new ArrayList<>();
         int newRow = startRow;
         int newCol = startCol;
-        Position p;
+        Optional<Position> p;
         while (true) {
             newRow += rowStep;
             newCol += colStep;
-            p = Position.fromRowCol(newRow, newCol).get();
-            Figure check = board.get(p);
-            if (check != null && check.getColor().equals(figure.getColor())) {
+            p = Position.fromRowCol(newRow, newCol);
+            if(p.isEmpty()){
                 break;
             }
-            if(!checkService.isKingSafeAfterMove(figure, p.toString(), figure.getGame())){
+            Figure check = board.get(p.get());
+            if (check != null && check.getColor().equals(figure.getColor())) {
                 break;
             }
             moves.add(p.toString());

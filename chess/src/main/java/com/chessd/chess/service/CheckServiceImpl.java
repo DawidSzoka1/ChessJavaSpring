@@ -17,7 +17,7 @@ import java.util.Optional;
 public class CheckServiceImpl implements CheckService {
     private final MoveService moveService;
     private final GameService gameService;
-    private FigureDao figureDao;
+    private final FigureDao figureDao;
     private final FigureMoveServiceFactory serviceFactory;
 
     @Autowired

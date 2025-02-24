@@ -24,13 +24,16 @@ public class ProcessMoveListener {
 
     @EventListener
     public void onProcessMove(ProcessMoveEvent event) throws Exception {
+        System.out.println("Uruchamiam ProcessMoveListenera");
         Figure figure = event.getFigure();
         String to = event.getTo();
         Game game = event.getGame();
         if (event.getTypeOfMove().equals("take")) {
             moveService.handleTakingFigure(figure, to, game);
         }
+        System.out.println(figure.getPosition());
         moveService.executeMove(figure, to, game);
+        System.out.println(figure.getPosition());
         applicationEventPublisher.publishEvent(new AfterMoveEvent(event));
     }
 }

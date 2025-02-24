@@ -44,12 +44,12 @@ public class GameServiceImpl implements GameService {
             Column colName = Column.fromIndex(i).orElseThrow();
 
             //Putting pawns on a2, b2, ..., h2 and a7, b7, ..., h7
-            figureDao.save(new Pawn("W", Position.fromColumnRow(colName, 1).get(), game));
-            figureDao.save(new Pawn("B", Position.fromColumnRow(colName, 6).get(), game));
+            figureDao.save(new Pawn("W", Position.fromColumnRow(colName, 1).orElseThrow(), game));
+            figureDao.save(new Pawn("B", Position.fromColumnRow(colName, 6).orElseThrow(), game));
 
             //Putting other figures on a1, b1, ..., h1 and a8, b8, ..., h8
-            figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "W", Position.fromColumnRow(colName, 0).get(), game));
-            figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "B", Position.fromColumnRow(colName, 7).get(), game));
+            figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "W", Position.fromColumnRow(colName, 0).orElseThrow(), game));
+            figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "B", Position.fromColumnRow(colName, 7).orElseThrow(), game));
         }
     }
 
@@ -66,7 +66,7 @@ public class GameServiceImpl implements GameService {
         if(!game.getResult().name().equals("ONGOING")){
             throw new Exception("Game is over");
         }
-        Figure figure = figureDao.getFigureByPosition(from, game);
+        Figure figure = figureDao.getFigureByPosition(Position.fromString(from).orElseThrow(), game);
         applicationEventPublisher.publishEvent(
                 new ValidateMoveEvent(this,
                         figure,

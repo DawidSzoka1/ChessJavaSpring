@@ -21,12 +21,8 @@ public enum Position {
     private final int row;
     private final int col;
 
-    public static Optional<Position> fromString(String pos){
-        try{
-            return Optional.of(Position.valueOf(pos));
-        }catch (IllegalArgumentException e){
-            return Optional.empty();
-        }
+    public static Optional<Position> fromString(String pos) {
+        return Optional.of(Position.valueOf(pos.toUpperCase()));
     }
 
     public static Optional<Position> fromRowCol(int row, int col){

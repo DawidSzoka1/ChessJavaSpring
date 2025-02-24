@@ -6,6 +6,7 @@ import com.chessd.chess.service.MoveService;
 import com.chessd.chess.utils.Column;
 import com.chessd.chess.utils.Position;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class PawnMoveService implements FigureMoveService {
     private final MoveService moveService;
 
     @Autowired
-    public PawnMoveService(MoveService moveService) {
+    public PawnMoveService(@Lazy MoveService moveService) {
         this.moveService = moveService;
     }
 
@@ -26,8 +27,8 @@ public class PawnMoveService implements FigureMoveService {
         ArrayList<String> moves = new ArrayList<>();
         int direction = ((Pawn) figure).getDirection();
         int row = figure.getRow();
-        String col = Column.fromIndex(figure.getCol()).get().name();
-        Figure possibleBlock = board.get(Position.fromRowCol(row + direction, figure.getCol()).get());
+        String col = Column.fromIndex(figure.getCol()).orElseThrow().name();
+        Figure possibleBlock = board.get(Position.fromRowCol(row + direction, figure.getCol()).orElseThrow());
         if (possibleBlock == null) {
             moves.add(col + (row + direction));
         }
@@ -47,7 +48,7 @@ public class PawnMoveService implements FigureMoveService {
             int newRow = startRow + ((Pawn) figure).getDirection();
             int newCol = startCol + i;
             if (moveService.validRowCol(newRow, newCol)) {
-                Figure toTake = board.get(Position.fromRowCol(newRow, newCol).get());
+                Figure toTake = board.get(Position.fromRowCol(newRow, newCol).orElseThrow());
                 if (toTake != null && !toTake.getColor().equals(figure.getColor())) {
                     moves.add(toTake.getPosition().toString());
                 }

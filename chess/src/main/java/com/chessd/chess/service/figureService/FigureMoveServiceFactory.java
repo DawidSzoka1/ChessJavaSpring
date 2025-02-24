@@ -12,7 +12,7 @@ public class FigureMoveServiceFactory {
 
     public FigureMoveServiceFactory(List<FigureMoveService> moveService) {
         this.figureMoveService = moveService.stream().collect(Collectors.toMap(
-                service -> service.getClass().getSimpleName().replace("FigureMoveService", "").toLowerCase(),
+                service -> service.getClass().getSimpleName().replace("MoveService", "").toLowerCase(),
                 service -> service
         ));
     }

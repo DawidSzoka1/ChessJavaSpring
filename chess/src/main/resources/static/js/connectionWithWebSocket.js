@@ -148,7 +148,7 @@ export default class CustomWebSocket {
     }
 
     messageError(data){
-        console.log(data.content)
+        console.log(data)
     }
     /**
      * Handles "PONG" messages to keep the WebSocket connection alive.

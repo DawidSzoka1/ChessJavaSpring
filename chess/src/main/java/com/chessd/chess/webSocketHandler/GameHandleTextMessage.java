@@ -43,7 +43,10 @@ public class GameHandleTextMessage {
                     String.valueOf(message.charAt(0)),
                     messageType.equals("take"));
         }catch (Exception e){
-            return new MessageToJS("ERROR", e.getMessage(), false);
+            StackTraceElement stackTraceElement = e.getStackTrace()[0];
+            return new MessageToJS("ERROR", stackTraceElement.getClassName() + " " +
+                    stackTraceElement.getMethodName() + " " + stackTraceElement.getLineNumber()
+                    , e.getMessage(), false);
         }
         return new MessageToJS(messageType.toUpperCase(), moveDetails[1], true);
     }

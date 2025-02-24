@@ -21,6 +21,7 @@ public class KingSafetyListener {
 
     @EventListener
     public void onKingSafety(KingSafetyEvent event) throws Exception {
+        System.out.println("Uruchamiam KingSafListenera");
         if (!checkService.isKingSafeAfterMove(event.getFigure(), event.getTo(), event.getGame())) {
             throw new Exception("King is under attack after move");
         }

@@ -22,6 +22,7 @@ public class ValidateMoveListener {
 
     @EventListener
     public void onValidateMove(ValidateMoveEvent event) throws Exception {
+        System.out.println("Uruchamiam ValidateListenera");
         moveService.isMoveValid(event.getFigure(), event.getTo(), event.getGame());
         eventPublisher.publishEvent(new KingSafetyEvent(event));
     }

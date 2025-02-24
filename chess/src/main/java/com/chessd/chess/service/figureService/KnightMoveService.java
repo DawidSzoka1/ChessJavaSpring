@@ -5,6 +5,7 @@ import com.chessd.chess.service.MoveService;
 import com.chessd.chess.utils.Column;
 import com.chessd.chess.utils.Position;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class KnightMoveService implements FigureMoveService {
     private final MoveService moveService;
 
     @Autowired
-    public KnightMoveService(MoveService moveService) {
+    public KnightMoveService(@Lazy MoveService moveService) {
         this.moveService = moveService;
     }
 
@@ -31,7 +32,7 @@ public class KnightMoveService implements FigureMoveService {
             int newRow = currentRow + rowPossibilities[i];
             int newCol = currentCol + colPossibilities[i];
             if (moveService.validRowCol(newRow, newCol)) {
-                moves.add(Column.fromIndex(newCol).get().name() + newRow);
+                moves.add(Column.fromIndex(newCol).orElseThrow().name() + newRow);
             }
         }
         return moves;

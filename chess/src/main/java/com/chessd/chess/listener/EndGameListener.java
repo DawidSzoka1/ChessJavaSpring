@@ -19,6 +19,7 @@ public class EndGameListener {
 
     @EventListener
     public void onEndGame(EndGameEvent event){
+        System.out.println("Uruchamiam EndGame");
         boolean result = endGameService.lookForEndGame(event.getGame(), event.getFigure().getOpponent());
         if(!result){
             return;

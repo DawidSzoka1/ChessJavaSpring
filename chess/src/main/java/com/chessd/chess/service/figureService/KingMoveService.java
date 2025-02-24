@@ -6,6 +6,9 @@ import com.chessd.chess.service.CheckService;
 import com.chessd.chess.service.MoveService;
 import com.chessd.chess.utils.Column;
 import com.chessd.chess.utils.Position;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,12 +17,11 @@ import java.util.List;
 
 @Service
 public class KingMoveService implements FigureMoveService {
-    private final FigureDao figureDao;
     private final MoveService moveService;
     private final CheckService checkService;
 
-    public KingMoveService(FigureDao figureDao, MoveService moveService, CheckService checkService) {
-        this.figureDao = figureDao;
+    @Autowired
+    public KingMoveService(@Lazy MoveService moveService, @Lazy CheckService checkService) {
         this.moveService = moveService;
         this.checkService = checkService;
     }
@@ -32,15 +34,15 @@ public class KingMoveService implements FigureMoveService {
         int newRow;
         int newCol;
         Position p;
-        for(int row: vertical){
-            for(int col: horizontal){
+        for (int row : vertical) {
+            for (int col : horizontal) {
                 newRow = figure.getRow() + row;
                 newCol = figure.getCol() + col;
-                if(moveService.validRowCol(newRow, newCol)){
-                    p = Position.fromRowCol(newRow, newCol).get();
+                if (moveService.validRowCol(newRow, newCol)) {
+                    p = Position.fromRowCol(newRow, newCol).orElseThrow();
                     Figure potentialF = board.get(p);
-                    if(potentialF == null || potentialF.getOpponent().equals(figure.getColor())){
-                        if(checkService.isKingSafeAfterMove(figure, p.toString(), figure.getGame())) {
+                    if (potentialF == null || potentialF.getOpponent().equals(figure.getColor())) {
+                        if (checkService.isKingSafeAfterMove(figure, p.toString(), figure.getGame())) {
                             moves.add(p.toString());
                         }
                     }

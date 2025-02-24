@@ -29,6 +29,7 @@ public class AfterMoveListener {
 
     @EventListener
     public void lookForCheck(AfterMoveEvent event) {
+        System.out.println("Uruchamiam AFterMove");
         checkService.lookForChecks(event.getGame());
         moveUpdateService.updateAffectedFigures(event.getFigure(), event.getBoard(), event.getFrom());
         applicationEventPublisher.publishEvent(new EndGameEvent(event));

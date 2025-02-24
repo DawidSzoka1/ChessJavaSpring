@@ -12,5 +12,4 @@ public class Bishop extends Figure {
     public Bishop(String color, Position position, Game game) {
         super("bishop", color, position, game);
     }
-
 }
