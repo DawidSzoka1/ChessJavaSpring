@@ -57,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
             gameId: gameId,
         });
 
-
         e.preventDefault();
     }
 

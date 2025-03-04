@@ -179,6 +179,8 @@ export default class CustomWebSocket {
      */
     messageMove(data) {
         if(!this.validData(data)){
+            console.log("move isnt valid")
+            console.log(data)
             return null;
         }
         this.pieceToMove.id = data.content;
@@ -189,6 +191,8 @@ export default class CustomWebSocket {
 
     messageTake(data){
         if(!this.validData(data)){
+            console.log("move isnt valid")
+            console.log(data)
             return null;
         }
         const pieceToRemove = document.getElementById(data.content);
