@@ -21,38 +21,10 @@ public class Pawn extends Figure {
         super("pawn", color, position, game);
         direction = this.getColor().equals("W") ? 1 : -1;
     }
+    public Pawn(String color, Position position, Game game, List<String> moves) {
+        super("pawn", color, position, game);
+        direction = this.getColor().equals("W") ? 1 : -1;
+        this.setMoves(moves);
+    }
 
-//    @Override
-//    public List<String> availableMoves(Figure[][] board) {
-//        ArrayList<String> moves = new ArrayList<>();
-//        int row = this.getRow();
-//        String col = Column.fromIndex(this.getCol()).get().name();
-//        Figure possibleBlock = board[row + this.direction][this.getCol()];
-//        if(possibleBlock == null) {
-//            moves.add(col + (row + this.direction));
-//        }
-//        if ((row == 1 && this.getColor().equals("W")) ||
-//                (row == 6 && this.getColor().equals("B"))) {
-//            moves.add(col + (row + this.direction * 2));
-//        }
-//        moves.addAll(availableTakes(board));
-//        return moves;
-//    }
-//
-//    public List<String> availableTakes(Figure[][] board) {
-//        ArrayList<String> moves = new ArrayList<>();
-//        int startRow =  this.getRow();
-//        int startCol = this.getCol();
-//        for (int i = -1; i <= 1; i += 2) {
-//            int newRow = startRow + this.direction;
-//            int newCol =  startCol + i;
-//            if (this.validRowCol(newRow, newCol)) {
-//                Figure toTake = board[newRow][newCol];
-//                if(toTake != null && !toTake.getColor().equals(this.getColor())){
-//                    moves.add(toTake.getPosition());
-//                }
-//            }
-//        }
-//        return moves;
-//    }
 }

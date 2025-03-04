@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,74 +75,6 @@ public abstract class Figure {
     public Figure(String name, String color, Position position, Game game) {
         this(name, color, position, color.toUpperCase() + "_" + name + ".png", game);
     }
-
-//    public static int[] convertStringPositionToRowColInt(String position) {
-//        int[] tab = new int[2];
-//        tab[0] = position.charAt(1) - '0';
-//        tab[1] = com.chessd.chess.utils.Column.fromName(String.valueOf(position.charAt(0))).get().getIndex();
-//        return tab;
-//    }
-//
-//
-//    public String[] validMove(int row, int col, Figure[][] board) {
-//        String[] tab = new String[2];
-//        tab[0] = "break";
-//        if (!this.validRowCol(row, col)) {
-//            return tab;
-//        }
-//        Figure posibleFigure = board[row][col];
-//        if (posibleFigure != null && posibleFigure.getColor().equals(this.getColor())) {
-//            return tab;
-//        }
-//        tab[0] = "break and add";
-//        if (posibleFigure == null) {
-//            tab[0] = "continue";
-//        }
-//        tab[1] = com.chessd.chess.utils.Column.fromIndex(col).get().name() + row;
-//        return tab;
-//    }
-//
-//    public List<String> generateMoves(int startRow, int startCol, int rowStep, int colStep, Figure[][] board){
-//        ArrayList<String> moves = new ArrayList<>();
-//        int newRow = startRow;
-//        int newCol = startCol;
-//        while (true) {
-//            newCol += colStep;
-//            newRow += rowStep;
-//            String[] check = this.validMove(newRow, newCol, board);
-//            if(check[0].equals("break")){
-//                break;
-//            }
-//            moves.add(check[1]);
-//            if(check[0].equals("break and add")){
-//                break;
-//            }
-//        }
-//        return moves;
-//    }
-//
-//    public void makeMove(Position position, Figure[][] board) {
-//        this.setPosition(position);
-//        this.setMoves(this.availableMoves(board));
-//    }
-//
-//    public boolean validRowCol(int row, int col) {
-//        return row >= 0 && row <= 7 && col >= 0 && col <= 7;
-//    }
-//
-//    public boolean checkIfMoveIsValid(String newPosition, Figure[][] board) {
-//        if(!this.getColor().equalsIgnoreCase(this.getGame().getNextMove())){
-//            return false;
-//        }
-//        return this.checkIfMoveInAvailableMoves(newPosition, board);
-//    }
-//    public boolean checkIfMoveInAvailableMoves(String newPosition, Figure[][] board){
-//        List<String> moves = this.getMoves();
-//        if(moves == null || moves.isEmpty()){
-//            moves = this.availableMoves(board);
-//        }
-//        return moves.contains(newPosition);
-//    }
 
     @Override
     public String toString() {
