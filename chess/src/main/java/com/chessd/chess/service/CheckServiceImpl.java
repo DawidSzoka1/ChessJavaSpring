@@ -29,11 +29,20 @@ public class CheckServiceImpl implements CheckService {
     }
 
     @Override
+    public boolean isFieldAttacked(String move, Game game, String color) {
+        Optional<Figure> attacker = figureDao.getFigureByPossibleMovesAndColor(game, move, color);
+        return attacker.isPresent();
+    }
+
+    @Override
     public void lookForChecks(Game game) {
+        System.out.println("Szukam szacha: ");
         Figure king = figureDao.getKing(game, game.getNextMove());
+        System.out.println(king.getPosition());
         Optional<Figure> attacker = figureDao
                 .getFigureByPossibleMovesAndColor(game, king.getOpponent(), king.getPosition().toString());
         if (attacker.isPresent()) {
+            System.out.println("mam szacha: ");
             game.setCheckStatus(king.getColor());
             this.restrictMovesInCheck(game, king);
         } else {
@@ -44,6 +53,7 @@ public class CheckServiceImpl implements CheckService {
 
     @Override
     public boolean isKingSafeAfterMove(Figure figure, String move, Game game) {
+        System.out.println("Sprawdzam krola czy bezpieczny: ");
         Figure king = figureDao.getKing(game, figure.getColor());
         if (figure.getName().equals("king")) {
             figure = king;

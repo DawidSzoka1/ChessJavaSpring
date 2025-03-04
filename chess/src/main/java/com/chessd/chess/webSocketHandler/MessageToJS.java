@@ -18,7 +18,7 @@ public class MessageToJS {
     private String errorMessage;
     private boolean valid;
 
-    public MessageToJS(String content, String type, boolean valid) {
+    public MessageToJS(String type, String content,  boolean valid) {
         this.content = content;
         this.type = type;
         this.valid = valid;

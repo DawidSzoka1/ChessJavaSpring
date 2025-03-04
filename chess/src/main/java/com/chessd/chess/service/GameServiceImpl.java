@@ -42,10 +42,16 @@ public class GameServiceImpl implements GameService {
     public void startGame(@NotNull Game game) {
         for (int i = 0; i < 8; i++) {
             Column colName = Column.fromIndex(i).orElseThrow();
-
             //Putting pawns on a2, b2, ..., h2 and a7, b7, ..., h7
-            figureDao.save(new Pawn("W", Position.fromColumnRow(colName, 1).orElseThrow(), game));
-            figureDao.save(new Pawn("B", Position.fromColumnRow(colName, 6).orElseThrow(), game));
+            figureDao.save(new Pawn("W",
+                    Position.fromColumnRow(colName, 1).orElseThrow(),
+                    game,
+                    List.of(new String[]{Position.fromColumnRow(colName, 2).get().toString(),
+                            Position.fromColumnRow(colName, 3).get().toString()})
+                    ));
+            figureDao.save(new Pawn("B", Position.fromColumnRow(colName, 6).orElseThrow(), game,
+                    List.of(new String[]{Position.fromColumnRow(colName, 5).get().toString(),
+                            Position.fromColumnRow(colName, 4).get().toString()})));
 
             //Putting other figures on a1, b1, ..., h1 and a8, b8, ..., h8
             figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "W", Position.fromColumnRow(colName, 0).orElseThrow(), game));

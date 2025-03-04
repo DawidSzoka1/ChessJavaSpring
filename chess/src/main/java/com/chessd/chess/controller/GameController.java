@@ -27,7 +27,7 @@ public class GameController {
 
     @GetMapping("/classic")
     public String classic(Model model){
-        Game g = gameService.getGameById("6f460727-b499-4515-a392-da2b8bc2e254").get();
+        Game g = gameService.getGameById("9397a5d8-e1a1-4332-b96b-3815aa77214e").get();
 //        Game g = new Game(randomUniqIdGenerator.generateUniqId());
 //        gameService.save(g);
 //        gameService.startGame(g);

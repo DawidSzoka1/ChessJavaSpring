@@ -29,23 +29,26 @@ public class KingMoveService implements FigureMoveService {
     @Override
     public List<String> getAvailableMoves(Figure figure, HashMap<Position, Figure> board) {
         List<String> moves = new ArrayList<>();
-        int[] horizontal = {1, 0, -1};
-        int[] vertical = {1, 0, -1};
-        int newRow;
-        int newCol;
-        Position p;
-        for (int row : vertical) {
-            for (int col : horizontal) {
-                newRow = figure.getRow() + row;
-                newCol = figure.getCol() + col;
-                if (moveService.validRowCol(newRow, newCol)) {
-                    p = Position.fromRowCol(newRow, newCol).orElseThrow();
-                    Figure potentialF = board.get(p);
-                    if (potentialF == null || potentialF.getOpponent().equals(figure.getColor())) {
-                        if (checkService.isKingSafeAfterMove(figure, p.toString(), figure.getGame())) {
-                            moves.add(p.toString());
-                        }
-                    }
+        int[] directions = {-1, 0, 1};
+
+        for (int rowOffset : directions) {
+            for (int colOffset : directions) {
+                if (rowOffset == 0 && colOffset == 0) continue;
+
+                int newRow = figure.getRow() + rowOffset;
+                int newCol = figure.getCol() + colOffset;
+
+                if (!moveService.validRowCol(newRow, newCol)) continue;
+
+                Position newPosition = Position.fromRowCol(newRow, newCol).orElse(null);
+                if (newPosition == null) continue;
+
+                Figure targetFigure = board.get(newPosition);
+                boolean isFieldEmptyOrEnemy = (targetFigure == null || targetFigure.getColor().equals(figure.getOpponent()));
+                boolean isFieldSafe = !checkService.isFieldAttacked(newPosition.toString(), figure.getGame(), figure.getOpponent());
+
+                if (isFieldEmptyOrEnemy && isFieldSafe) {
+                    moves.add(newPosition.toString());
                 }
             }
         }
