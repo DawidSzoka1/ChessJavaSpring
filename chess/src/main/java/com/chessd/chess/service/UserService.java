@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface UserService extends UserDetailsService {
     User findByUserName(String username);
-
     List<User> findAll();
-
     Optional<User> findById(int id);
 }

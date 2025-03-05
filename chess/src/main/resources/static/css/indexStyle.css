@@ -6,51 +6,77 @@
 }
 
 body {
+    margin: 0;
+    padding: 0;
     display: flex;
     background-color: #f4f4f4;
-    height: 100vh;
-    align-items: center;
+    min-height: 100vh;
+    font-size: 1vw; /* Skaluje tekst względem szerokości ekranu */
+    align-items: stretch;
+    justify-content: center;
+    flex-direction: row;
+    overflow: auto;
 }
 
+/* Sidebar dostosowany do wysokości i szerokości ekranu */
 .sidebar {
-    width: 80px;
+    left: 0;
+    top: 0;
+    position: fixed;
+    flex-wrap: wrap;
+    width: 10vw; /* Skaluje się dynamicznie */
     background-color: #4a2c2c;
     height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 20px;
 }
 
 .icon {
-    margin: 15px 0;
+    margin: 2vh 0;
 }
 
 .icon img {
-    width: 50px;
-    height: 50px;
+    width: 5vw; /* Skaluje się do szerokości ekranu */
+    height: auto;
     cursor: pointer;
 }
 
 .container {
-    flex-direction: column; /* Aby tytuł był wyżej */
+    flex-wrap: wrap;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 85vw;
     text-align: center;
 }
 
 .title {
-    font-size: 5em;
+    font-size: 5vw;
     font-weight: bold;
-    margin-bottom: 20px; /* Odstęp od opcji gry */
+    margin-bottom: 5vh;
+    margin-left: -12vw;
+    margin-top: -10vh;
+}
+
+.subtitle{
+    font-size: 2vw;
+    margin-left: -40vw;
 }
 
 .option-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 100px; /* Większa przestrzeń między opcjami */
+    gap: 5vw;
+    flex-wrap: wrap;
+}
+
+.computer{
+    width: 50vw;
 }
 
 .option {
@@ -58,14 +84,10 @@ body {
 }
 
 .option img {
-    width: 200px;
+    width: 20vw;
     height: auto;
 }
 
-/* Poprawka dla napisu PLAY ONLINE */
-.left h2 {
-    margin-bottom: 10px;
-}
 
 .image-container {
     position: relative;
@@ -79,9 +101,8 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    font-size: 1.5em;
+    font-size: 2vw;
     font-weight: bold;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 1vh 2vw;
+    border-radius: 0.5vw;
 }
