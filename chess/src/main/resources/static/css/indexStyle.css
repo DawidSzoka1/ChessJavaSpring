@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    background-color: #f4f4f4;
+    height: 100vh;
+    align-items: center;
+}
+
+.sidebar {
+    width: 80px;
+    background-color: #4a2c2c;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.icon {
+    margin: 15px 0;
+}
+
+.icon img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.container {
+    flex-direction: column; /* Aby tytuł był wyżej */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.title {
+    font-size: 5em;
+    font-weight: bold;
+    margin-bottom: 20px; /* Odstęp od opcji gry */
+}
+
+.option-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 100px; /* Większa przestrzeń między opcjami */
+}
+
+.option {
+    text-align: center;
+}
+
+.option img {
+    width: 200px;
+    height: auto;
+}
+
+/* Poprawka dla napisu PLAY ONLINE */
+.left h2 {
+    margin-bottom: 10px;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+}
+
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 5px;
+}

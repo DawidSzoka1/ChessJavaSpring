@@ -2,9 +2,34 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="stylesheet" th:href="@{/css/indexStyle.css}">
 </head>
 <body>
-Home page
+<div class="sidebar">
+    <div class="icon">
+        <img src="profile-icon.png" alt="Profile">
+    </div>
+    <div class="icon">
+        <img src="add-icon.png" alt="Add">
+    </div>
+</div>
+
+<div class="container">
+    <h1 class="title">LET'S PLAY CHESS</h1>
+
+    <div class="option-container">
+        <div class="option left">
+            <h2>PLAY ONLINE</h2>
+            <img th:src="@{/images/index/chess-piece.png}" alt="Chess King">
+        </div>
+
+        <div class="option right image-container">
+            <img th:src="@{/images/index/computer.png}" alt="Computer">
+            <h3 class="overlay-text">PLAY WITH COMPUTER</h3>
+        </div>
+    </div>
+</div>
 </body>
 </html>
