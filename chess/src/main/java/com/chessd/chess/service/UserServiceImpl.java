@@ -16,6 +16,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the {@link UserService} interface.
+ * Provides services related to user management, including finding users,
+ * loading user details, and managing user roles.
+ */
 @Service
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
@@ -56,6 +61,12 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    /**
+     * Maps the roles of a user to {@link GrantedAuthority} objects, which are used for authorization in Spring Security.
+     *
+     * @param roles The roles assigned to the user.
+     * @return A collection of {@link GrantedAuthority} objects corresponding to the user's roles.
+     */
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
