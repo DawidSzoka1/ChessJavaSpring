@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -40,6 +40,8 @@ public class UserController {
 
     @GetMapping("/rankings")
     public String rankings(Model model){
+        List<User> users = userService.findAllByRanking(5);
+        model.addAttribute("users", users);
         return "users/rankings";
     }
 }

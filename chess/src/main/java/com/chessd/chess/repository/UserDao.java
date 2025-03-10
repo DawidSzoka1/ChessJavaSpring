@@ -15,7 +15,7 @@ public interface UserDao {
     void delete(int id);
 
     void update(User user);
-
+    List<User> findALlByRanking();
     List<User> findAll();
 
     List<User> findAllSortedByNameASC();

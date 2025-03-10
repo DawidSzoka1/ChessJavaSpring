@@ -53,6 +53,14 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
+    public List<User> findALlByRanking() {
+        TypedQuery<User> query = entityManager.createQuery(
+          "From User where enable=true order by ranking", User.class
+        );
+        return query.getResultList();
+    }
+
+    @Override
     public List<User> findAll() {
         TypedQuery<User> query = entityManager.createQuery("FROM  User where enable=true", User.class);
 

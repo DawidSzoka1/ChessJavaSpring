@@ -27,6 +27,8 @@ public class User {
     @Column(name = "enable")
     private boolean enable;
 
+    @Column(name = "ranking")
+    private int ranking;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
@@ -35,10 +37,11 @@ public class User {
     private Collection<Role> roles;
 
 
-    public User(String userName, String password, boolean enabled) {
+    public User(String userName, String password, boolean enabled, int ranking) {
         this.userName = userName;
         this.password = password;
         this.enable = enabled;
+        this.ranking = ranking;
     }
 
     @Override

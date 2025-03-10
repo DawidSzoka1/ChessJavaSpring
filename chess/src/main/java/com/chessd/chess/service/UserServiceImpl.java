@@ -43,6 +43,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findAllByRanking(int amount) {
+        List<User> users = userDao.findALlByRanking();
+        return users.subList(0, amount);
+    }
+
+    @Override
     public Optional<User> findById(int id) {
         return userDao.findById(id);
     }
