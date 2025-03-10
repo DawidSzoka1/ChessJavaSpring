@@ -37,4 +37,9 @@ public class UserController {
         model.addAttribute("user", user.get());
         return "users/details";
     }
+
+    @GetMapping("/rankings")
+    public String rankings(Model model){
+        return "users/rankings";
+    }
 }

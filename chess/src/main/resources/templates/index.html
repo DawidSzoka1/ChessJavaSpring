@@ -5,30 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Game</title>
     <link rel="stylesheet" th:href="@{/css/indexStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
 </head>
 <body>
-<div class="sidebar">
-    <div class="icon">
-        <img src="profile-icon.png" alt="Profile">
-    </div>
-    <div class="icon">
-        <img src="add-icon.png" alt="Add">
-    </div>
+<div th:insert="~{fragments/sidebar :: sidebar}">
 </div>
-
 <div class="container">
     <div class="option-container">
         <div class="option left">
-            <img th:src="@{/images/index/chess-piece.png}" alt="Chess King">
+            <img class="king" th:src="@{/images/index/chess-piece.png}" alt="Chess King">
         </div>
 
         <div class="option right image-container">
             <h1 class="title">LET'S PLAY CHESS</h1>
-            <h2 class="subtitle">PLAY ONLINE</h2>
+            <h2 class="subtitle"><a th:href="@{/game/classic}">PLAY ONLINE</a></h2>
             <img class="computer" th:src="@{/images/index/computer.png}" alt="Computer">
-            <h3 class="overlay-text">PLAY WITH COMPUTER</h3>
+            <h3 class="overlay-text"><a th:href="@{/}">PLAY WITH COMPUTER</a></h3>
         </div>
     </div>
 </div>
+
+
 </body>
 </html>
