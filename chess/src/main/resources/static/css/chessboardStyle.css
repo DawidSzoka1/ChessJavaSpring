@@ -1,8 +1,16 @@
 .chessboard {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
-    width: 50%;
-    height: 50%;
+    width: 45%;
+    height: 45%;
+    margin:0;
+}
+
+
+.center{
+    margin-left: 15vw;
+    margin-top: 1vh;
+    overflow: hidden;
 }
 
 .square {
@@ -32,7 +40,8 @@
     box-sizing: border-box;
 }
 .piece{
-    max-width: 100%;
+    max-width: 90%;
+    max-height: 90%;
     height: auto;
     object-fit: cover;
 }
