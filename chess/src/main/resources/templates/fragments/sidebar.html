@@ -7,14 +7,18 @@
 </head>
 <body>
 <div th:fragment="sidebar" class="sidebar">
+    <div class="icon">
+        <a th:href="@{/}"><img th:src="@{/images/sidebar/home.png}" alt="home"></a>
+    </div>
     <div sec:authorize="isAuthenticated()" class="icon">
         <img src="profile-icon.png" alt="Profile">
     </div>
+
     <div class="icon">
-        <img src="add-icon.png" alt="Add">
+        <a th:href="@{/users/rankings}"><img th:src="@{/images/sidebar/ranking.png}" alt="Ranking"></a>
     </div>
-    <div class="icon">
-        <a th:href="@{/users/rankings}"><img th:src="@{/images/index/ranking.png}" alt="Ranking"></a>
+    <div sec:authorize="!isAuthenticated()" class="icon">
+        <a th:href="@{/login}"><img th:src="@{/images/sidebar/login.png}" alt="Login"></a>
     </div>
 </div>
 </body>
