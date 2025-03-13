@@ -23,7 +23,8 @@ body {
     top: 0;
     position: fixed;
     flex-wrap: wrap;
-    width: 10vw;
+    width: 8vw;
+    min-width: 8vw;
     background-color: #4a2c2c;
     height: 100vh;
     min-height: 100vh;

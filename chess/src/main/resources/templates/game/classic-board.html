@@ -10,24 +10,45 @@
 
 </head>
 <body>
-<div class="container">
-    <div th:insert="~{fragments/sidebar :: sidebar}"></div>
-    <div hidden="hidden" id="game" th:data-id="${game.gameId}"></div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Lewy sidebar -->
+        <div class="col-1 sidebar">
+            <div th:insert="~{fragments/sidebar :: sidebar}"></div>
+        </div>
 
-    <div id="chessboard" class="center">
-        <div th:each="row, statRow : ${gameBoard}" class="g-0 chessboard">
-            <div th:each="col, statCol : ${row}"
-                 th:class="${(statRow.index + statCol.index) % 2 == 0 ? 'square white' : 'square black'}">
+        <!-- Główna zawartość (środkowa kolumna) -->
+        <div class="col-9 main-content">
+            <div class="top">
+                <h4>Górny wiersz</h4>
+            </div>
+            <div class="middle">
+                <div id="chessboard" class="col-sm-6 ">
+                    <div th:each="row, statRow : ${gameBoard}" class="g-0 chessboard">
+                        <div th:each="col, statCol : ${row}"
+                             th:class="${(statRow.index + statCol.index) % 2 == 0 ? 'square white' : 'square black'}">
 
-                <div class="square-content" th:id="${columns[statCol.index] + '' + (statRow.index+1) + '-'}">
-                    <th:block th:if="${col != null}">
-                        <!--white pawns and black back rows -->
-                        <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure"
-                             class="piece"
-                             draggable="true" th:id="${col.position}">
-                    </th:block>
+                            <div class="square-content" th:id="${columns[statCol.index] + '' + (statRow.index+1) + '-'}">
+                                <th:block th:if="${col != null}">
+                                    <!--white pawns and black back rows -->
+                                    <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure"
+                                         class="piece"
+                                         draggable="true" th:id="${col.position}">
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="bottom">
+                <h4>Dolny wiersz</h4>
+            </div>
+        </div>
+
+        <!-- Prawy sidebar -->
+        <div class="col-3 right-sidebar">
+            <div hidden="hidden" id="game" th:data-id="${game.gameId}"></div>
+            <h3>Prawy Sidebar</h3>
         </div>
     </div>
 </div>
