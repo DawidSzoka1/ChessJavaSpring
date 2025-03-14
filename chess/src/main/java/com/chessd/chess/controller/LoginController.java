@@ -19,6 +19,11 @@ public class LoginController {
         return "users/login";
     }
 
+    @GetMapping("/register")
+    public String showMyRegisterPage(){
+        return "users/register";
+    }
+
     @GetMapping("/access-denied")
     public String accessDenied() {
         return "access-denied";

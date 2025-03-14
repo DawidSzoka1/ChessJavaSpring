@@ -33,7 +33,7 @@
             <h1><strong>LOGOWANIE</strong></h1>
         </div>
         <div class="col-6 main-content">
-            <form th:action="@{/login}" method="post">
+            <form th:action="@{/authenticateTheUser}" method="post">
                 <div class="container">
                     <div class="login-box">
                         <div class="row">
@@ -49,8 +49,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-center">
+                    <div class="text-end">
                         <button type="submit" class="btn btn-lg mt-3">Zaloguj sie</button>
+                        <a th:href="@{/register}" class="text-secondary text-decoration-none">Nie masz jeszcze konta?</a>
                     </div>
                 </div>
             </form>

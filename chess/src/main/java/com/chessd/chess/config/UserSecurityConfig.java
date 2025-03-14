@@ -33,13 +33,13 @@ public class UserSecurityConfig {
         http.authorizeHttpRequests(configurer ->
                         configurer
                                 .requestMatchers("/").permitAll()
-                                .requestMatchers("/showMyLoginPage").anonymous()
+                                .requestMatchers("/login").anonymous()
                                 .requestMatchers("/game/**").permitAll()
                                 .anyRequest().permitAll()
                 )
                 .formLogin(form ->
                         form
-                                .loginPage("/showMyLoginPage")
+                                .loginPage("/login")
                                 .loginProcessingUrl("/authenticateTheUser")
                                 .permitAll()
                 )
