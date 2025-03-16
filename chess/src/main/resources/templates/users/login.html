@@ -35,6 +35,12 @@
         <div class="col-6 main-content">
             <form th:action="@{/authenticateTheUser}" method="post">
                 <div class="container">
+                    <div th:if="${param.logout}" class="alert alert-info">
+                        Wylogowany pomyslnie
+                    </div>
+                    <div th:if="${param.error}" class="alert alter-danger">
+                        <span th:text="${param.error}"></span>
+                    </div>
                     <div class="login-box">
                         <div class="row">
                             <label for="login" class="col-3 black">LOGIN:</label>
