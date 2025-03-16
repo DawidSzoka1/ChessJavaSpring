@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
         user.setUserName(webUser.getUserName());
         user.setPassword(passwordEncoder.encode(webUser.getPassword()));
-
+        user.setEnable(true);
         user.setRoles(Arrays.asList(roleDao.findByName("ROLE_BASE")));
 
         userDao.save(user);
@@ -75,6 +75,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUserName(username);
         if (user == null) {
+            System.out.println("Uzytkownik nie znaleziony: " + username);
             throw new UsernameNotFoundException(username);
         }
 
