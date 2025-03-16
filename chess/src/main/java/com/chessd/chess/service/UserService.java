@@ -1,6 +1,7 @@
 package com.chessd.chess.service;
 
 import com.chessd.chess.entity.User;
+import com.chessd.chess.web.WebUser;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface UserService extends UserDetailsService {
     List<User> findAll();
     List<User> findAllByRanking(int amount);
     Optional<User> findById(int id);
+    void save(WebUser webUser);
 }

@@ -1,13 +1,15 @@
-package com.chessd.chess.config;
+package com.chessd.chess.security;
 
 import com.chessd.chess.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -28,22 +30,29 @@ public class UserSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http,
+                                           AuthenticationSuccessHandler authenticationSuccessHandler) throws Exception {
 
         http.authorizeHttpRequests(configurer ->
                         configurer
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/login").anonymous()
                                 .requestMatchers("/game/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/logout").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .formLogin(form ->
                         form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/authenticateTheUser")
+                                .successHandler(authenticationSuccessHandler)
                                 .permitAll()
                 )
-                .logout(logout -> logout.permitAll()
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                 )
                 .exceptionHandling(configurer ->
                         configurer.accessDeniedPage("/access-denied")

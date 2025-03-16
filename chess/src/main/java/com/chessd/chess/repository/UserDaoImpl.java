@@ -30,7 +30,11 @@ public class UserDaoImpl implements UserDao{
     public User findByUserName(String username) {
         TypedQuery<User> query = entityManager.createQuery("FROM  User where userName=:uName and enable=true", User.class);
         query.setParameter("uName", username);
-        return query.getSingleResult();
+        User user = null;
+        try {
+            user = query.getSingleResult();
+        }catch (Exception _){}
+        return user;
     }
 
 //    @Override
