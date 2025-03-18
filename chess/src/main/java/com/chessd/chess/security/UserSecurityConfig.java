@@ -38,6 +38,7 @@ public class UserSecurityConfig {
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/login").anonymous()
                                 .requestMatchers("/game/**").permitAll()
+                                .requestMatchers("/users/update").authenticated()
                                 .requestMatchers(HttpMethod.POST,"/logout").authenticated()
                                 .anyRequest().permitAll()
                 )

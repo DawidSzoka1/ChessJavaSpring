@@ -20,6 +20,12 @@ public class RoleDaoImpl implements RoleDao {
     public Role findByName(String name) {
         TypedQuery<Role> query = entityManager.createQuery("FROM Role where name=:name", Role.class);
         query.setParameter("name", name);
-        return query.getSingleResult();
+        Role role;
+        try {
+            role = query.getSingleResult();
+        }catch (Exception _){
+            throw new RuntimeException("Given role dont exist: " + name);
+        }
+        return role;
     }
 }

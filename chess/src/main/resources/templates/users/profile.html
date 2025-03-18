@@ -25,8 +25,8 @@
                 </div>
                 <div class="col-3">
                     <h2 th:text="${user.userName}"></h2>
-                    <h3 th:text="${fullName}"></h3>
-                    <a href="" class="btn btn-redirect">Zmień haslo</a>
+                    <h4 th:text="${fullName}"></h4>
+                    <a href="" class="btn btn-redirect">ZMIEN HASLO</a>
                 </div>
                 <div>
                 </div>
@@ -36,13 +36,18 @@
                     <h1>Dane uzytkownika</h1>
                 </div>
             </div>
-            <div class="row bottom d-flex align-items-center justify-content-center">
-                <span th:text="'Pseudonim:   ' + ${user.userName}"></span>
-                <span th:text="'Imie:   ' + ${user.firstName}"></span>
-                <span th:text="'Nazwisko:   ' + ${user.lastName}"></span>
-                <span th:text="'Adres e-mail:   ' + ${user.email}"></span>
-                <span th:text="'Kraj:   ' + ${user.userName}"></span>
-                <span th:text="'Płeć:   ' + ${user.userName}"></span>
+            <div class="row bottom d-flex">
+                <div class="col-9 mt-4">
+                    <h3 th:text="'Pseudonim:   ' + ${user.userName}"></h3>
+                    <h3 th:text="'Imie:   ' + ${user.firstName}"></h3>
+                    <h3 th:text="'Nazwisko:   ' + ${user.lastName}"></h3>
+                    <h3 th:text="'Adres e-mail:   ' + ${user.email}"></h3>
+                    <h3 th:text="'Kraj:   ' + ${user.userName}"></h3>
+                    <h3 th:text="'Płeć:   ' + ${user.userName}"></h3>
+                </div>
+                <div class="col-3 text-end mt-4">
+                    <a th:href="@{/users/update}" class="btn btn-lg custom-btn">ZMIEN DANE</a>
+                </div>
             </div>
         </div>
     </div>

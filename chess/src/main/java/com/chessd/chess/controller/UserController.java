@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,14 +30,11 @@ public class UserController {
         return "users/all";
     }
 
-    @GetMapping("/{id}")
-    public String details(Model model, @PathVariable int id) throws Exception {
-        Optional<User> user = userService.findById(id);
-        if (user.isEmpty()) {
-            throw new Exception("user not found");
-        }
-        model.addAttribute("user", user.get());
-        return "profile";
+    @GetMapping("/update")
+    public String updateInfo(Model model, Principal principal){
+        User user = userService.findByUserName(principal.getName());
+        model.addAttribute("user", user);
+        return "users/update";
     }
 
     @GetMapping("/rankings")
