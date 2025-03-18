@@ -1,6 +1,5 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <title>Login Page</title>
     <meta charset="utf-8">
@@ -11,7 +10,6 @@
     <link th:href="@{/css/global.css}" rel="stylesheet">
     <link th:href="@{/css/login.css}" rel="stylesheet">
 </head>
-
 <body>
 <div class="container-fluid">
     <div class="row">
@@ -19,16 +17,12 @@
         <div class="col-1 sidebar">
             <div th:insert="~{fragments/sidebar :: sidebar}"></div>
         </div>
-        <div class="col-2">
 
-        </div>
-
+        <div class="col-2"></div>
 
         <div class="col-2 small-col">
             <img th:src="@{/images/index/chess-piece.png}" alt="chess-piece">
         </div>
-
-        <!-- Główna kolumna zajmująca resztę szerokości -->
         <div class="col-1 mt-5 mr-5">
             <h1><strong>LOGOWANIE</strong></h1>
         </div>

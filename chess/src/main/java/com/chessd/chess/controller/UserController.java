@@ -35,7 +35,7 @@ public class UserController {
             throw new Exception("user not found");
         }
         model.addAttribute("user", user.get());
-        return "users/details";
+        return "profile";
     }
 
     @GetMapping("/rankings")
