@@ -13,4 +13,5 @@ public interface UserService extends UserDetailsService {
     List<User> findAllByRanking(int amount);
     Optional<User> findById(int id);
     void save(WebUser webUser);
+    void update(WebUser webUser);
 }

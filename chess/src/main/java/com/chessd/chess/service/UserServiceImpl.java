@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllByRanking(int amount) {
         List<User> users = userDao.findALlByRanking();
-        if(users.size() < amount){
+        if (users.size() < amount) {
             amount = users.size();
         }
         return users.subList(0, amount);
@@ -68,6 +68,20 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Arrays.asList(roleDao.findByName("ROLE_BASE")));
 
         userDao.save(user);
+    }
+
+    @Override
+    public void update(WebUser webUser) {
+        User user = findByUserName(webUser.getUserName());
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        user.setFirstName(webUser.getFirstName());
+        user.setLastName(webUser.getLastName());
+        user.setEmail(webUser.getEmail());
+        user.setGender(webUser.getGender());
+        user.setCountry(webUser.getCountry());
+        userDao.update(user);
     }
 
 
@@ -94,7 +108,7 @@ public class UserServiceImpl implements UserService {
      */
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for(Role temp: roles){
+        for (Role temp : roles) {
             SimpleGrantedAuthority tempAuthority = new SimpleGrantedAuthority(temp.getName());
             authorities.add(tempAuthority);
         }
