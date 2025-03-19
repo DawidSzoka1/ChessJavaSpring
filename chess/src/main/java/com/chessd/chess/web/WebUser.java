@@ -25,4 +25,16 @@ public class WebUser {
     @Size(min=1, message = "password2 min 1 length")
     private String password2;
 
+    @Size(max = 20, message = "first name cant by longer than 20")
+    private String firstName;
+
+    @Size(max = 20, message = "last name cant by longer than 20")
+    private String lastName;
+
+    private String email;
+
+    @Size(max = 1)
+    private String gender;
+
+    private String country;
 }

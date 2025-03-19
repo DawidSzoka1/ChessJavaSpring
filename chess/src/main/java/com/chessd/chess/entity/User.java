@@ -32,6 +32,14 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "gender",
+            columnDefinition = "varchar(1) check(gender in ('F', 'M'))"
+    )
+    private String gender;
+
+    @Column(name = "country")
+    private String country;
+
     @Column(name = "enable")
     private boolean enable;
 
