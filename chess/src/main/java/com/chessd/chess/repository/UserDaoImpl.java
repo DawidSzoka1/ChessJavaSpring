@@ -11,13 +11,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
 
     private EntityManager entityManager;
 
     @Autowired
     public UserDaoImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    private User userOrNull(TypedQuery<User> query) {
+        User user = null;
+        try {
+            user = query.getSingleResult();
+        } catch (Exception _) {
+        }
+        return user;
     }
 
     @Override
@@ -28,21 +37,19 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User findByUserName(String username) {
-        TypedQuery<User> query = entityManager.createQuery("FROM  User where userName=:uName and enable=true", User.class);
+        TypedQuery<User> query = entityManager
+                .createQuery("FROM  User where userName=:uName and enable=true", User.class);
         query.setParameter("uName", username);
-        User user = null;
-        try {
-            user = query.getSingleResult();
-        }catch (Exception _){}
-        return user;
+        return this.userOrNull(query);
     }
 
-//    @Override
-//    public User findByEmail(String email) {
-//        TypedQuery<User> query = entityManager.createQuery("FROM  User where email=:email and enable=true", User.class);
-//        query.setParameter("email", email);
-//        return query.getSingleResult();
-//    }
+    @Override
+    public User findByEmail(String email) {
+        TypedQuery<User> query = entityManager
+                .createQuery("FROM User where email=:email and enable=true", User.class);
+        query.setParameter("email", email);
+        return this.userOrNull(query);
+    }
 
     @Override
     @Transactional
@@ -59,7 +66,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public List<User> findALlByRanking() {
         TypedQuery<User> query = entityManager.createQuery(
-          "From User where enable=true order by ranking", User.class
+                "From User where enable=true order by ranking", User.class
         );
         return query.getResultList();
     }
@@ -79,11 +86,11 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public Optional<User> findById(int id) {
-        try{
+        try {
             TypedQuery<User> query = entityManager.createQuery("FROM  User where id=:id and enable=true", User.class);
             query.setParameter("id", id);
             return Optional.ofNullable(query.getSingleResult());
-        }catch (Exception e){
+        } catch (Exception e) {
             return Optional.empty();
         }
     }

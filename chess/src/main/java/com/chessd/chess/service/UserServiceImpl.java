@@ -4,7 +4,9 @@ import com.chessd.chess.entity.Role;
 import com.chessd.chess.entity.User;
 import com.chessd.chess.repository.RoleDao;
 import com.chessd.chess.repository.UserDao;
-import com.chessd.chess.web.WebUser;
+import com.chessd.chess.user.CustomUserDetails;
+import com.chessd.chess.user.web.RegisterUser;
+import com.chessd.chess.user.web.UpdateUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of the {@link UserService} interface.
@@ -40,6 +41,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
+
+    @Override
     public List<User> findAll() {
         return userDao.findAll();
     }
@@ -59,11 +65,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(WebUser webUser) {
+    public void save(RegisterUser registerUser) {
         User user = new User();
 
-        user.setUserName(webUser.getUserName());
-        user.setPassword(passwordEncoder.encode(webUser.getPassword()));
+        user.setUserName(registerUser.getUserName());
+        user.setPassword(passwordEncoder.encode(registerUser.getPassword()));
         user.setEnable(true);
         user.setRoles(Arrays.asList(roleDao.findByName("ROLE_BASE")));
 
@@ -71,47 +77,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(WebUser webUser) {
-        User user = findByUserName(webUser.getUserName());
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+    public void update(int id, UpdateUser updateUser) {
+        Optional<User> userOptional = userDao.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("User with that id dont exist");
         }
-        user.setFirstName(webUser.getFirstName());
-        user.setLastName(webUser.getLastName());
-        user.setEmail(webUser.getEmail());
-        user.setGender(webUser.getGender());
-        user.setCountry(webUser.getCountry());
+        User user = userOptional.get();
+        user.setFirstName(updateUser.getFirstName());
+        user.setUserName(updateUser.getUserName());
+        user.setLastName(updateUser.getLastName());
+        user.setEmail(updateUser.getEmail());
+        user.setCountry(updateUser.getCountry());
+        user.setGender(updateUser.getGender());
         userDao.update(user);
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUserName(username);
         if (user == null) {
-            System.out.println("Uzytkownik nie znaleziony: " + username);
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException("User not found");
         }
 
-        return new org.springframework.security.core.userdetails.User(
+        return new CustomUserDetails(
                 user.getUserName(),
                 user.getPassword(),
-                mapRolesToAuthorities(user.getRoles())
+                user.isEnable(),
+                user.getRoles()
         );
-    }
-
-    /**
-     * Maps the roles of a user to {@link GrantedAuthority} objects, which are used for authorization in Spring Security.
-     *
-     * @param roles The roles assigned to the user.
-     * @return A collection of {@link GrantedAuthority} objects corresponding to the user's roles.
-     */
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (Role temp : roles) {
-            SimpleGrantedAuthority tempAuthority = new SimpleGrantedAuthority(temp.getName());
-            authorities.add(tempAuthority);
-        }
-        return authorities;
     }
 }

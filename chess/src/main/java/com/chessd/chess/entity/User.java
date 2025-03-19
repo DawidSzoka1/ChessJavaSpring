@@ -33,7 +33,7 @@ public class User {
     private String email;
 
     @Column(name = "gender",
-            columnDefinition = "varchar(1) check(gender in ('F', 'M'))"
+            columnDefinition = "varchar(1) check(gender in ('F', 'M')) default 'M'"
     )
     private String gender;
 

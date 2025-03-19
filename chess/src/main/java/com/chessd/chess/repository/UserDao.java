@@ -11,11 +11,15 @@ public interface UserDao {
 
     User findByUserName(String username);
 
+    User findByEmail(String email);
+
     //    User findByEmail(String email);
     void delete(int id);
 
     void update(User user);
+
     List<User> findALlByRanking();
+
     List<User> findAll();
 
     List<User> findAllSortedByNameASC();
