@@ -1,4 +1,4 @@
-package com.chessd.chess.controller;
+package com.chessd.chess.controller.user;
 
 
 import org.springframework.stereotype.Controller;

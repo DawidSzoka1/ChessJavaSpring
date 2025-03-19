@@ -1,4 +1,4 @@
-package com.chessd.chess.service;
+package com.chessd.chess.service.game;
 
 import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;

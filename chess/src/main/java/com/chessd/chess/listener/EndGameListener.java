@@ -1,7 +1,7 @@
 package com.chessd.chess.listener;
 
 import com.chessd.chess.event.EndGameEvent;
-import com.chessd.chess.service.EndGameService;
+import com.chessd.chess.service.game.EndGameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;

@@ -4,7 +4,7 @@ import com.chessd.chess.entity.Game;
 import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.event.AfterMoveEvent;
 import com.chessd.chess.event.ProcessMoveEvent;
-import com.chessd.chess.service.MoveService;
+import com.chessd.chess.service.game.MoveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;

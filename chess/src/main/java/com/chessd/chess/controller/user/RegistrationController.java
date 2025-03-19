@@ -1,8 +1,8 @@
-package com.chessd.chess.controller;
+package com.chessd.chess.controller.user;
 
 import com.chessd.chess.entity.User;
 import com.chessd.chess.service.UserService;
-import com.chessd.chess.web.WebUser;
+import com.chessd.chess.user.web.RegisterUser;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +26,14 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        WebUser webUser = new WebUser();
-        model.addAttribute("webUser", webUser);
+        RegisterUser registerUser = new RegisterUser();
+        model.addAttribute("registerUser", registerUser);
         return "users/register";
     }
 
     @PostMapping("/processRegistration")
     public String processRegistration(
-            @Valid @ModelAttribute("webUser") WebUser webUser,
+            @Valid @ModelAttribute("registerUser") RegisterUser registerUser,
             BindingResult bindingResult,
             HttpSession session,
             Model model
@@ -42,18 +42,19 @@ public class RegistrationController {
             return "users/register";
         }
 
-        User existing = userService.findByUserName(webUser.getUserName());
+        User existing = userService.findByUserName(registerUser.getUserName());
         if (existing != null) {
             model.addAttribute("registrationError", "User name already exists.");
             return "users/register";
         }
-        if(!webUser.getPassword().equals(webUser.getPassword2())){
+        if(!registerUser.getPassword().equals(registerUser.getPassword2())){
             model.addAttribute("registrationError", "Passwords dont match");
             return "users/register";
         }
-        userService.save(webUser);
-
-        session.setAttribute("user", webUser);
+        userService.save(registerUser);
+        User user = userService.findByUserName(registerUser.getUserName());
+        System.out.println(user);
+        session.setAttribute("user", user.getId());
 
         return "index";
     }

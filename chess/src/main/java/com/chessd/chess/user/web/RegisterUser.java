@@ -1,4 +1,4 @@
-package com.chessd.chess.web;
+package com.chessd.chess.user.web;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -7,11 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class WebUser {
+public class RegisterUser {
 
     @NotNull(message = "is required")
     @Size(min=1, message = "user name min 1 length")
@@ -25,16 +27,15 @@ public class WebUser {
     @Size(min=1, message = "password2 min 1 length")
     private String password2;
 
-    @Size(max = 20, message = "first name cant by longer than 20")
-    private String firstName;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        RegisterUser registerUser = (RegisterUser) o;
+        return Objects.equals(userName, registerUser.userName);
+    }
 
-    @Size(max = 20, message = "last name cant by longer than 20")
-    private String lastName;
-
-    private String email;
-
-    @Size(max = 1)
-    private String gender;
-
-    private String country;
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(userName);
+    }
 }

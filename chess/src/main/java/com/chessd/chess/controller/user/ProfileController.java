@@ -1,4 +1,4 @@
-package com.chessd.chess.controller;
+package com.chessd.chess.controller.user;
 
 import com.chessd.chess.entity.User;
 import com.chessd.chess.service.UserService;

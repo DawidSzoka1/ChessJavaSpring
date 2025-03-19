@@ -1,6 +1,6 @@
 package com.chessd.chess.webSocketHandler;
 
-import com.chessd.chess.service.GameService;
+import com.chessd.chess.service.game.GameService;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

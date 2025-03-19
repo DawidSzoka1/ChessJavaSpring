@@ -1,7 +1,7 @@
 package com.chessd.chess.controller;
 
 import com.chessd.chess.entity.Game;
-import com.chessd.chess.service.GameService;
+import com.chessd.chess.service.game.GameService;
 import com.chessd.chess.service.RandomUniqIdGenerator;
 import com.chessd.chess.utils.Column;
 import org.springframework.beans.factory.annotation.Autowired;

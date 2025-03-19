@@ -2,7 +2,7 @@ package com.chessd.chess.listener;
 
 import com.chessd.chess.event.KingSafetyEvent;
 import com.chessd.chess.event.ValidateMoveEvent;
-import com.chessd.chess.service.MoveService;
+import com.chessd.chess.service.game.MoveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;

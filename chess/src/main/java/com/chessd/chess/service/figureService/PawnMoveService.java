@@ -2,7 +2,7 @@ package com.chessd.chess.service.figureService;
 
 import com.chessd.chess.entity.figureEntity.Figure;
 import com.chessd.chess.entity.figureEntity.Pawn;
-import com.chessd.chess.service.MoveService;
+import com.chessd.chess.service.game.MoveService;
 import com.chessd.chess.utils.Column;
 import com.chessd.chess.utils.Position;
 import org.springframework.beans.factory.annotation.Autowired;

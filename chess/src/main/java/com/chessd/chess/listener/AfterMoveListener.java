@@ -2,8 +2,8 @@ package com.chessd.chess.listener;
 
 import com.chessd.chess.event.AfterMoveEvent;
 import com.chessd.chess.event.EndGameEvent;
-import com.chessd.chess.service.CheckService;
-import com.chessd.chess.service.MoveService;
+import com.chessd.chess.service.game.CheckService;
+import com.chessd.chess.service.game.MoveService;
 import com.chessd.chess.service.MoveUpdateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
