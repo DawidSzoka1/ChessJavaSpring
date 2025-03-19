@@ -33,7 +33,7 @@
             <h1><strong>REJESTRACJA</strong></h1>
         </div>
         <div class="col-6 main-content">
-            <form th:action="@{/processRegistration}" method="post" th:object="${webUser}">
+            <form th:action="@{/processRegistration}" method="post" th:object="${registerUser}">
                 <div class="container">
                     <div th:if="${registrationError}" class="alert alert-danger">
                         <span th:text="${registrationError}"></span>
