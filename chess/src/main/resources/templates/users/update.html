@@ -8,6 +8,9 @@
 <body>
 <div>
     <div th:insert="~{fragments/sidebar :: sidebar}"></div>
+    <form method="post" th:action="@{/users/update}" th:object="${user}">
+
+    </form>
     <div th:text="${user}"></div>
 </div>
 
