@@ -45,6 +45,7 @@ public class UpdateController {
     @GetMapping("/update")
     public String updateInfo(Model model, Principal principal) {
         User user = userService.findByUserName(principal.getName());
+        model.addAttribute("fullName", user.getFullName());
         model.addAttribute("user", user);
         model.addAttribute("error", false);
         return "users/update";

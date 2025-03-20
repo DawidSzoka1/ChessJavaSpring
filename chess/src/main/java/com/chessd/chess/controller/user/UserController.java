@@ -29,8 +29,9 @@ public class UserController {
 
     @GetMapping("/rankings")
     public String rankings(Model model) {
-        List<User> users = userService.findAllByRanking(5);
-        model.addAttribute("users", users);
+        List<User> users = userService.findAllByRanking(6);
+        model.addAttribute("first", users.getFirst());
+        model.addAttribute("users", users.subList(1, users.size()));
         return "users/rankings";
     }
 }

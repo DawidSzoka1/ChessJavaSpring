@@ -24,12 +24,7 @@ public class ProfileController {
         if(user == null){
             throw new IllegalArgumentException("User with that id does not exist");
         }
-        String fullName = (user.getFirstName() == null ? "" : user.getFirstName() + " " ) +
-                 (user.getLastName() == null ? "" : user.getLastName());
-        if(fullName.isEmpty()){
-            fullName = "brak danych";
-        }
-        model.addAttribute("fullName", fullName);
+        model.addAttribute("fullName", user.getFullName());
         model.addAttribute("user", user);
         return "users/profile";
     }

@@ -38,16 +38,21 @@
             </div>
             <div class="row bottom d-flex">
                 <form method="post" th:action="@{/users/update}" th:object="${user}">
-                    <div class="col-9 mt-4">
-                        <h3>Pseudonim:  <input th:field="*{userName}" name="userName" id="userName"></h3>
-                        <h3>Imie:  <input th:field="*{firstName}" name="firstName" id="firstName"></h3>
-                        <h3>Nazwisko:  <input th:field="*{lastName}" name="lastName" id="lastName"></h3>
-                        <h3>Adres e-mail:  <input th:field="*{email}" name="email" id="email"></h3>
-                        <h3>Kraj:  <input th:field="*{country}" name="country" id="country"></h3>
-                        <h3>Płeć:  <input th:field="*{gender}" name="gender" id="gender"></h3>
-                    </div>
-                    <div class="col-3 text-end mt-4">
-                        <button type="submit" class="btn btn-lg custom-btn">ZAAKCEPTUJ</button>
+                    <div class="row">
+                        <div class="col-7 mt-4">
+                            <h3>Pseudonim: <input th:field="*{userName}" name="userName" id="userName"></h3>
+                            <h3>Imie: <input th:field="*{firstName}" name="firstName" id="firstName"></h3>
+                            <h3>Nazwisko: <input th:field="*{lastName}" name="lastName" id="lastName"></h3>
+                            <h3>Adres e-mail: <input th:field="*{email}" name="email" id="email"></h3>
+                            <h3>Kraj: <input th:field="*{country}" name="country" id="country"></h3>
+                            <h3>Płeć: <select th:field="*{gender}" name="gender" id="gender">
+                                <option value="M">Mężczyzna</option>
+                                <option value="F">Kobieta</option>
+                            </select></h3>
+                        </div>
+                        <div class="col text-end mt-4">
+                            <button type="submit" class="btn btn-lg custom-btn">ZAAKCEPTUJ</button>
+                        </div>
                     </div>
                 </form>
             </div>
