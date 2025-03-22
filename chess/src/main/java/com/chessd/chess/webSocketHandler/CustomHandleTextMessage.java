@@ -1,11 +1,21 @@
 package com.chessd.chess.webSocketHandler;
 
+import com.chessd.chess.service.RandomUniqIdGenerator;
 import com.chessd.chess.service.game.GameService;
+import com.chessd.chess.utils.MatchmakingMechanism;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketSession;
+
+import java.io.IOException;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * Handles WebSocket text messages related to chess game operations.
@@ -13,8 +23,10 @@ import org.springframework.stereotype.Component;
  * (e.g., handling moves, responding to pings), and returns a response to the client.
  */
 @Component
-@Getter @Setter @NoArgsConstructor
-public class GameHandleTextMessage {
+@Getter
+@Setter
+@NoArgsConstructor
+public class CustomHandleTextMessage {
     private String message;
     private String messageType;
     private String gameId;
@@ -22,10 +34,16 @@ public class GameHandleTextMessage {
      * The service used to manage chess game logic and state.
      */
     private GameService gameService;
+    private RandomUniqIdGenerator randomUniqIdGenerator;
+    private MatchmakingMechanism matchmakingMechanism;
 
     @Autowired
-    public GameHandleTextMessage(GameService gameService) {
+    public CustomHandleTextMessage(GameService gameService,
+                                   RandomUniqIdGenerator randomUniqIdGenerator,
+                                   MatchmakingMechanism matchmakingMechanism) {
         this.gameService = gameService;
+        this.matchmakingMechanism = matchmakingMechanism;
+        this.randomUniqIdGenerator = randomUniqIdGenerator;
     }
 
     /**
@@ -42,7 +60,7 @@ public class GameHandleTextMessage {
                     moveDetails[1],
                     String.valueOf(message.charAt(0)),
                     messageType.equals("take"));
-        }catch (Exception e){
+        } catch (Exception e) {
             StackTraceElement stackTraceElement = e.getStackTrace()[0];
             return new MessageToJS("ERROR", stackTraceElement.getClassName() + " " +
                     stackTraceElement.getMethodName() + " " + stackTraceElement.getLineNumber()
@@ -50,6 +68,13 @@ public class GameHandleTextMessage {
         }
         return new MessageToJS(messageType.toUpperCase(), moveDetails[1], true);
     }
+
+    public CustomHandleTextMessage fromPayload(String payload) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
+        return objectMapper.readValue(payload, CustomHandleTextMessage.class);
+    }
+
 
     /**
      * Constructs a "pong" message response to keep the WebSocket connection alive.
@@ -60,15 +85,37 @@ public class GameHandleTextMessage {
         return new MessageToJS("PONG", "pong", true);
     }
 
+
+    public MessageToJS queueMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
+        Map<String, String> response = matchmakingMechanism.lookForOpponent(session, waitingPlayers);
+        if(response.get("result").equals("not found")){
+            waitingPlayers.add(session);
+            return new MessageToJS();
+        }
+        return new MessageToJS("QUEUE", "waiting for other player..", true);
+    }
+
+    public MessageToJS foundMessage() {
+        return new MessageToJS("FOUND", "found", true);
+    }
+
     /**
      * Handles the received message based on its type.
      * Delegates to appropriate handlers (e.g., move handling, pong response).
      *
      * @return a {@link MessageToJS} object representing the response to the client.
      */
-    public MessageToJS handleMessage()  {
+    public MessageToJS handleMessage() {
         return switch (messageType) {
             case "move", "take" -> handleMessageMove();
+            default -> pongMessage();
+        };
+    }
+
+    public MessageToJS handleMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
+        return switch (messageType) {
+            case "queue" -> queueMessage(session, waitingPlayers);
+            case "found" -> foundMessage();
             default -> pongMessage();
         };
     }
