@@ -13,25 +13,26 @@
         </div>
 
         <div class="col-5 d-flex flex-column text-center py-5">
-            <div class="top flex-grow-1">
+            <div class="flex-grow-1">
                 <h1>RANKING GIER</h1>
             </div>
-            <div class="bottom flex-grow-1">
+            <div class="flex-grow-1">
                 <h2>~TYP GRY~</h2>
             </div>
         </div>
 
-        <div class="col-3 d-flex flex-column">
-            <div class="flex-grow-1 text-center" style="margin-top: 40vh">
-                <h3 th:text="${first.userName}"></h3>
+        <div class="col-3 d-flex flex-column text-center">
+            <div class="flex-grow-1" style="margin-top: 40vh">
+                <h3 th:text="${first.userName} + ' ' + ${first.ranking}"></h3>
             </div>
-            <img th:src="@{/images/sidebar/ranking.png}">
-
+            <div class="flex-grow-1">
+                <img th:src="@{/images/sidebar/ranking.png}" class="img-fluid w-60">
+            </div>
         </div>
         <div class="col-3" style="margin-top:50vh">
-                <th:block th:each="user, count : ${users}">
-                    <h4 th:text="${count.count + 1} + '.' + ${user.userName}"></h4>
-                </th:block>
+            <th:block th:each="user, count : ${users}">
+                <h4 th:text="${count.count + 1} + '.' + ${user.userName} + ' ' + ${user.ranking}"></h4>
+            </th:block>
         </div>
 
     </div>

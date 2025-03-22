@@ -56,6 +56,6 @@ public class RegistrationController {
         System.out.println(user);
         session.setAttribute("user", user.getId());
 
-        return "index";
+        return "users/login";
     }
 }

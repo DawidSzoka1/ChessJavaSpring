@@ -1,7 +1,5 @@
 package com.chessd.chess.webSocketHandler;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,16 +11,16 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 /**
  * Handles WebSocket communication for the chess application.
  * This class extends {@link TextWebSocketHandler} to manage text-based WebSocket messages.
- * It processes messages sent by the client, delegates game logic to {@link GameHandleTextMessage},
+ * It processes messages sent by the client, delegates game logic to {@link CustomHandleTextMessage},
  * and responds with appropriate messages to the client.
  */
 @Component
 public class ChessWebSocketHandler extends TextWebSocketHandler {
-    private GameHandleTextMessage gameHandleTextMessage;
+    private final CustomHandleTextMessage customHandleTextMessage;
 
     @Autowired
-    public ChessWebSocketHandler(GameHandleTextMessage gameHandleTextMessage) {
-        this.gameHandleTextMessage = gameHandleTextMessage;
+    public ChessWebSocketHandler(CustomHandleTextMessage customHandleTextMessage) {
+        this.customHandleTextMessage = customHandleTextMessage;
     }
 
     @Override
@@ -40,23 +38,17 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
      */
     @Override
     protected void handleTextMessage(@NotNull WebSocketSession session, @NotNull TextMessage message) throws Exception {
-        String payload = message.getPayload();
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
-        // Deserialize the message into a GameHandleTextMessage object
-        System.out.println(payload);
-        GameHandleTextMessage gh = objectMapper.readValue(payload, GameHandleTextMessage.class);
-
+        CustomHandleTextMessage gh = customHandleTextMessage.fromPayload(message.getPayload());
         // Update the game state in the handler
-        gameHandleTextMessage.setGameId(gh.getGameId());
-        gameHandleTextMessage.setMessage(gh.getMessage());
-        gameHandleTextMessage.setMessageType(gh.getMessageType());
+        customHandleTextMessage.setGameId(gh.getGameId());
+        customHandleTextMessage.setMessage(gh.getMessage());
+        customHandleTextMessage.setMessageType(gh.getMessageType());
 
         // Process the message and send a response back to the client
-        session.sendMessage(new TextMessage(gameHandleTextMessage.handleMessage().toJson()));
+        session.sendMessage(new TextMessage(customHandleTextMessage.handleMessage().toJson()));
 
         // Log the current state of the message handler
-        System.out.println(gameHandleTextMessage);
+        System.out.println(customHandleTextMessage);
     }
 
     @Override

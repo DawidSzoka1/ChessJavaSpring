@@ -55,8 +55,6 @@ body, html {
     background-color: #4a2c2c;
     color: white;
     display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100vh;
 }
 .main-content {
@@ -66,22 +64,27 @@ body, html {
 }
 .top, .bottom {
     height: 15vh;
-    background-color: #f8f9fa;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
+.top img, .bottom img{
+    width: 5vw;
+    height: auto;
+    margin-right: 10px;
+}
+
 .middle {
     flex-grow: 1;
-    background-color: #e9ecef;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .right-sidebar {
-    background-color: #d1d1d1; /* Szary kolor dla prawego paska */
+    background-color: #d1d1d1;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh; /* Pełna wysokość ekranu */
+    height: 100vh;
 }
