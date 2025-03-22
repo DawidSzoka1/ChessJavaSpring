@@ -4,10 +4,10 @@
 export default class CustomWebSocket {
     /**
      * @private
-     * @type {number}
+     * @type {string}
      * The unique game ID associated with this WebSocket connection.
      */
-    #gameId = 0;
+    #gameId = "";
 
     /**
      * @private
@@ -35,6 +35,11 @@ export default class CustomWebSocket {
     pieceToMove = null;
 
     /**
+     * @type {HTMLElement|null}
+     */
+    infoObject = null
+
+    /**
      * @private
      * @type {Object|null}
      * The current state of the game board.
@@ -43,7 +48,7 @@ export default class CustomWebSocket {
 
     /**
      * Creates an instance of CustomWebSocket.
-     * @param {number} gameId - The unique identifier for the game.
+     * @param {string} gameId - The unique identifier for the game.
      * @param {string} url - The WebSocket server URL.
      */
     constructor(gameId, url) {
@@ -93,7 +98,7 @@ export default class CustomWebSocket {
 
     /**
      * Sets the unique game ID.
-     * @param {number} gameId - The new game ID.
+     * @param {string} gameId - The new game ID.
      */
     set gameId(gameId) {
         this.#gameId = gameId;
@@ -101,7 +106,7 @@ export default class CustomWebSocket {
 
     /**
      * Gets the unique game ID.
-     * @returns {number} The game ID.
+     * @returns {string} The game ID.
      */
     get gameId() {
         return this.#gameId;
@@ -112,12 +117,14 @@ export default class CustomWebSocket {
      */
     connect() {
         this.socket = new WebSocket(this.url);
+        console.log(`socekt: ${this.socket}`)
         this.open();
+
         this.messageListener();
 
         this.socket.onerror = (error) => {
             console.error(error);
-            setTimeout(() => this.connect(), 1000);
+            // setTimeout(() => this.connect(), 1000);
         };
 
         this.socket.onclose = () => {
@@ -141,15 +148,32 @@ export default class CustomWebSocket {
                 case "ERROR":
                     this.messageError(data);
                     break;
+                case "QUEUE":
+                    this.messageQueue(data);
+                    break;
+                case "FOUND":
+                    this.messageFound(data);
+                    break;
                 default:
                     this.messagePong();
             }
         };
     }
 
-    messageError(data){
+    messageFound(data) {
+        console.log(`Found message ${data}`)
+        window.location.href = `/game/${data.content}`
+    }
+
+    messageQueue(data) {
+        console.log(`Queue message ${data}`)
+        this.infoObject.innerHTML = data.content;
+    }
+
+    messageError(data) {
         console.log(data)
     }
+
     /**
      * Handles "PONG" messages to keep the WebSocket connection alive.
      * @returns {string} A confirmation string indicating receipt of the "PONG".
@@ -158,7 +182,8 @@ export default class CustomWebSocket {
         this.isPongReceived = true;
         return "received";
     }
-    validData(data){
+
+    validData(data) {
         if (!this.#eventForMove) {
             console.warn("No event for move.");
             return false;
@@ -178,7 +203,7 @@ export default class CustomWebSocket {
      * @param {string} data.content - The new position for the piece.
      */
     messageMove(data) {
-        if(!this.validData(data)){
+        if (!this.validData(data)) {
             console.log("move isnt valid")
             console.log(data)
             return null;
@@ -189,8 +214,9 @@ export default class CustomWebSocket {
         console.log("Successful move");
     }
 
-    messageTake(data){
-        if(!this.validData(data)){
+
+    messageTake(data) {
+        if (!this.validData(data)) {
             console.log("move isnt valid")
             console.log(data)
             return null;
