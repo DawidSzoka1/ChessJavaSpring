@@ -1,6 +1,6 @@
 package com.chessd.chess.user;
 
-import com.chessd.chess.entity.Role;
+import com.chessd.chess.user.entity.Role;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

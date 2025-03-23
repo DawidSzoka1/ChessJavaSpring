@@ -1,6 +1,6 @@
 package com.chessd.chess.security;
 
-import com.chessd.chess.service.UserService;
+import com.chessd.chess.user.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

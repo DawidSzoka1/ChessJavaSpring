@@ -1,7 +1,7 @@
 package com.chessd.chess.security;
 
-import com.chessd.chess.entity.User;
-import com.chessd.chess.service.UserService;
+import com.chessd.chess.user.entity.User;
+import com.chessd.chess.user.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
