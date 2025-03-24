@@ -1,6 +1,6 @@
 package com.chessd.chess.webSocket.handler;
 
-import com.chessd.chess.game.service.RandomUniqIdGenerator;
+import com.chessd.chess.webSocket.message.CustomHandleTextMessage;
 import com.chessd.chess.webSocket.message.MessageToJS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,12 +15,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Component
 public class MatchmakingHandler extends TextWebSocketHandler {
 
-    private final Queue<WebSocketSession> waitingPlayers = new ConcurrentLinkedQueue<>();
-    private final RandomUniqIdGenerator randomUniqIdGenerator;
+    private static Queue<WebSocketSession> waitingPlayers = new ConcurrentLinkedQueue<>();
+    private final CustomHandleTextMessage customHandleTextMessage;
 
     @Autowired
-    public MatchmakingHandler(RandomUniqIdGenerator randomUniqIdGenerator) {
-        this.randomUniqIdGenerator = randomUniqIdGenerator;
+    public MatchmakingHandler(CustomHandleTextMessage customHandleTextMessage) {
+        this.customHandleTextMessage = customHandleTextMessage;
     }
 
     @Override
@@ -31,29 +31,12 @@ public class MatchmakingHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        CustomHandleTextMessage ch = customHandleTextMessage.fromPayload(message.getPayload());
+        customHandleTextMessage.setGameId(ch.getGameId());
+        customHandleTextMessage.setMessage(ch.getMessage());
+        customHandleTextMessage.setMessageType(ch.getMessageType());
 
-        synchronized (waitingPlayers) {
-            if (waitingPlayers.isEmpty()) {
-                waitingPlayers.add(session);
-                session.sendMessage(new TextMessage(
-                        new MessageToJS("QUEUE",
-                                "waiting for other player...",
-                                true).toJson()));
-            } else {
-                WebSocketSession player1 = waitingPlayers.poll();
-                if (player1 != null) {
-                    String gameId = randomUniqIdGenerator.generateUniqId();
-                    player1.sendMessage(new TextMessage(
-                            new MessageToJS("FOUND",
-                                    gameId,
-                                    true).toJson()));
-                    session.sendMessage(new TextMessage(
-                            new MessageToJS("FOUND",
-                                    gameId,
-                                    true).toJson()));
-                }
-            }
-        }
+        session.sendMessage(new TextMessage(customHandleTextMessage.handleMessage(session, waitingPlayers).toJson()));
     }
 
     @Override

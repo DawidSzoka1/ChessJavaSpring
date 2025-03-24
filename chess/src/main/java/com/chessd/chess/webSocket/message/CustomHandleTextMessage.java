@@ -2,7 +2,10 @@ package com.chessd.chess.webSocket.message;
 
 import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.game.service.GameService;
-import com.chessd.chess.game.utils.MatchmakingMechanism;
+import com.chessd.chess.user.entity.User;
+import com.chessd.chess.user.service.UserService;
+import com.chessd.chess.webSocket.utils.MatchmakingMechanism;
+import com.chessd.chess.webSocket.utils.UserHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
@@ -36,14 +40,20 @@ public class CustomHandleTextMessage {
     private GameService gameService;
     private RandomUniqIdGenerator randomUniqIdGenerator;
     private MatchmakingMechanism matchmakingMechanism;
+    private UserService userService;
+    private UserHelper userHelper;
 
     @Autowired
     public CustomHandleTextMessage(GameService gameService,
                                    RandomUniqIdGenerator randomUniqIdGenerator,
-                                   MatchmakingMechanism matchmakingMechanism) {
+                                   MatchmakingMechanism matchmakingMechanism,
+                                   UserService userService,
+                                   UserHelper userHelper) {
         this.gameService = gameService;
         this.matchmakingMechanism = matchmakingMechanism;
         this.randomUniqIdGenerator = randomUniqIdGenerator;
+        this.userService = userService;
+        this.userHelper = userHelper;
     }
 
     /**
@@ -87,16 +97,18 @@ public class CustomHandleTextMessage {
 
 
     public MessageToJS queueMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
-        Map<String, String> response = matchmakingMechanism.lookForOpponent(session, waitingPlayers);
-        if(response.get("result").equals("not found")){
+        Map<String, Object> response = matchmakingMechanism.lookForOpponent(session, waitingPlayers);
+        System.out.println(matchmakingMechanism);
+        if(!(Boolean)response.get("result")){
             waitingPlayers.add(session);
-            return new MessageToJS();
+            return new MessageToJS("QUEUE", "waiting for other player..", true);
         }
-        return new MessageToJS("QUEUE", "waiting for other player..", true);
-    }
-
-    public MessageToJS foundMessage() {
-        return new MessageToJS("FOUND", "found", true);
+        User player1 = userHelper.userFromWebSession((WebSocketSession)response.get("player1"));
+        User player2 = userHelper.userFromWebSession((WebSocketSession)response.get("player2"));
+        String gameId = matchmakingMechanism.createGame(player1, player2);
+        ((WebSocketSession)response.get("player2"))
+                .sendMessage(new TextMessage(new MessageToJS("FOUND", gameId, true).toJson()));
+        return new MessageToJS("FOUND", gameId, true);
     }
 
     /**
@@ -115,7 +127,6 @@ public class CustomHandleTextMessage {
     public MessageToJS handleMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
         return switch (messageType) {
             case "queue" -> queueMessage(session, waitingPlayers);
-            case "found" -> foundMessage();
             default -> pongMessage();
         };
     }
