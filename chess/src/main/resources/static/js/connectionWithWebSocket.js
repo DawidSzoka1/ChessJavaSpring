@@ -162,7 +162,7 @@ export default class CustomWebSocket {
 
     messageFound(data) {
         console.log(`Found message ${data}`)
-        window.location.href = `/game/${data.content}`
+        window.location.href = `/play/${data.content}`
     }
 
     messageQueue(data) {

@@ -7,8 +7,12 @@ addEventListener("DOMContentLoaded", () => {
     find.addEventListener("click", (e) => {
         e.preventDefault()
         socket.infoObject = info;
-        console.log("Evenet findGame ")
+        console.log("Evenet findGame")
         info.innerHTML = "Szukanie gry..."
-        socket.send("queue");
+        socket.send({
+            message: 'queue',
+            messageType: 'queue',
+            gameId: '0',
+        });
     })
 })
