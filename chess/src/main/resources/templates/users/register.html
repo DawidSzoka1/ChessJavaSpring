@@ -1,5 +1,6 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Login Page</title>
     <meta charset="utf-8">
@@ -10,6 +11,7 @@
     <link th:href="@{/css/global.css}" rel="stylesheet">
     <link th:href="@{/css/login.css}" rel="stylesheet">
 </head>
+
 <body>
 <div class="container-fluid">
     <div class="row">
@@ -17,41 +19,48 @@
         <div class="col-1 sidebar">
             <div th:insert="~{fragments/sidebar :: sidebar}"></div>
         </div>
+        <div class="col-2">
 
-        <div class="col-2"></div>
+        </div>
+
 
         <div class="col-2 small-col">
             <img th:src="@{/images/index/chess-piece.png}" alt="chess-piece">
         </div>
+
+        <!-- Główna kolumna zajmująca resztę szerokości -->
         <div class="col-1 mt-5 mr-5">
-            <h1><strong>LOGOWANIE</strong></h1>
+            <h1><strong>REJESTRACJA</strong></h1>
         </div>
         <div class="col-6 main-content">
-            <form th:action="@{/authenticateTheUser}" method="post">
+            <form th:action="@{/processRegistration}" method="post" th:object="${registerUser}">
                 <div class="container">
-                    <div th:if="${param.logout}" class="alert alert-info">
-                        Wylogowany pomyslnie
-                    </div>
-                    <div th:if="${param.error}" class="alert alter-danger">
-                        <span>Niepoprawny login lub haslo</span>
+                    <div th:if="${registrationError}" class="alert alert-danger">
+                        <span th:text="${registrationError}"></span>
                     </div>
                     <div class="login-box">
                         <div class="row">
                             <label for="login" class="col-3 black">LOGIN:</label>
                             <div class="col-9 white">
-                                <input type="text" id="login" name="username" placeholder="Wpisz login">
+                                <input type="text" th:field="*{userName}" id="login" placeholder="Wpisz login">
                             </div>
                         </div>
                         <div class="row">
                             <label for="password" class="col-3 white">HASŁO:</label>
                             <div class="col-9 black">
-                                <input type="password" id="password" name="password" placeholder="Wpisz hasło">
+                                <input type="password" th:field="*{password}" id="password" placeholder="Wpisz hasło">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label for="password" class="col-3 black">Powtorz haslo:</label>
+                            <div class="col-9 white">
+                                <input type="password" th:field="*{password2}" id="password2" placeholder="Wpisz hasło">
                             </div>
                         </div>
                     </div>
                     <div class="text-end">
-                        <button type="submit" class="btn btn-lg mt-3">Zaloguj sie</button>
-                        <a th:href="@{/register}" class="text-secondary text-decoration-none">Nie masz jeszcze konta?</a>
+                        <button type="submit" class="btn btn-lg mt-3">Zarejestruj sie</button>
+                        <a th:href="@{/login}" class="text-secondary text-decoration-none">Masz juz konto?</a>
                     </div>
                 </div>
             </form>
