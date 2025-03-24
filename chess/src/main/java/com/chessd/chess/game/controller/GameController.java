@@ -8,20 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
 @Controller
-@RequestMapping("/game")
 public class GameController {
     GameService gameService;
     RandomUniqIdGenerator randomUniqIdGenerator;
-    private Set<String> initializedGames = new HashSet<>();
-    private HashMap<String, Set<String>> playersInGame = new HashMap<>();
 
     @Autowired
     public GameController(GameService gameService, RandomUniqIdGenerator randomUniqIdGenerator) {
@@ -29,13 +28,13 @@ public class GameController {
         this.randomUniqIdGenerator = randomUniqIdGenerator;
     }
 
-    @GetMapping("/classic")
-    public String classic(Model model){
-//        Game g = gameService.getGameById("9397a5d8-e1a1-4332-b96b-3815aa77214e").get();
-
-        Game g = new Game(randomUniqIdGenerator.generateUniqId());
-        gameService.save(g);
-        gameService.startGame(g);
+    @GetMapping("/play/{gamId}")
+    public String classic(Model model, @PathVariable String gamId){
+        Optional<Game> optional = gameService.getGameById(gamId);
+        if(optional.isEmpty()){
+            return "game/lobby";
+        }
+        Game g = gameService.getGameById(gamId).get();
         model
                 .addAttribute("white", g.getWhite())
                 .addAttribute("black", g.getBlack())
