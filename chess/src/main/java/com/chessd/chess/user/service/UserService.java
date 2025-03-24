@@ -21,5 +21,9 @@ public interface UserService extends UserDetailsService {
 
     void save(RegisterUser registerUser);
 
+    void save(User user);
+
     void update(int id, UpdateUser user);
+
+    User createGuestUser();
 }

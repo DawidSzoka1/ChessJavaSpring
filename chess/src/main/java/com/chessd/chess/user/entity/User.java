@@ -32,6 +32,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "is_guest")
+    private boolean isGuest = false;
+
     @Column(name = "gender",
             columnDefinition = "varchar(1) check(gender in ('F', 'M')) default 'M'"
     )

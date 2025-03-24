@@ -74,6 +74,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void save(User user) {
+        userDao.save(user);
+    }
+
+    @Override
     public void update(int id, UpdateUser updateUser) {
         Optional<User> userOptional = userDao.findById(id);
         if (userOptional.isEmpty()) {
@@ -87,6 +92,15 @@ public class UserServiceImpl implements UserService {
         user.setCountry(updateUser.getCountry());
         user.setGender(updateUser.getGender());
         userDao.update(user);
+    }
+
+    @Override
+    public User createGuestUser() {
+        User guest = new User();
+        guest.setUserName("Guest_" + UUID.randomUUID().toString().substring(0, 6));
+        guest.setGuest(true);
+        this.save(guest);
+        return guest;
     }
 
     @Override
