@@ -97,6 +97,11 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public List<Game> getGamesByPlayerUsername(String username) {
+        return gameDao.getGamesByPlayerUsername(username);
+    }
+
+    @Override
     public Optional<Game> getGameById(String gameId) {
         return gameDao.getGameById(gameId);
     }

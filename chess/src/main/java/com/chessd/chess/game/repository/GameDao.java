@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface GameDao {
     Optional<Game> getGameById(String gameId);
-    List<Game> getGamesByPlayerId(String playerId);
+    List<Game> getGamesByPlayerUsername(String username);
     List<Game> getAllGames();
     void save(Game game);
     void update(Game game);

@@ -38,11 +38,11 @@ public class GameDaoImpl implements GameDao {
     }
 
     @Override
-    public List<Game> getGamesByPlayerId(String playerId) {
+    public List<Game> getGamesByPlayerUsername(String username) {
         TypedQuery<Game> query = entityManager.createQuery(
-                "FROM Game WHERE white = :playerId or black = :playerId " +
+                "FROM Game WHERE white = :username or black = :username " +
                         "order by start", Game.class);
-        query.setParameter("playerId", playerId);
+        query.setParameter("username", username);
         return query.getResultList();
     }
 
