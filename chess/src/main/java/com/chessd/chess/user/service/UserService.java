@@ -17,6 +17,8 @@ public interface UserService extends UserDetailsService {
 
     List<User> findAllByRanking(int amount);
 
+    List<User> findAllSortedByNameASC();
+
     Optional<User> findById(int id);
 
     void save(RegisterUser registerUser);

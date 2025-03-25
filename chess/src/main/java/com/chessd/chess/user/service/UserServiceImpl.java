@@ -57,6 +57,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findAllSortedByNameASC() {
+        return userDao.findAllSortedByNameASC();
+    }
+
+    @Override
     public Optional<User> findById(int id) {
         return userDao.findById(id);
     }
