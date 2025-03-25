@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:href="@{/css/global.css}">
 </head>
 <body>
-Games history
+<div>
+    <div th:insert="~{fragments/sidebar :: sidebar}"></div>
+    <ul>
+       <li th:each="game : ${games}">
+           <th:block th:text="${game.getGameId()}"></th:block>
+       </li>
+    </ul>
+</div>
+
 </body>
 </html>
