@@ -40,6 +40,7 @@ public class UserSecurityConfig {
                                 .requestMatchers("/game/**").permitAll()
                                 .requestMatchers("/play").permitAll()
                                 .requestMatchers("/users/update").authenticated()
+                                .requestMatchers("/admin/*").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST,"/logout").authenticated()
                                 .anyRequest().permitAll()
                 )

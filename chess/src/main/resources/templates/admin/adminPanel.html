@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/global.css}">
+</head>
+<body>
+<div>
+    <div th:insert="~{fragments/sidebar :: sidebar}"></div>
+    <ul>
+        <li th:each="user : ${users}">
+            <th:block th:text="${user.userName}"></th:block>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

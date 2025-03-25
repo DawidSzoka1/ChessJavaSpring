@@ -21,12 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/all")
-    public String all(Model model) {
-        model.addAttribute("users", userService.findAll());
-        return "users/all";
-    }
-
     @GetMapping("/rankings")
     public String rankings(Model model) {
         List<User> users = userService.findAllByRanking(6);
