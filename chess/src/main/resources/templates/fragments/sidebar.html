@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<div th:fragment="sidebar" class="sidebar">
+    <div class="icon">
+        <a th:href="@{/}"><img th:src="@{/images/sidebar/home.png}" alt="home"></a>
+    </div>
+
+    <div class="icon">
+        <a th:href="@{/users/rankings}"><img th:src="@{/images/sidebar/ranking.png}" alt="Ranking"></a>
+    </div>
+
+    <div sec:authorize="!isAuthenticated()" class="icon">
+        <a th:href="@{/login}"><img th:src="@{/images/sidebar/login.png}" alt="Login"></a>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" class="icon">
+        <a th:href="@{/users/profile/{userName}(userName=${#authentication.principal.username})}"><img th:src="@{/images/sidebar/profile.png}" alt="Profile"></a>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" class="icon">
+        <form th:action="@{/logout}" method="post">
+            <input type="image" th:src="@{/images/sidebar/logout.png}" alt="logout" class="icon" width="70">
+        </form>
+    </div>
+</div>
+</body>
+</html>

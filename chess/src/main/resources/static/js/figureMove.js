@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
 
-    const ws = new CustomWebSocket(gameId, "ws://localhost:8080/chess");
+    const ws = new CustomWebSocket(gameId, "ws://localhost:8080/ws/chess");
     ws.connect();
 
     pieces.forEach(piece => {
@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
             messageType: e.target.tagName === 'DIV' ? 'move' : 'take',
             gameId: gameId,
         });
-
 
         e.preventDefault();
     }
