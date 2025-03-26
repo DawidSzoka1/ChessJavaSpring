@@ -10,6 +10,7 @@ import com.chessd.chess.game.event.ValidateMoveEvent;
 import com.chessd.chess.figure.repository.FigureDao;
 import com.chessd.chess.game.repository.GameDao;
 import com.chessd.chess.game.utils.GameResult;
+import com.chessd.chess.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class GameServiceImpl implements GameService {
     }
 
     public Game getGameIfExists(String gameId){
-        Optional<Game> gameOpt = gameDao.getGameById(gameId);
+        Optional<Game> gameOpt = gameDao.getGameByGameId(gameId);
         //TODO throw error custom
         return gameOpt.orElse(null);
     }
@@ -97,13 +98,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getGamesByPlayerUsername(String username) {
-        return gameDao.getGamesByPlayerUsername(username);
+    public List<Game> getGamesByPlayer(User user) {
+        return gameDao.getGamesByPlayer(user);
     }
 
     @Override
     public Optional<Game> getGameById(String gameId) {
-        return gameDao.getGameById(gameId);
+        return gameDao.getGameByGameId(gameId);
     }
 
     @Override

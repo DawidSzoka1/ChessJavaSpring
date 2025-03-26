@@ -27,7 +27,7 @@ public class RandomUniqIdGenerator {
      */
     public String generateUniqId() {
         String uniqId = UUID.randomUUID().toString();
-        while (gameDao.getGameById(uniqId).isPresent()) {
+        while (gameDao.getGameByGameId(uniqId).isPresent()) {
             uniqId = UUID.randomUUID().toString();
         }
         return uniqId;

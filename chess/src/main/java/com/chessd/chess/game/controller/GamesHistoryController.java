@@ -23,13 +23,14 @@ public class GamesHistoryController {
         this.gameService = gameService;
     }
 
-    @GetMapping("/user/{username}/history")
-    public String getHistory(Model model, @PathVariable String username) {
-        User user = userService.findByUserName(username);
+    @GetMapping("/users/history/{userName}")
+    public String getHistory(Model model, @PathVariable String userName) {
+        User user = userService.findByUserName(userName);
         if (user == null) {
             return "redirect:/";
         }
-        List<Game> games = gameService.getGamesByPlayerUsername(user.getUserName());
+        List<Game> games = gameService.getGamesByPlayer(user);
+        System.out.println("dzialam ale nie");
         model
                 .addAttribute("user", user)
                 .addAttribute("games", games);

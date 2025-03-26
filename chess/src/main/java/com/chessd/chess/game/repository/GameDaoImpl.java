@@ -3,6 +3,7 @@ package com.chessd.chess.game.repository;
 import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.figure.entity.Figure;
 import com.chessd.chess.figure.utils.Position;
+import com.chessd.chess.user.entity.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class GameDaoImpl implements GameDao {
     }
 
     @Override
-    public Optional<Game> getGameById(String gameId) {
+    public Optional<Game> getGameByGameId(String gameId) {
         try {
             TypedQuery<Game> query = entityManager.createQuery(
                     "FROM Game  WHERE gameId =:gameId", Game.class);
@@ -38,17 +39,29 @@ public class GameDaoImpl implements GameDao {
     }
 
     @Override
-    public List<Game> getGamesByPlayerUsername(String username) {
+    public List<Game> getGamesByPlayer(User user) {
         TypedQuery<Game> query = entityManager.createQuery(
-                "FROM Game WHERE white = :username or black = :username " +
+                "FROM Game WHERE white =:user or black =:user " +
                         "order by start", Game.class);
-        query.setParameter("username", username);
+        query.setParameter("user", user);
         return query.getResultList();
     }
 
     @Override
     public List<Game> getAllGames() {
         TypedQuery<Game> query = entityManager.createQuery("SELECT g FROM Game g", Game.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Game> getGamesWithPagination(int page, int size, User user) {
+        TypedQuery<Game> query = entityManager
+                .createQuery("SELECT g from Game g where" +
+                        " g.white =:user or g.black =:user " +
+                        " ORDER BY g.start", Game.class);
+        query.setParameter("user", user);
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
         return query.getResultList();
     }
 
@@ -77,7 +90,7 @@ public class GameDaoImpl implements GameDao {
         TypedQuery<Figure> query = entityManager.createQuery("SELECT f from Figure f where f.game =:game", Figure.class);
         query.setParameter("game", game);
         HashMap<Position, Figure> board = new HashMap<>();
-        for(Figure f: query.getResultList()){
+        for (Figure f : query.getResultList()) {
             board.put(f.getPosition(), f);
         }
         return board;

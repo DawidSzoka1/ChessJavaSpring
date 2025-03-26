@@ -42,3 +42,30 @@ body {
     height: auto;
     cursor: pointer;
 }
+
+.game-history {
+    max-width: 600px;
+    margin: 20px auto;
+}
+.game-entry {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.win {
+    background-color: #4a7c4d;
+    color: #1e3c1f;
+}
+.loss {
+    background-color: #8c3a3a;
+    color: #3c1e1e;
+}
+.game-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
