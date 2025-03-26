@@ -19,6 +19,10 @@ public interface UserService extends UserDetailsService {
 
     List<User> findAllSortedByNameASC();
 
+    void deleteUsers(List<Integer> userIds);
+
+    void delete(User user);
+
     Optional<User> findById(int id);
 
     void save(RegisterUser registerUser);
