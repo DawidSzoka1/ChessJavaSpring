@@ -9,32 +9,50 @@
 <body class="vh-100">
 <div class="container-fluid h-100">
     <div class="row h-100">
-        <div class="col d-flex flex-column" th:insert="~{fragments/sidebar :: sidebar}">
+        <div class="col-2">
+            <div th:insert="~{fragments/sidebar :: sidebar}"></div>
         </div>
+        <div class="ranking col-9">
+            <div class="main-content">
+                <div class="d-flex flex-column h-100">
 
-        <div class="col-5 d-flex flex-column text-center py-5">
-            <div class="flex-grow-1">
-                <h1>RANKING GIER</h1>
-            </div>
-            <div class="flex-grow-1">
-                <h2>~TYP GRY~</h2>
-            </div>
-        </div>
+                    <div class="top-section d-flex align-items-center">
+                        <h1>RANKING</h1>
+                    </div>
 
-        <div class="col-3 d-flex flex-column text-center">
-            <div class="flex-grow-1" style="margin-top: 40vh">
-                <h3 th:text="${first.userName} + ' ' + ${first.ranking}"></h3>
-            </div>
-            <div class="flex-grow-1">
-                <img th:src="@{/images/sidebar/ranking.png}" class="img-fluid w-60">
-            </div>
-        </div>
-        <div class="col-3" style="margin-top:50vh">
-            <th:block th:each="user, count : ${users}">
-                <h4 th:text="${count.count + 1} + '.' + ${user.userName} + ' ' + ${user.ranking}"></h4>
-            </th:block>
-        </div>
+                    <div class="flex-grow-1 bg-table px-4 py-3 overflow-auto">
+                        <table class="table custom-table text-center mb-0">
+                            <thead>
+                            <tr>
+                                <th>MIEJSCE</th>
+                                <th>PSEUDONIM</th>
+                                <th>RANKING</th>
+                                <th>RODZAJ</th>
+                                <th>RODZAJ</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user, count : ${users}">
+                                <td><strong th:text="${count.count}"></strong></td>
+                                <td>
+                                    <a th:href="@{/users/profile/{username}(username=${user.userName})}">
+                                        <strong th:text="${user.userName}"></strong>
+                                    </a>
+                                </td>
+                                <td th:text="${user.ranking}"></td>
+                                <td>8765</td>
+                                <td>9876</td>
+                            </tr>
+                            <!--                            <tr class="empty-row">-->
+                            <!--                                <td colspan="5">&nbsp;</td>-->
+                            <!--                            </tr>-->
+                            </tbody>
+                        </table>
+                    </div>
 
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

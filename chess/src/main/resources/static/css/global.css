@@ -69,3 +69,36 @@ body {
     height: 50px;
     margin-right: 15px;
 }
+
+.ranking .main-content{
+    height: 100vh;
+}
+.ranking .top-section{
+    height: 20vh;
+}
+
+.ranking .bottom-section{
+    height: 80vh;
+}
+
+
+.custom-table thead tr{
+    border-bottom: 30px solid white;
+}
+.custom-table thead th{
+    background-color: #b58863;
+    color: #f0d9b5;
+}
+.custom-table tbody td{
+    background-color: #f0d9b5;
+}
+
+.custom-table tbody td a{
+    text-decoration: none;
+    color: black;
+}
+.empty-row td{
+    height: 50vh;
+}
+
+

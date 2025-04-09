@@ -12,20 +12,19 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/users")
-public class UserController {
+public class RankingController {
 
     UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public RankingController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/rankings")
     public String rankings(Model model) {
         List<User> users = userService.findAllByRanking(6);
-        model.addAttribute("first", users.getFirst());
-        model.addAttribute("users", users.subList(1, users.size()));
+        model.addAttribute("users", users);
         return "users/rankings";
     }
 }
