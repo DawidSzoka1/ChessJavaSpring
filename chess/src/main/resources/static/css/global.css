@@ -102,3 +102,60 @@ body {
 }
 
 
+
+
+.admin-profile{
+    .bottom-section{
+        height: 66vh;
+    }
+
+    .top-section{
+        height: 33vh;
+    }
+
+    .admin-box{
+        background-color: #f1e1a6;
+        height: 20vh;
+        margin-top: 8vh;
+        padding: 20px;
+    }
+
+    .top-section .admin-label {
+        font-style: italic;
+        font-weight: bold;
+        font-size: 1.8rem;
+        color: #7d4f3f;
+    }
+
+    .top-section .admin-name {
+        font-weight: 900;
+        font-size: 2.2rem;
+        color: #7d4f3f;
+    }
+
+
+    .menu-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #a87551;
+        color: #f3e7b3;
+        font-weight: bold;
+        text-align: center;
+        border: none;
+        text-decoration: none;
+        font-family: 'YourFontName', sans-serif;
+        font-size: 2.2em;
+        margin-bottom: 10px;
+        transition: background-color 0.3s ease;
+        border-radius: 4px;
+    }
+
+    .menu-btn:hover {
+        background-color: #8d6245;
+        cursor: pointer;
+    }
+}
+
+
+

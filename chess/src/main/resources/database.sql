@@ -11,18 +11,18 @@ DELETE FROM user;
 INSERT INTO role values
                      (1, 'ROLE_BASE'),
                      (2, 'ROLE_ADMIN');
-
+# password is haslo
 INSERT INTO user (enable, id, ranking, password, username, is_guest)
-VALUES (true, 1, 25, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'jan_kowalski', FALSE),
-       (false, 2, 30, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'anna_nowak', FALSE),
-       (true, 3, 45, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'michal_adamczyk', FALSE),
-       (false, 4, 22, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'kasia_kwiatkowska', FALSE),
-       (true, 5, 35, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'tomasz_wisniewski', FALSE),
-       (true, 6, 50, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'agnieszka_lewandowska', FALSE),
-       (false, 7, 28, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'bartek_zielinski', FALSE),
-       (true, 8, 40, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'joanna_dabrowska', FALSE),
-       (true, 9, 33, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'mateusz_kaczmarek', FALSE),
-       (false, 10, 27, '$2a$10$bYBlRV5MWem8oNtA10pzyu./ncfpgaqUaqB/eZc2BfzC.mYYYhBDW', 'aleksandra_pawlak', FALSE);
+VALUES (true, 1, 25, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'jan_kowalski', FALSE),
+       (false, 2, 30, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'anna_nowak', FALSE),
+       (true, 3, 45, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'michal_adamczyk', FALSE),
+       (false, 4, 22, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'kasia_kwiatkowska', FALSE),
+       (true, 5, 35, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'tomasz_wisniewski', FALSE),
+       (true, 6, 50, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'agnieszka_lewandowska', FALSE),
+       (false, 7, 28, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'bartek_zielinski', FALSE),
+       (true, 8, 40, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'joanna_dabrowska', FALSE),
+       (true, 9, 33, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'mateusz_kaczmarek', FALSE),
+       (false, 10, 27, '$2a$12$cJ9u3iJfldUasYTScx6qrO7VqPpS/7XomSG/9/wrtIPC.Zb6YBV3y', 'aleksandra_pawlak', FALSE);
 INSERT INTO users_roles VALUES
                             (2, 1),
                             (1, 1),

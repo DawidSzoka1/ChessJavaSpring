@@ -3,10 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:href="@{/css/global.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div>
-    <div th:insert="~{fragments/sidebar :: sidebar}"></div>
+<div class="container-fluid full-height">
+    <div class="row h-100">
+
+        <div class="col-2 d-flex flex-column">
+            <div th:insert="~{fragments/sidebar :: sidebar}"></div>
+        </div>
+
+        <div class="col-9 d-flex flex-column p-0 admin-profile">
+            <div class="top-section">
+                <div class="admin-box">
+                    <div class="admin-label">Administrator</div>
+                    <div class="admin-name" th:text="${admin.userName}"></div>
+                </div>
+            </div>
+            <div class="bottom-section">
+                <a class="menu-btn" th:href="@{${(#mvc.url('AC#adminPanel')).build()}}">LISTA UŻYTKOWNIKÓW</a>
+                <a class="menu-btn">PROŚBY O USUNIĘCIE</a>
+                <a class="menu-btn" th:href="@{${(#mvc.url('RC#rankings')).build()}}">RANKING GIER</a>
+            </div>
+
+        </div>
+    </div>
 </div>
 </body>
 </html>
