@@ -3,6 +3,7 @@ package com.chessd.chess.user.service;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.web.RegisterUser;
 import com.chessd.chess.user.web.UpdateUser;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -15,9 +16,9 @@ public interface UserService extends UserDetailsService {
 
     List<User> findAll();
 
-    List<User> findAllByRanking(int amount);
+    Page<User> findAllByRanking(int pageNumber, int pageSize);
 
-    List<User> findAllSortedByNameASC();
+    Page<User> findAllSortedByNameASC(int pageNumber, int pageSize);
 
     void deleteUsers(List<Integer> userIds);
 

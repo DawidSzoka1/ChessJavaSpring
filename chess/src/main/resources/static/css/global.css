@@ -92,7 +92,9 @@ body {
 .custom-table tbody td{
     background-color: #f0d9b5;
 }
-
+.custom-table tbody{
+    max-height: 300px;
+}
 .custom-table tbody td a{
     text-decoration: none;
     color: black;
@@ -154,6 +156,49 @@ body {
     .menu-btn:hover {
         background-color: #8d6245;
         cursor: pointer;
+    }
+}
+.admin-panel .label{
+    font-size: 3.2rem;
+    margin: 5vh;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.admin-table{
+    thead tr{
+        border-bottom: 30px solid white;
+    }
+    thead th{
+        background-color:#a87551;
+        color: #f0d9b5;
+        font-size: 1.8rem;
+    }
+    .delete{
+        top: 0;
+        left: 0;
+        height: 24px;
+        width: 24px;
+        background-color: #f1e4b3 !important;
+        border: 2px solid #a87551 !important;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+
+    tbody td{
+
+        background-color: #f0d9b5;
+        color: #a87551;
+        font-size: 1.5rem;
+    }
+    .userName{
+        align-items: start;
+        text-align: start;
+    }
+    tbody td a{
+        text-decoration: none;
+        color: #a87551;
     }
 }
 

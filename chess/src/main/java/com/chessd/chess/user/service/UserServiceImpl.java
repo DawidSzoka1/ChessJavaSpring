@@ -7,6 +7,10 @@ import com.chessd.chess.user.CustomUserDetails;
 import com.chessd.chess.user.web.RegisterUser;
 import com.chessd.chess.user.web.UpdateUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,12 +38,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUserName(String username) {
-        return userDao.findByUserName(username);
+        return userDao.findUserByUserName(username);
     }
 
     @Override
     public User findByEmail(String email) {
-        return userDao.findByEmail(email);
+        return userDao.findUserByEmail(email);
     }
 
     @Override
@@ -48,22 +52,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllByRanking(int amount) {
-        List<User> users = userDao.findALlByRanking();
-        if (users.size() < amount) {
-            amount = users.size();
-        }
-        return users.subList(0, amount);
+    public Page<User> findAllByRanking(int pageNumber, int pageSize) {
+        Pageable pageable =
+                PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Order.desc("ranking")));
+
+        return userDao.findAll(pageable);
     }
 
     @Override
-    public List<User> findAllSortedByNameASC() {
-        return userDao.findAllSortedByNameASC();
+    public Page<User> findAllSortedByNameASC(int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Order.asc("userName"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return userDao.findAll(pageable);
     }
 
     @Override
     public void delete(User user){
-        userDao.delete(user.getId());
+        userDao.delete(user);
     }
 
     @Override
@@ -112,7 +117,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(updateUser.getEmail());
         user.setCountry(updateUser.getCountry());
         user.setGender(updateUser.getGender());
-        userDao.update(user);
+        userDao.save(user);
     }
 
     @Override
@@ -126,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDao.findByUserName(username);
+        User user = userDao.findUserByUserName(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }

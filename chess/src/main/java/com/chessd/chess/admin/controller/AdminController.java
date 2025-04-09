@@ -30,8 +30,15 @@ public class AdminController {
     }
 
     @GetMapping("/panel")
-    public String adminPanel(Model model) {
-        model.addAttribute("users", userService.findAllSortedByNameASC());
+    public String adminPanel(Model model,
+                             @RequestParam(
+                                     value = "pageNumber", defaultValue = "0", required = false
+                             ) int pageNumber,
+                             @RequestParam(
+                                     value = "pageSize", defaultValue = "8", required = false
+                             ) int pageSize
+                             ) {
+        model.addAttribute("page", userService.findAllSortedByNameASC(pageNumber, pageSize));
         return "admin/adminPanel";
     }
 
@@ -40,7 +47,8 @@ public class AdminController {
         if(userIds.isEmpty()){
             return "redirect:admin/panel";
         }
-        userService.deleteUsers(userIds);
+        System.out.println(userIds);
+//        userService.deleteUsers(userIds);
         return "redirect:admin/panel";
     }
 }

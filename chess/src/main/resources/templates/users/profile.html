@@ -24,7 +24,9 @@
                 <div class="col-3">
                     <h2 th:text="${user.userName}"></h2>
                     <h4 th:text="${fullName}"></h4>
-                    <a href="" class="btn btn-redirect">ZMIEN HASLO</a>
+                    <th:block th:if="${(#authentication.principal.username) == user.userName}">
+                        <a href="" class="btn btn-redirect">ZMIEN HASLO</a>
+                    </th:block>
                 </div>
                 <div>
                 </div>
@@ -44,7 +46,9 @@
                     <h3 th:text="'Płeć:   ' + ${user.gender}"></h3>
                 </div>
                 <div class="col-3 text-end mt-4">
-                    <a th:href="@{/users/update}" class="btn btn-lg custom-btn">ZMIEN DANE</a>
+                    <th:block th:if="${(#authentication.principal.username) == user.userName}">
+                        <a th:href="@{/users/update}" class="btn btn-lg custom-btn">ZMIEN DANE</a>
+                    </th:block>
                 </div>
             </div>
         </div>
