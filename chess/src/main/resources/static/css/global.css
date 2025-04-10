@@ -202,5 +202,21 @@ body {
     }
 }
 
+.pagination{
+    text-align: center;
+    justify-content: center;
 
+    li img{
+        height: 9vh;
+        vertical-align: middle;
+        margin: 0;
+        padding: 0;
+        display: block;
+    }
+    a{
+        text-decoration: none;
+        color: black;
+    }
+
+}
 

@@ -33,8 +33,11 @@ public class RankingController {
                            ) int pageSize
                            ) {
         Page<User> page = userService.findAllByRanking(pageNumber, pageSize);
-
-        model.addAttribute("page", page);
+        int startPagination = Math.max(page.getNumber() - 3, 0);
+        int endPagination = Math.min(startPagination + 10, page.getTotalPages()) - 1;
+        model.addAttribute("page", page)
+                .addAttribute("start", startPagination)
+                .addAttribute("end", endPagination);
         return "users/rankings";
     }
 }

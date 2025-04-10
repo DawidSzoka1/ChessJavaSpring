@@ -20,7 +20,7 @@
                         <h1>RANKING</h1>
                     </div>
 
-                    <div class="flex-grow-1 bg-table px-4 py-3 overflow-auto">
+                    <div class="flex-grow-1 bg-table px-4 py-3">
                         <table class="table custom-table text-center mb-0">
                             <thead>
                             <tr>
@@ -46,17 +46,20 @@
                             </tbody>
                         </table>
                         <div>
-                        <span th:if="${page.hasPrevious()}">
-                            <a th:href="@{/users/rankings(pageNumber=${page.number - 1}, pageSize=${page.size})}">Previous</a>
-                        </span>
-                                            <span th:if="${page.hasNext()}">
-                            <a th:href="@{/users/rankings(pageNumber=${page.number + 1}, pageSize=${page.size})}">Next</a>
-                        </span>
-                        </div>
-
-
-                        <div>
-                            <span th:text="'Page ' + ${page.number + 1} + ' of ' + ${page.totalPages}"></span>
+                            <ul class="pagination">
+                                <li th:each="i : ${#numbers.sequence(start, end)}">
+                                    <a th:href="@{${#mvc.url('RC#rankings').arg(1, i).arg(2, page.size).build()}}">
+                                        <img th:if="${page.number} == ${i}"
+                                             th:src="@{/images/B/paginationQueen.png}"
+                                             class="chess-icon" alt="Hetman"/>
+                                        <img th:if="${page.number} != ${i}"
+                                             th:src="@{/images/B/paginationPawn.png}"
+                                             class="chess-icon pawn" alt="Pionek"/>
+                                        <br>
+                                        <span th:text="${i+1}" class="pagination-number"></span>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 

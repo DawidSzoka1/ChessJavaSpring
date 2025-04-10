@@ -2,6 +2,7 @@ package com.chessd.chess.admin.controller;
 
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +39,12 @@ public class AdminController {
                                      value = "pageSize", defaultValue = "8", required = false
                              ) int pageSize
                              ) {
-        model.addAttribute("page", userService.findAllSortedByNameASC(pageNumber, pageSize));
+        Page<User> page = userService.findAllSortedByNameASC(pageNumber, pageSize);
+        int startPagination = Math.max(page.getNumber() - 3, 0);
+        int endPagination = Math.min(startPagination + 10, page.getTotalPages()) - 1;
+        model.addAttribute("page", page)
+                .addAttribute("start", startPagination)
+                .addAttribute("end", endPagination);
         return "admin/adminPanel";
     }
 
