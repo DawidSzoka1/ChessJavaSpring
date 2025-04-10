@@ -13,18 +13,18 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Lewy sidebar -->
-        <div class="col-1 sidebar">
+        <div class="col-1">
             <div th:insert="~{fragments/sidebar :: sidebar}"></div>
         </div>
 
         <!-- Główna zawartość (środkowa kolumna) -->
-        <div class="col-9 main-content">
+        <div class="col-8 main-content">
             <div class="top text-start">
                 <img th:src="@{/images/util/default-user.png}" alt="icon">
                 <h4>Przeciwnik</h4>
             </div>
             <div class="middle">
-                <div id="chessboard" class="col-sm-6 ">
+                <div id="chessboard" class="col-sm-7">
                     <img class="chessboard" th:src="@{/images/util/board.png}" alt="board">
                 </div>
             </div>
@@ -34,8 +34,9 @@
         </div>
 
         <!-- Prawy sidebar -->
-        <div class="col-3 right-sidebar" id="optionDiv">
-            <a href="#" id="findGame" th:data-user="${user}" class="btn btn-lg">Graj</a>
+        <div class="col-2 right-sidebar" id="optionDiv">
+            <h1>10 minut</h1>
+            <a href="#" id="findGame" th:data-user="${user}" class="btn play">Graj</a>
         </div>
     </div>
 </div>
