@@ -23,11 +23,11 @@ public class Game {
     @Column(name = "result")
     private GameResult result = GameResult.ONGOING;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "white", referencedColumnName = "id")
     private User white;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "black", referencedColumnName = "id")
     private User black;
 

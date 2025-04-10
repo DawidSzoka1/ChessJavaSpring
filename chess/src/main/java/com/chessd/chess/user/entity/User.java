@@ -1,11 +1,13 @@
 package com.chessd.chess.user.entity;
 
+import com.chessd.chess.game.entity.Game;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -49,12 +51,24 @@ public class User {
     @Column(name = "ranking")
     private int ranking;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade =
+            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
+    @OneToMany(mappedBy = "white")
+    private List<Game> gamesAsWhite = new ArrayList<>();
+
+    @OneToMany(mappedBy = "black")
+    private List<Game> gamesAsBlack = new ArrayList<>();
+
+    @PreRemove
+    public void nullifGames(){
+        gamesAsBlack.forEach((game) -> game.setBlack(null));
+        gamesAsWhite.forEach((game) -> game.setWhite(null));
+    }
 
     public User(String userName, String password, boolean enabled, int ranking) {
         this.userName = userName;

@@ -15,19 +15,23 @@
             <div class="col-2 d-flex flex-column">
                 <div th:insert="~{fragments/sidebar :: sidebar}"></div>
             </div>
-
             <div class="col-9 d-flex flex-column p-0 admin-panel">
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show mt-3 fixed-top" role="alert">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span th:text="${success}">Użytkownicy zostali usunięci.</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Zamknij"></button>
+                </div>
                 <div class="top-section">
                     <div class="label">LISTA UŻYTKOWNIKÓW</div>
                 </div>
                 <div class="bottom-section">
-                    <form>
+                    <form method="POST" th:action="@{${#mvc.url('AC#deleteUsers').build()}}">
                         <table class="table admin-table text-center mb-0">
                             <thead>
                             <tr>
                                 <th>PSEUDONIM</th>
                                 <th>UPRAWNIENIA</th>
-                                <th>USUŃ</th>
+                                <th><input type="submit" value="USUŃ" class="btn"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -39,7 +43,7 @@
                                     </a>
                                 </td>
                                 <td th:text="${user.getRoles()[user.getRoles().size()-1].getName().split('_')[1]}"></td>
-                                <td><input class="delete form-check-input" type="checkbox" th:value="${user.id}"> <span class="custom-checkmark"></span></td>
+                                <td><input class="delete form-check-input" name="userIds" type="checkbox" th:value="${user.id}"> <span class="custom-checkmark"></span></td>
                             </tr>
                             </tbody>
                         </table>
@@ -54,7 +58,6 @@
                                     <img th:if="${page.number} != ${i}"
                                          th:src="@{/images/B/paginationPawn.png}"
                                          class="chess-icon pawn" alt="Pionek"/>
-                                    <br>
                                     <span th:text="${i+1}" class="pagination-number"></span>
                                 </a>
                             </li>

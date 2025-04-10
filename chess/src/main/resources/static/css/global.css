@@ -14,6 +14,7 @@ body {
     justify-content: center;
     flex-direction: row;
     overflow: auto;
+    position: relative;
 }
 
 
@@ -205,7 +206,10 @@ body {
 .pagination{
     text-align: center;
     justify-content: center;
-
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
     li img{
         height: 9vh;
         vertical-align: middle;
@@ -220,3 +224,6 @@ body {
 
 }
 
+.login-title{
+    font-size: 3.2rem;
+}
