@@ -1,5 +1,6 @@
 package com.chessd.chess.admin.controller;
 
+import com.chessd.chess.game.service.GameService;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
 import org.springframework.data.domain.Page;
@@ -20,9 +21,11 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
+    private final GameService gameService;
 
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, GameService gameService) {
         this.userService = userService;
+        this.gameService = gameService;
     }
 
     @GetMapping("/profile")
@@ -67,5 +70,10 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return new RedirectView("/admin/panel");
         }
+    }
+
+    @GetMapping("/live/games")
+    public String getGames(){
+        return "admin/liveGames";
     }
 }
