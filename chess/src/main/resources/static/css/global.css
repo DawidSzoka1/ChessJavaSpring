@@ -46,20 +46,29 @@ body {
 
 .game-history {
     max-width: 600px;
-    margin: 20px auto;
+    margin-left: 20%;
 }
 .game-entry {
     display: flex;
     align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 800px;
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 10px;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 1.5rem;
 }
 .win {
     background-color: #4a7c4d;
     color: #1e3c1f;
+}
+
+.draw{
+    background-color: lightgray;
+    color: darkgray;
 }
 .loss {
     background-color: #8c3a3a;
@@ -249,4 +258,16 @@ body {
 }
 .right-sidebar{
     background-image: url("/images/util/play-options.png");
+}
+
+.error-text h3 strong{
+    font-weight: bold;
+    font-size: 2.4rem;
+}
+
+.knight-img{
+    position: relative;
+
+    margin-right: 3vw;
+    height: 50vh;
 }

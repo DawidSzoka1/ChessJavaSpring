@@ -20,7 +20,7 @@
         <!-- Główna zawartość (środkowa kolumna) -->
         <div class="col-9 main-content">
             <div class="top">
-                <h4>Górny wiersz</h4>
+                <img th:src="@{/images/util/default-user.png}" alt="icon"><h4 th:text="${game.white.userName}"></h4>
             </div>
             <div class="middle">
                 <div id="chessboard" class="col-sm-6 ">
@@ -41,14 +41,14 @@
                 </div>
             </div>
             <div class="bottom">
-                <h4>Dolny wiersz</h4>
+                <img th:src="@{/images/util/default-user.png}" alt="icon"><h4 th:text="${game.black.userName}"></h4>
             </div>
         </div>
 
         <!-- Prawy sidebar -->
-        <div class="col-3 right-sidebar">
+        <div class="col right-sidebar">
             <div hidden="hidden" id="game" th:data-id="${game.gameId}"></div>
-            <h3>Prawy Sidebar</h3>
+
         </div>
     </div>
 </div>

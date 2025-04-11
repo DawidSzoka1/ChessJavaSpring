@@ -30,7 +30,6 @@ public class GamesHistoryController {
             return "redirect:/";
         }
         List<Game> games = gameService.getGamesByPlayer(user);
-        System.out.println("dzialam ale nie");
         model
                 .addAttribute("user", user)
                 .addAttribute("games", games);

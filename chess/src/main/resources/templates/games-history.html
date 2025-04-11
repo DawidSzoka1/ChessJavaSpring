@@ -12,20 +12,28 @@
     <div class="container">
         <h1 class="text-center my-4 fw-bold">HISTORIA GIER</h1>
         <div class="game-history">
-            <div th:each="game : ${games}" class="game-entry win">
-                <img th:src="@{/images/util/win.png}" class="game-icon" alt="Crown">
-                <span>WYGRANA</span>
-                <span class="ms-auto">CZAS GRY / DATA / PRZECIWNIK</span>
-            </div>
-            <div class="game-entry win">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Chess_crown.svg" class="game-icon" alt="Crown">
-                <span>WYGRANA</span>
-                <span class="ms-auto">CZAS GRY / DATA / PRZECIWNIK</span>
-            </div>
-            <div class="game-entry loss">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Chess_crown.svg" class="game-icon" alt="Crown" style="opacity: 0.5;">
-                <span>PRZEGRANA</span>
-                <span class="ms-auto">CZAS GRY / DATA / PRZECIWNIK</span>
+            <div th:each="game : ${games}">
+                <th:block th:if="${game.winner != null && game.winner.userName.equals(user.userName)}">
+                    <div class="game-entry win">
+                        <img th:src="@{/images/util/win.png}" class="game-icon" alt="Crown">
+                        <span>WYGRANA</span>
+                        <span class="ms-auto" th:text="${game.white.userName + ' vs ' + game.black.userName}"></span>
+                    </div>
+                </th:block>
+                <th:block th:if="${game.result.equals(game.result.DRAW)}">
+                    <div class="game-entry draw">
+                        <img th:src="@{/images/util/win.png}" class="game-icon" alt="Crown">
+                        <span>REMIS</span>
+                        <span class="ms-auto" th:text="${game.white.userName + ' vs ' + game.black.userName}"></span>
+                    </div>
+                </th:block>
+                <th:block th:if="${game.winner != null && !game.winner.userName.equals(user.userName)}">
+                    <div class="game-entry loss">
+                        <img th:src="@{/images/util/lose.png}" class="game-icon" alt="Crown">
+                        <span>PORAŻKA</span>
+                        <span class="ms-auto" th:text="${game.white.userName + ' vs ' + game.black.userName}"></span>
+                    </div>
+                </th:block>
             </div>
         </div>
     </div>
