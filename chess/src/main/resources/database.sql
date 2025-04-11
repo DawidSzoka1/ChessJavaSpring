@@ -37,14 +37,14 @@ INSERT INTO users_roles VALUES
                             (1, 9),
                             (1, 10);
 
-INSERT INTO game (black, white, start, end, check_status, game_id, next_move, result) VALUES
-                                                                                          (1, 2, TIMESTAMP '2024-03-01 15:30:00', TIMESTAMP '2024-03-01 16:15:00', 'N', 'GME12345AB', 'W', 'BLACK_WINS'),
-                                                                                          (3, 4, TIMESTAMP '2024-03-02 18:00:00', TIMESTAMP '2024-03-02 18:45:00', 'N', 'GME67890CD', 'W', 'DRAW'),
-                                                                                          (5, 6, TIMESTAMP '2024-03-03 20:10:00', TIMESTAMP '2024-03-03 21:00:00', 'N', 'GME54321EF', 'W', 'WHITE_WINS'),
-                                                                                          (7, 8, TIMESTAMP '2024-03-05 11:15:00', TIMESTAMP '2024-03-05 12:05:00', 'N', 'GME98765GH', 'W', 'DRAW'),
-                                                                                          (9, 10, TIMESTAMP '2024-03-06 14:40:00', TIMESTAMP '2024-03-06 15:20:00', 'N', 'GME19283IJ', 'W', 'DRAW'),
-                                                                                          (2, 5, TIMESTAMP '2024-03-07 16:50:00', TIMESTAMP '2024-03-07 17:35:00', 'N', 'GME56789KL', 'W', 'DRAW'),
-                                                                                          (4, 7, TIMESTAMP '2024-03-08 19:20:00', TIMESTAMP '2024-03-08 20:10:00', 'N', 'GME34567MN', 'W', 'WHITE_WINS'),
-                                                                                          (6, 9, TIMESTAMP '2024-03-10 12:45:00', TIMESTAMP '2024-03-10 13:30:00', 'N', 'GME87654OP', 'W', 'BLACK_WINS'),
-                                                                                          (8, 1, TIMESTAMP '2024-03-11 21:30:00', TIMESTAMP '2024-03-11 22:15:00', 'N', 'GME23456QR', 'W', 'DRAW'),
-                                                                                          (10, 3, TIMESTAMP '2024-03-12 10:05:00', TIMESTAMP '2024-03-12 10:50:00', 'N', 'GME78901ST', 'W', 'WHITE_WINS');
+INSERT INTO game (black, white, winner, start, end, check_status, game_id, next_move, result) VALUES
+                                                                                          (1, 2,2, TIMESTAMP '2024-03-01 15:30:00', TIMESTAMP '2024-03-01 16:15:00', 'N', 'GME12345AB', 'W', 'BLACK_WINS'),
+                                                                                          (3, 4, 4,TIMESTAMP '2024-03-02 18:00:00', TIMESTAMP '2024-03-02 18:45:00', 'N', 'GME67890CD', 'W', 'DRAW'),
+                                                                                          (5, 6, 5,TIMESTAMP '2024-03-03 20:10:00', TIMESTAMP '2024-03-03 21:00:00', 'N', 'GME54321EF', 'W', 'WHITE_WINS'),
+                                                                                          (7, 8, 8,TIMESTAMP '2024-03-05 11:15:00', TIMESTAMP '2024-03-05 12:05:00', 'N', 'GME98765GH', 'W', 'DRAW'),
+                                                                                          (9, 10, 9,TIMESTAMP '2024-03-06 14:40:00', TIMESTAMP '2024-03-06 15:20:00', 'N', 'GME19283IJ', 'W', 'DRAW'),
+                                                                                          (2, 5, 5,TIMESTAMP '2024-03-07 16:50:00', TIMESTAMP '2024-03-07 17:35:00', 'N', 'GME56789KL', 'W', 'DRAW'),
+                                                                                          (4, 7, 4,TIMESTAMP '2024-03-08 19:20:00', TIMESTAMP '2024-03-08 20:10:00', 'N', 'GME34567MN', 'W', 'WHITE_WINS'),
+                                                                                          (6, 9, 6,TIMESTAMP '2024-03-10 12:45:00', TIMESTAMP '2024-03-10 13:30:00', 'N', 'GME87654OP', 'W', 'BLACK_WINS'),
+                                                                                          (8, 1, 8,TIMESTAMP '2024-03-11 21:30:00', TIMESTAMP '2024-03-11 22:15:00', 'N', 'GME23456QR', 'W', 'DRAW'),
+                                                                                          (10, 3, 3,TIMESTAMP '2024-03-12 10:05:00', TIMESTAMP '2024-03-12 10:50:00', 'N', 'GME78901ST', 'W', 'WHITE_WINS');

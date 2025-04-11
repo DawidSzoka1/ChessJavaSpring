@@ -28,6 +28,10 @@ public class Game {
     private User white;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "winner", referencedColumnName = "id")
+    private User winner;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "black", referencedColumnName = "id")
     private User black;
 
@@ -43,7 +47,6 @@ public class Game {
 
     @Column(name = "next_move", columnDefinition = "varchar(1) check(next_move in ('W', 'B'))")
     private String nextMove = "W";
-
 
     public Game(String gameId) {
         this.gameId = gameId;
