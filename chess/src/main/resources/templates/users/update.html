@@ -10,7 +10,10 @@
 <body class="vh-100">
 <div class="container-fluid h-100">
     <div class="row h-100">
-        <div class="col-2 p-3" th:insert="~{fragments/sidebar :: sidebar}">
+        <div class="col-2 p-3">
+            <div th:insert="~{fragments/sidebar :: sidebar}">
+
+            </div>
         </div>
 
         <div class="col-8 d-flex flex-column">
@@ -21,7 +24,7 @@
                 <div class="profile-icon col-2 text-start">
                     <img th:src="@{/images/sidebar/profile.png}" alt="profile picture">
                 </div>
-                <div class="col-3">
+                <div class="col-10 col-md-4 d-flex flex-column justify-content-start">
                     <h2 th:text="${user.userName}"></h2>
                     <h4 th:text="${fullName}"></h4>
                     <a href="" class="btn btn-redirect">ZMIEN HASLO</a>

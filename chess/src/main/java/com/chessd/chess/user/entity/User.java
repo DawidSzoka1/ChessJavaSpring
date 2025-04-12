@@ -77,14 +77,6 @@ public class User {
         this.ranking = ranking;
     }
 
-    public String getFullName(){
-        String fullName = (this.getFirstName() == null ? "" : (this.getFirstName() + " ") ) +
-                (this.getLastName() == null ? "" : this.getLastName());
-        if(fullName.isEmpty()){
-            fullName = "brak danych";
-        }
-        return fullName;
-    }
 
     @Override
     public String toString() {

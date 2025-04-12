@@ -17,18 +17,16 @@
             <div class="row empty">
 
             </div>
-            <div class="row top d-flex align-items-start justify-content-start">
+            <div class="row top d-flex align-items-start justify-content-start flex-wrap">
                 <div class="profile-icon col-2 text-start">
                     <img th:src="@{/images/sidebar/profile.png}" alt="profile picture">
                 </div>
-                <div class="col-3">
+                <div class="col-10 col-md-4 d-flex flex-column justify-content-start">
                     <h2 th:text="${user.userName}"></h2>
                     <h4 th:text="${fullName}"></h4>
                     <th:block th:if="${(#authentication.principal.username) == user.userName}">
                         <a href="" class="btn btn-redirect">ZMIEN HASLO</a>
                     </th:block>
-                </div>
-                <div>
                 </div>
             </div>
             <div class="row middle d-flex align-items-center justify-content-center" style="height: 10%;">
@@ -36,7 +34,7 @@
                     <h1>Dane uzytkownika</h1>
                 </div>
             </div>
-            <div class="row bottom d-flex">
+            <div class="row bottom d-flex flex-wrap">
                 <div class="col-9 mt-4">
                     <h3 th:text="'Pseudonim:   ' + ${user.userName}"></h3>
                     <h3 th:text="'Imie:   ' + ${user.firstName}"></h3>
@@ -47,7 +45,7 @@
                 </div>
                 <div class="col-3 text-end mt-4">
                     <th:block th:if="${(#authentication.principal.username) == user.userName}">
-                        <a th:href="@{/users/update}" class="btn btn-lg custom-btn">ZMIEN DANE</a>
+                        <a th:href="@{/users/update}" class="btn btn-lg custom-btn me-3">ZMIEN DANE</a>
                     </th:block>
                 </div>
             </div>

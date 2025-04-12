@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
 
@@ -45,27 +46,32 @@ public class UpdateController {
     @GetMapping("/update")
     public String updateInfo(Model model, Principal principal) {
         User user = userService.findByUserName(principal.getName());
-        model.addAttribute("fullName", user.getFullName());
+        String fullName = (user.getFirstName() == null ? "" : (user.getFirstName() + " ") ) +
+                (user.getLastName() == null ? "" : user.getLastName());
+        if(fullName.isEmpty()){
+            fullName = "brak danych";
+        }
+        model.addAttribute("fullName", fullName);
         model.addAttribute("user", user);
         model.addAttribute("error", false);
         return "users/update";
     }
 
     @PostMapping("/update")
-    public String updateProcess(
+    public RedirectView updateProcess(
             @Valid @ModelAttribute("user") UpdateUser updateUser,
             BindingResult bindingResult,
             HttpSession session,
             Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("error", bindingResult.getAllErrors());
-            return "users/update";
+            return new RedirectView("/users/update");
         }
         User user = sessionHelper.getUserFromPrincipal(session);
         String check = this.validUpdateUser(updateUser, user);
         if (!check.isEmpty()) {
             model.addAttribute("error", check);
-            return "redirect:users/update";
+            return new RedirectView("/users/update");
         }
         if (!updateUser.getUserName().equals(user.getUserName())) {
             sessionHelper.updateUserInSession(updateUser, session);
@@ -73,6 +79,6 @@ public class UpdateController {
         userService.update(user.getId(), updateUser);
 
         model.addAttribute("success", "Successfully update info");
-        return "users/profile";
+        return new RedirectView("/users/profile/"+user.getUserName());
     }
 }
