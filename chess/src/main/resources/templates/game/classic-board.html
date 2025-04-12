@@ -11,19 +11,19 @@
 </head>
 <body>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row flex-wrap g-0">
         <!-- Lewy sidebar -->
-        <div class="col-1 sidebar">
+        <div class="col-1">
             <div th:insert="~{fragments/sidebar :: sidebar}"></div>
         </div>
 
         <!-- Główna zawartość (środkowa kolumna) -->
-        <div class="col-9 main-content">
+        <div class="col-7 main-content pe-0">
             <div class="top">
                 <img th:src="@{/images/util/default-user.png}" alt="icon"><h4 th:text="${game.white.userName}"></h4>
             </div>
             <div class="middle">
-                <div id="chessboard" class="col-sm-6 ">
+                <div id="chessboard" class="col-sm-7">
                     <div th:each="row, statRow : ${gameBoard}" class="g-0 chessboard">
                         <div th:each="col, statCol : ${row}"
                              th:class="${(statRow.index + statCol.index) % 2 == 0 ? 'square white' : 'square black'}">
@@ -46,9 +46,18 @@
         </div>
 
         <!-- Prawy sidebar -->
-        <div class="col right-sidebar">
+        <div class="col right-sidebar-game ps-0">
             <div hidden="hidden" id="game" th:data-id="${game.gameId}"></div>
-
+            <div class="moves-box text-start">
+                <p>skoczek na c3</p>
+                <hr>
+                <p class="black-move">goniec na d4</p>
+                <hr>
+                <p>...</p>
+                <hr>
+                <p>...</p>
+            </div>
+            <button class="surrender-btn">Poddaj się</button>
         </div>
     </div>
 </div>
