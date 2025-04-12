@@ -5,10 +5,11 @@ addEventListener("DOMContentLoaded", () => {
     const info = document.getElementById("optionDiv");
     const find = document.getElementById("findGame")
     find.addEventListener("click", (e) => {
+        document.getElementById("searching").classList.remove("d-none");
+        document.getElementById("lobby-info").classList.add("d-none")
         e.preventDefault()
         socket.infoObject = info;
         console.log("Evenet findGame")
-        info.innerHTML = "Szukanie gry..."
         socket.send({
             message: 'queue',
             messageType: 'queue',
