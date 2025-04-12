@@ -22,7 +22,7 @@
                 </th:block>
                 <th:block th:if="${game.result.equals(game.result.DRAW)}">
                     <div class="game-entry draw">
-                        <img th:src="@{/images/util/win.png}" class="game-icon" alt="Crown">
+                        <img th:src="@{/images/util/draw.png}" class="game-icon" alt="Crown">
                         <span>REMIS</span>
                         <span class="ms-auto" th:text="${game.white.userName + ' vs ' + game.black.userName}"></span>
                     </div>
