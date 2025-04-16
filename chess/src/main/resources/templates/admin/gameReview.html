@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/global.css}" rel="stylesheet">
+    <link th:href="@{/css/gameReview.css}" rel="stylesheet">
+</head>
+<body>
+<div th:insert="~{fragments/sidebar :: sidebar}">
+
+</div>
+<div class="main-content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="section-title">PRZEGLĄD GIER</div>
+
+    </div>
+
+    <div class="game-header">
+        <div>Partie rozegrane</div>
+        <div class="search-box">
+            <input type="text" placeholder="Szukaj partii" class="form-control form-control-lg custom-search">
+        </div>
+    </div>
+
+    <div class="games-list p-2">
+        <th:block th:each="game : ${games}">
+            <div class="row">
+                <div class="col-8" >
+                    <span th:class="${game.winner.userName.equals(game.white.userName) ? 'green' : 'red'}" th:text="${game.white.userName}"></span>
+                    vs
+                    <span th:class="${game.winner.userName.equals(game.black.userName) ? 'green' : 'red'}" th:text="${game.black.userName}"></span>
+                </div>
+                <div class="col-4 text-end" th:text="${time.minutesBetween(game.start, game.end) + ' minut'}"></div>
+            </div>
+        </th:block>
+    </div>
+</div>
+
+</body>
+</html>
