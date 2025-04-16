@@ -3,6 +3,7 @@ package com.chessd.chess.admin.controller;
 import com.chessd.chess.game.service.GameService;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
+import com.chessd.chess.utils.TimeUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,10 +23,12 @@ public class AdminController {
 
     private final UserService userService;
     private final GameService gameService;
+    private final TimeUtils timeUtils;
 
-    public AdminController(UserService userService, GameService gameService) {
+    public AdminController(UserService userService, GameService gameService, TimeUtils timeUtils) {
         this.userService = userService;
         this.gameService = gameService;
+        this.timeUtils = timeUtils;
     }
 
     @GetMapping("/profile")
@@ -58,7 +61,7 @@ public class AdminController {
                                     Principal principal, RedirectAttributes redirectAttributes) {
         int amount = userIds.size();
         userIds.removeIf(i -> principal.getName().equals(userService.findById(i).get().getUserName()));
-        if(amount != userIds.size()){
+        if (amount != userIds.size()) {
             redirectAttributes.addFlashAttribute("info", "Nie mozna usunac admina");
         }
         try {
@@ -66,14 +69,16 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("success",
                     "Usunieto zaznaczonych uzytkownikow(" + userIds.size() + ")");
             return new RedirectView("/admin/panel");
-        }catch (Exception e){
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return new RedirectView("/admin/panel");
         }
     }
 
-    @GetMapping("/live/games")
-    public String getGames(){
-        return "admin/liveGames";
+    @GetMapping("/review/games")
+    public String getGames(Model model) {
+        model.addAttribute("games", gameService.getALlGames())
+                .addAttribute("time", timeUtils);
+        return "admin/gameReview";
     }
 }

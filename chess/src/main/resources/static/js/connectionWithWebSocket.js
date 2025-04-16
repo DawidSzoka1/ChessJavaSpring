@@ -167,7 +167,6 @@ export default class CustomWebSocket {
 
     messageQueue(data) {
         console.log(`Queue message ${data}`)
-        this.infoObject.innerHTML = data.content;
     }
 
     messageError(data) {
