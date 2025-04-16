@@ -19,4 +19,5 @@ public interface GameDao {
     void delete(Game game);
     HashMap<Position, Figure> getBoard(Game game);
     Figure[][] getBoardAsTable(Game game);
+
 }
