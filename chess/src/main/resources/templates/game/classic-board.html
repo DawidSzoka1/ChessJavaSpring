@@ -17,9 +17,12 @@
         </div>
 
         <!-- Główna zawartość (środkowa kolumna) -->
-        <div class="col-7 main-content pe-0">
+        <div class="col-12 col-md-7 main-content mb-3 mb-md-0">
             <div class="top">
-                <img th:src="@{/images/util/default-user.png}" alt="icon"><h4 th:text="${game.white.userName}"></h4>
+                <img th:src="@{/images/util/default-user.png}" alt="icon">
+                <h4 th:if="${game.white != null}" th:text="${game.white.userName}"></h4>
+                <h4 th:if="${game.white == null}">Anonimowy</h4>
+
             </div>
             <div class="middle">
                 <div id="chessboard" class="col-sm-7">
@@ -27,7 +30,8 @@
                         <div th:each="col, statCol : ${row}"
                              th:class="${(statRow.index + statCol.index) % 2 == 0 ? 'square white' : 'square black'}">
 
-                            <div class="square-content" th:id="${columns[statCol.index] + '' + (statRow.index+1) + '-'}">
+                            <div class="square-content"
+                                 th:id="${columns[statCol.index] + '' + (statRow.index+1) + '-'}">
                                 <th:block th:if="${col != null}">
                                     <!--white pawns and black back rows -->
                                     <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure"
@@ -40,23 +44,28 @@
                 </div>
             </div>
             <div class="bottom">
-                <img th:src="@{/images/util/default-user.png}" alt="icon"><h4>anonimowy</h4>
+                <img th:src="@{/images/util/default-user.png}" alt="icon">
+                <h4 th:if="${game.black != null}" th:text="${game.black.userName}"></h4>
+                <h4 th:if="${game.black == null}">Anonimowy</h4>
             </div>
         </div>
 
         <!-- Prawy sidebar -->
-        <div class="col right-sidebar-game ps-0">
+        <div class="col-8 col-md-4 right-sidebar-game ps-0">
             <div hidden="hidden" id="game" th:data-id="${game.gameId}"></div>
-            <div class="moves-box text-start">
-                <p>skoczek na c3</p>
-                <hr>
-                <p class="black-move">goniec na d4</p>
-                <hr>
-                <p>...</p>
-                <hr>
-                <p>...</p>
+            <img th:src="@{/images/util/game-option.png}" alt="background" class="img-fluid w-100">
+            <div class="overlay-panel text-center">
+                <div class="moves-box">
+                    <p>skoczek na c3</p>
+                    <hr>
+                    <p class="black-move">goniec na d4</p>
+                    <hr>
+                    <p>...</p>
+                    <hr>
+                    <p>...</p>
+                </div>
+                <button class="surrender-btn">Poddaj się</button>
             </div>
-            <button class="surrender-btn">Poddaj się</button>
         </div>
     </div>
 </div>

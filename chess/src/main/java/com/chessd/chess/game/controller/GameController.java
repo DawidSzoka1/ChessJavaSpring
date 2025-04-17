@@ -35,7 +35,9 @@ public class GameController {
     @GetMapping("/play/test")
     public String test(Model model, Principal principal){
         Game g = new Game(randomUniqIdGenerator.generateUniqId());
-        g.setWhite(userService.findByUserName(principal.getName()));
+        if(principal != null){
+            g.setWhite(userService.findByUserName(principal.getName()));
+        }
         gameService.save(g);
         gameService.startGame(g);
 

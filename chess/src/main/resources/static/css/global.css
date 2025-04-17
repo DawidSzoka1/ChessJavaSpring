@@ -355,21 +355,36 @@ body {
 
 .game {
 
+    .background-img {
+        position: absolute;
+        object-fit: cover;
+        bottom: 0;
+        left: 0;
+    }
+
+    .right-sidebar-game img{
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .overlay-panel{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 1rem;
+        width: 250px;
+        max-height: 70vh;
+    }
     .moves-box {
-        box-sizing: border-box;
-        position: relative;
-        margin-top: 15vh;
-        margin-left: 7vw;
         overflow-y: auto;
         overflow-x: hidden;
-        width: 20vw;
-        height: 50vh;
-        transform: scale(0.9);
+        margin-bottom: 1rem;
         background-color: #a94442;
-        font-size: 1.5rem;
         padding: 1rem;
         border-radius: 10px;
     }
+
 
     .black-move {
         color: black;
@@ -379,29 +394,24 @@ body {
         margin: 0;
         font-weight: bold;
     }
-
     .surrender-btn {
         background-color: #1c1c1c;
         color: white;
-        width: 50%;
+        width: 100%;
         border: none;
-        margin-left: 9vw;
-        padding: 10px;
+        padding: 10px 20px;
         font-weight: bold;
+        border-radius: 5px;
+        margin-top: 1rem;
     }
 
     .right-sidebar-game {
-        background-image: url("/images/util/game-option.png");
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: contain;
-        min-height: 400px;
-        padding:20px;
-        justify-content: center;
+        display: flex;
+        flex-direction: column;
         align-items: center;
+        justify-content: center;
+        text-align: center;
         position: relative;
-        overflow: hidden;
-        color: white;
     }
 
     .chessboard {
