@@ -25,11 +25,17 @@
 
     <div class="games-list p-2">
         <th:block th:each="game : ${games}">
+
             <div class="row">
-                <div class="col-8" >
+                <div class="col-8" th:if="${game.winner != null}">
                     <span th:class="${game.winner.userName.equals(game.white.userName) ? 'green' : 'red'}" th:text="${game.white.userName}"></span>
                     vs
                     <span th:class="${game.winner.userName.equals(game.black.userName) ? 'green' : 'red'}" th:text="${game.black.userName}"></span>
+                </div>
+                <div class="col-8" th:if="${game.winner == null}">
+                    <span class="gray" th:text="${game.white.userName}"></span>
+                    vs
+                    <span class="gray" th:text="${game.black.userName}"></span>
                 </div>
                 <div class="col-4 text-end" th:text="${time.minutesBetween(game.start, game.end) + ' minut'}"></div>
             </div>

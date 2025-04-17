@@ -76,8 +76,11 @@ public class AdminController {
     }
 
     @GetMapping("/review/games")
-    public String getGames(Model model) {
-        model.addAttribute("games", gameService.getALlGames())
+    public String getGames(Model model,
+                           @RequestParam(name = "pageNum", value = "0", required = false) int pageNum,
+                           @RequestParam(name = "pageSize", value = "6", required = false) int pageSize
+    ) {
+        model.addAttribute("games", gameService.getALlGames(pageNum,pageSize))
                 .addAttribute("time", timeUtils);
         return "admin/gameReview";
     }

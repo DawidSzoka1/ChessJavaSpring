@@ -41,7 +41,7 @@ INSERT INTO game (black, white, winner, start, end, check_status, game_id, next_
                                                                                           (1, 2,2, TIMESTAMP '2024-03-01 15:30:00', TIMESTAMP '2024-03-01 16:15:00', 'N', 'GME12345AB', 'W', 'BLACK_WINS'),
                                                                                           (3, 4, 4,TIMESTAMP '2024-03-02 18:00:00', TIMESTAMP '2024-03-02 18:45:00', 'N', 'GME67890CD', 'W', 'DRAW'),
                                                                                           (5, 6, 5,TIMESTAMP '2024-03-03 20:10:00', TIMESTAMP '2024-03-03 21:00:00', 'N', 'GME54321EF', 'W', 'WHITE_WINS'),
-                                                                                          (7, 8, 8,TIMESTAMP '2024-03-05 11:15:00', TIMESTAMP '2024-03-05 12:05:00', 'N', 'GME98765GH', 'W', 'DRAW'),
+                                                                                          (7, 8, null,TIMESTAMP '2024-03-05 11:15:00', TIMESTAMP '2024-03-05 12:05:00', 'N', 'GME98765GH', 'W', 'DRAW'),
                                                                                           (9, 10, 9,TIMESTAMP '2024-03-06 14:40:00', TIMESTAMP '2024-03-06 15:20:00', 'N', 'GME19283IJ', 'W', 'DRAW'),
                                                                                           (2, 5, 5,TIMESTAMP '2024-03-07 16:50:00', TIMESTAMP '2024-03-07 17:35:00', 'N', 'GME56789KL', 'W', 'DRAW'),
                                                                                           (4, 7, 4,TIMESTAMP '2024-03-08 19:20:00', TIMESTAMP '2024-03-08 20:10:00', 'N', 'GME34567MN', 'W', 'WHITE_WINS'),

@@ -13,8 +13,13 @@ import com.chessd.chess.game.utils.GameResult;
 import com.chessd.chess.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.jetbrains.annotations.NotNull;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
@@ -53,7 +58,7 @@ public class GameServiceImpl implements GameService {
                     game,
                     List.of(new String[]{Position.fromColumnRow(colName, 2).get().toString(),
                             Position.fromColumnRow(colName, 3).get().toString()})
-                    ));
+            ));
             figureDao.save(new Pawn("B", Position.fromColumnRow(colName, 6).orElseThrow(), game,
                     List.of(new String[]{Position.fromColumnRow(colName, 5).get().toString(),
                             Position.fromColumnRow(colName, 4).get().toString()})));
@@ -64,8 +69,8 @@ public class GameServiceImpl implements GameService {
         }
     }
 
-    public Game getGameIfExists(String gameId){
-        Optional<Game> gameOpt = gameDao.getGameByGameId(gameId);
+    public Game getGameIfExists(String gameId) {
+        Optional<Game> gameOpt = gameDao.findById(gameId);
         //TODO throw error custom
         return gameOpt.orElse(null);
     }
@@ -74,7 +79,7 @@ public class GameServiceImpl implements GameService {
     public void move(String gameId, String from, String to, String color, boolean take) throws Exception {
         Game game = this.getGameIfExists(gameId);
         System.out.println("Status gry: " + game.getResult().name());
-        if(!game.getResult().name().equals("ONGOING")){
+        if (!game.getResult().name().equals("ONGOING")) {
             throw new Exception("Game is over");
         }
         Figure figure = figureDao.getFigureByPosition(Position.fromString(from).orElseThrow(), game);
@@ -94,22 +99,24 @@ public class GameServiceImpl implements GameService {
     public void endGame(Game game, GameResult result) {
         game.setEnd(Timestamp.from(Instant.now()));
         game.setResult(result);
-        gameDao.update(game);
+        gameDao.save(game);
     }
 
     @Override
     public List<Game> getGamesByPlayer(User user) {
-        return gameDao.getGamesByPlayer(user);
+        return gameDao.getGamesByWhiteOrBlack(user, user);
     }
 
     @Override
-    public List<Game> getALlGames() {
-        return gameDao.getAllGames();
+    public Page<Game> getALlGames(int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Order.asc("start"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return gameDao.findAll(pageable);
     }
 
     @Override
     public Optional<Game> getGameById(String gameId) {
-        return gameDao.getGameByGameId(gameId);
+        return gameDao.findById(gameId);
     }
 
     @Override
@@ -119,7 +126,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void update(Game game) {
-        gameDao.update(game);
+        gameDao.save(game);
     }
 
     @Override
@@ -129,11 +136,19 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public HashMap<Position, Figure> getBoard(Game game) {
-        return gameDao.getBoard(game);
+        HashMap<Position, Figure> board = new HashMap<>();
+        for (Figure f : figureDao.getAllFigureByGame(game)) {
+            board.put(f.getPosition(), f);
+        }
+        return board;
     }
 
     @Override
     public Figure[][] getBoardAsTable(Game game) {
-        return gameDao.getBoardAsTable(game);
+        Figure[][] board = new Figure[8][8];
+        for (Figure f : figureDao.getAllFigureByGame(game)) {
+            board[f.getRow()][f.getCol()] = f;
+        }
+        return board;
     }
 }
