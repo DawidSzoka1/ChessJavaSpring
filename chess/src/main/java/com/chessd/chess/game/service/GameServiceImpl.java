@@ -108,7 +108,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Page<Game> getALlGames(int pageNumber, int pageSize) {
+    public Page<Game> getAllGames(int pageNumber, int pageSize) {
         Sort sort = Sort.by(Sort.Order.asc("start"));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return gameDao.findAll(pageable);

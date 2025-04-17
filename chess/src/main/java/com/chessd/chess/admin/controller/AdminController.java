@@ -1,8 +1,10 @@
 package com.chessd.chess.admin.controller;
 
+import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.game.service.GameService;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
+import com.chessd.chess.utils.PaginationUtil;
 import com.chessd.chess.utils.TimeUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -24,11 +26,13 @@ public class AdminController {
     private final UserService userService;
     private final GameService gameService;
     private final TimeUtils timeUtils;
+    private final PaginationUtil paginationUtil;
 
-    public AdminController(UserService userService, GameService gameService, TimeUtils timeUtils) {
+    public AdminController(UserService userService, GameService gameService, TimeUtils timeUtils, PaginationUtil paginationUtil) {
         this.userService = userService;
         this.gameService = gameService;
         this.timeUtils = timeUtils;
+        this.paginationUtil = paginationUtil;
     }
 
     @GetMapping("/profile")
@@ -48,11 +52,7 @@ public class AdminController {
                              ) int pageSize
     ) {
         Page<User> page = userService.findAllSortedByNameASC(pageNumber, pageSize);
-        int startPagination = Math.max(page.getNumber() - 3, 0);
-        int endPagination = Math.min(startPagination + 10, page.getTotalPages()) - 1;
-        model.addAttribute("page", page)
-                .addAttribute("start", startPagination)
-                .addAttribute("end", endPagination);
+        paginationUtil.setPagination(page, model);
         return "admin/adminPanel";
     }
 
@@ -77,11 +77,18 @@ public class AdminController {
 
     @GetMapping("/review/games")
     public String getGames(Model model,
-                           @RequestParam(name = "pageNum", value = "0", required = false) int pageNum,
-                           @RequestParam(name = "pageSize", value = "6", required = false) int pageSize
+                           @RequestParam(
+                                   value = "pageNum",
+                                   defaultValue = "0",
+                                   required = false) int pageNum,
+                           @RequestParam(
+                                   value = "pageSize",
+                                   defaultValue = "5",
+                                   required = false) int pageSize
     ) {
-        model.addAttribute("games", gameService.getALlGames(pageNum,pageSize))
-                .addAttribute("time", timeUtils);
+        Page<Game> page = gameService.getAllGames(pageNum, pageSize);
+        paginationUtil.setPagination(page, model);
+        model.addAttribute("time", timeUtils);
         return "admin/gameReview";
     }
 }

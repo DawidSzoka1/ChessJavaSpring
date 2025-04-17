@@ -2,6 +2,7 @@ package com.chessd.chess.user.controller;
 
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
+import com.chessd.chess.utils.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -16,11 +17,13 @@ import java.util.List;
 @RequestMapping("/users")
 public class RankingController {
 
-    UserService userService;
+    private final UserService userService;
+    private final PaginationUtil paginationUtil;
 
     @Autowired
-    public RankingController(UserService userService) {
+    public RankingController(UserService userService, PaginationUtil paginationUtil) {
         this.userService = userService;
+        this.paginationUtil = paginationUtil;
     }
 
     @GetMapping("/rankings")
@@ -31,13 +34,9 @@ public class RankingController {
                            @RequestParam(
                                    value = "pageSize", defaultValue = "10", required = false
                            ) int pageSize
-                           ) {
+    ) {
         Page<User> page = userService.findAllByRanking(pageNumber, pageSize);
-        int startPagination = Math.max(page.getNumber() - 3, 0);
-        int endPagination = Math.min(startPagination + 10, page.getTotalPages()) - 1;
-        model.addAttribute("page", page)
-                .addAttribute("start", startPagination)
-                .addAttribute("end", endPagination);
+        paginationUtil.setPagination(page, model);
         return "users/rankings";
     }
 }
