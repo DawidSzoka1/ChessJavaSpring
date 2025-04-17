@@ -15,6 +15,7 @@ public interface GameService {
     void move(String gameId, String from, String to, String color, boolean take) throws Exception;
     void endGame(Game game, GameResult result);
     List<Game> getGamesByPlayer(User user);
+    List<Game> getALlGames();
     Optional<Game> getGameById(String gameId);
     void save(Game game);
     void update(Game game);

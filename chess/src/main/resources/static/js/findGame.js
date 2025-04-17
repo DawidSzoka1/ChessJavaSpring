@@ -9,7 +9,6 @@ addEventListener("DOMContentLoaded", () => {
         document.getElementById("lobby-info").classList.add("d-none")
         e.preventDefault()
         socket.infoObject = info;
-        console.log("Evenet findGame")
         socket.send({
             message: 'queue',
             messageType: 'queue',
