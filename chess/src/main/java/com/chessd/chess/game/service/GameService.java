@@ -5,6 +5,7 @@ import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.game.utils.GameResult;
 import com.chessd.chess.figure.utils.Position;
 import com.chessd.chess.user.entity.User;
+import org.springframework.data.domain.Page;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ public interface GameService {
     void move(String gameId, String from, String to, String color, boolean take) throws Exception;
     void endGame(Game game, GameResult result);
     List<Game> getGamesByPlayer(User user);
-    List<Game> getALlGames();
+    Page<Game> getAllGames(int pageNumber, int pageSize);
     Optional<Game> getGameById(String gameId);
     void save(Game game);
     void update(Game game);

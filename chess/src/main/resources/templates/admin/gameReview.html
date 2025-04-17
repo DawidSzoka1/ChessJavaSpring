@@ -24,17 +24,39 @@
     </div>
 
     <div class="games-list p-2">
-        <th:block th:each="game : ${games}">
+        <th:block th:each="game : ${page.content}">
+
             <div class="row">
-                <div class="col-8" >
+                <div class="col-8" th:if="${game.winner != null}">
                     <span th:class="${game.winner.userName.equals(game.white.userName) ? 'green' : 'red'}" th:text="${game.white.userName}"></span>
                     vs
                     <span th:class="${game.winner.userName.equals(game.black.userName) ? 'green' : 'red'}" th:text="${game.black.userName}"></span>
                 </div>
+                <div class="col-8" th:if="${game.winner == null}">
+                    <span class="gray" th:text="${game.white.userName}"></span>
+                    vs
+                    <span class="gray" th:text="${game.black.userName}"></span>
+                </div>
                 <div class="col-4 text-end" th:text="${time.minutesBetween(game.start, game.end) + ' minut'}"></div>
             </div>
         </th:block>
+
     </div>
+
+        <ul class="pagination">
+            <li th:each="i : ${#numbers.sequence(start, end)}">
+                <a th:href="@{${#mvc.url('AC#getGames').arg(1, i).arg(2, page.size).build()}}">
+                    <img th:if="${page.number} == ${i}"
+                         th:src="@{/images/B/paginationQueen.png}"
+                         class="chess-icon" alt="Hetman"/>
+                    <img th:if="${page.number} != ${i}"
+                         th:src="@{/images/B/paginationPawn.png}"
+                         class="chess-icon pawn" alt="Pionek"/>
+                    <span th:text="${i+1}" class="pagination-number"></span>
+                </a>
+            </li>
+        </ul>
+
 </div>
 
 </body>
