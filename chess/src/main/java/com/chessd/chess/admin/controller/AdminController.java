@@ -91,4 +91,9 @@ public class AdminController {
         model.addAttribute("time", timeUtils);
         return "admin/gameReview";
     }
+
+    @GetMapping("/review/panel")
+    public String getGamePanel(){
+        return "admin/gamePanel";
+    }
 }

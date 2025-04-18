@@ -520,3 +520,15 @@ body {
         height: 80vh;
     }
 }
+
+.green {
+    color: #00c853;
+}
+
+.red {
+    color: #f44336;
+}
+
+.gray {
+    color: lightgrey;
+}
