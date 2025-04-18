@@ -109,9 +109,23 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Page<Game> getAllGames(int pageNumber, int pageSize) {
-        Sort sort = Sort.by(Sort.Order.asc("start"));
+        Sort sort = Sort.by(Sort.Order.desc("start"));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return gameDao.findAll(pageable);
+    }
+
+    @Override
+    public Page<Game> getAllLiveGames(int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Order.desc("start"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return gameDao.findAllByResult(GameResult.ONGOING, pageable);
+    }
+
+    @Override
+    public Page<Game> getAllEndedGames(int pageNumber, int pageSize) {
+        Sort sort = Sort.by(Sort.Order.desc("start"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return gameDao.findAllByResultIsNot(GameResult.ONGOING, pageable);
     }
 
     @Override
