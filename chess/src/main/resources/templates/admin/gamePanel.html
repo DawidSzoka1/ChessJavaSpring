@@ -22,31 +22,23 @@
             <!-- Lewa kolumna -->
             <div class="col-md-6 mb-4">
                 <a th:href="${#mvc.url('AC#getGames').build()}" class="section-header">
-                        Aktualnie trwające partie
-                        <div class="live-dot"></div>
+                    Aktualnie trwające partie
+                    <div class="live-dot"></div>
                 </a>
                 <div class="game-list">
-                    <div class="game-item">
-                        <span><span class="green">jamnik</span> vs <span class="player-red">kogut</span></span>
-                        <span>(minuta trwania)</span>
-                    </div>
-                    <div class="game-item">
-                        <span><span class="player-red">kjuhijl</span> vs <span class="player-dark">ioklgdo</span></span>
-                        <span>00:16:37</span>
-                    </div>
-                    <div class="game-item">
-                        <span><span class="player-dark">iojdudw</span> vs <span class="player-red">tebyd</span></span>
-                        <span>00:10:34</span>
-                    </div>
-                    <div class="game-item">
-                        <span><span class="player-dark">kopciuch78</span> vs <span
-                                class="player-red">imigrant</span></span>
-                        <span>00:05:56</span>
-                    </div>
-                    <div class="game-item">
-                        <span><span class="player-dark">mrfejm03</span> vs <span
-                                class="player-red">oficer130</span></span>
-                        <span>00:01:11</span>
+                    <div class="game-item" th:each="live : ${liveGame}">
+                        <a th:href="${#mvc.url('GC#classic').arg(1, live.gameId).build()}">
+                        <span>
+                            <span class="white"
+                                  th:text="${live.white != null ? live.white.userName : 'anonimowy'}"></span>
+                            vs
+                            <span class="black"
+                                  th:text="${live.black != null ? live.black.userName : 'anonimowy'}">
+
+                        </span>
+                        </span>
+                            <span th:text="${time.minutesBetween(live.start)}"></span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -54,29 +46,26 @@
             <!-- Prawa kolumna -->
             <div class="col-md-6 mb-4">
                 <a th:href="${#mvc.url('AC#getGames').build()}" class="section-header right">
-                        <div>Partie rozegrane</div>
+                    <div>Partie rozegrane</div>
                 </a>
                 <div class="game-list right">
-                    <div class="game-item">
-                        <span><span class="player-green">alberto</span> vs <span
-                                class="player-red">donkasjo</span></span>
-                        <span>00:14:37</span>
-                    </div>
-                    <div class="game-item">
-                        <span><span class="player-dark">Olejnik</span> vs <span class="player-dark">cbś112</span></span>
-                        <span>00:03:33</span>
-                    </div>
-                    <div class="game-item">
-                        <span><span class="player-red">bandura</span> vs <span class="player-green">multi</span></span>
-                        <span>00:19:59</span>
-                    </div>
-                    <div class="game-item">
-                        <span><span class="player-green">kruszwil</span> vs <span class="player-red">bieda</span></span>
-                        <span>00:01:11</span>
-                    </div>
-                    <div class="game-item">
-                        <span><span class="player-dark">lom</span> vs <span class="player-dark">bard</span></span>
-                        <span>00:15:15</span>
+                    <div class="game-item" th:each="ended : ${endedGames}">
+                        <a th:href="${#mvc.url('GC#classic').arg(1, ended.gameId).build()}">
+                        <span th:if="${ended.winner != null}">
+                            <span th:class="${ended.winner.userName.equals(ended.white.userName) ? 'green' : 'red'}"
+                                  th:text="${ended.white != null ? ended.white.userName : 'anonimowy'}"></span> vs
+                            <span th:class="${ended.winner.userName.equals(ended.black.userName) ? 'green' : 'red'}"
+                                  th:text="${ended.black != null ? ended.black.userName : 'anonimowy'}"></span>
+                        </span>
+                            <span th:if="${ended.winner == null}">
+                             <span class="gray"
+                                   th:text="${ended.white != null ? ended.white.userName : 'anonimowy'}"></span> vs
+                            <span class="gray"
+                                  th:text="${ended.black != null ? ended.black.userName : 'anonimowy'}"></span>
+
+                        </span>
+                            <span th:text="${time.minutesBetween(ended.start, ended.end) + ' minut'}"></span>
+                        </a>
                     </div>
                 </div>
             </div>

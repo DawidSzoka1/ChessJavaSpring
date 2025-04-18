@@ -19,7 +19,7 @@ body {
     margin-bottom: 40px;
 }
 
-.section-header a {
+a {
     text-decoration: none;
     color: inherit;
 }
@@ -69,4 +69,12 @@ body {
 
 .game-item span {
     font-weight: 500;
+}
+
+.white{
+    color: white;
+}
+
+.black{
+    color: black;
 }

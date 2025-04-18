@@ -86,14 +86,20 @@ public class AdminController {
                                    defaultValue = "5",
                                    required = false) int pageSize
     ) {
-        Page<Game> page = gameService.getAllGames(pageNum, pageSize);
+        Page<Game> page = gameService.getAllEndedGames(pageNum, pageSize);
         paginationUtil.setPagination(page, model);
         model.addAttribute("time", timeUtils);
         return "admin/gameReview";
     }
 
     @GetMapping("/review/panel")
-    public String getGamePanel(){
+    public String getGamePanel(Model model){
+        Page<Game> pageLive = gameService.getAllLiveGames(0, 7);
+        Page<Game> pageEnded = gameService.getAllEndedGames(0, 7);
+        model.addAttribute("liveGame" , pageLive.getContent())
+                .addAttribute("endedGames", pageEnded.getContent())
+                .addAttribute("time", timeUtils);
+
         return "admin/gamePanel";
     }
 }
