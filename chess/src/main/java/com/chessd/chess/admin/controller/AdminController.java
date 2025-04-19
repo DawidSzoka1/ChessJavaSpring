@@ -114,7 +114,7 @@ public class AdminController {
                                 ) int pageNum,
                                 @RequestParam(
                                         value = "pageSize",
-                                        defaultValue = "5",
+                                        defaultValue = "10",
                                         required = false
                                 ) int pageSize) {
         Page<Game> page = gameService.getAllEndedGames(pageNum, pageSize);

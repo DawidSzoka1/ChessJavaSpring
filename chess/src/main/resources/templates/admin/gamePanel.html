@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/css/global.css}" rel="stylesheet">
     <link th:href="@{/css/gamePanel.css}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -16,7 +17,7 @@
 <!-- Główna zawartość -->
 <div class="main-content">
     <div class="container-fluid">
-        <div class="title">PRZEGLĄD GIER</div>
+        <div class="title title-main">PRZEGLĄD GIER</div>
 
         <div class="row">
             <!-- Lewa kolumna -->
@@ -29,8 +30,10 @@
                     <div class="game-item" th:if="${liveGame.size() == 0}">
                         Brak gier
                     </div>
-                    <div class="game-item" th:each="live : ${liveGame}">
-                        <a th:href="${#mvc.url('GC#classic').arg(1, live.gameId).build()}">
+                    <a class="game-item justify-content-space-between"
+                       th:href="${#mvc.url('GC#classic').arg(1, live.gameId).build()}"
+                       th:each="live : ${liveGame}">
+
                         <span>
                             <span class="white"
                                   th:text="${live.white?.userName ?: 'anonimowy'}"></span>
@@ -40,9 +43,9 @@
 
                         </span>
                         </span>
-                            <span th:text="${time.minutesBetween(live.start)}"></span>
-                        </a>
-                    </div>
+                        <span th:text="${time.minutesBetween(live.start)}"></span>
+
+                    </a>
                 </div>
             </div>
 
@@ -52,8 +55,9 @@
                     <div>Partie rozegrane</div>
                 </a>
                 <div class="game-list right">
-                    <div class="game-item" th:each="ended : ${endedGames}">
-                        <a th:href="${#mvc.url('GC#classic').arg(1, ended.gameId).build()}">
+                    <a class="game-item justify-content-space-between"
+                       th:href="${#mvc.url('GC#classic').arg(1, ended.gameId).build()}"
+                       th:each="ended : ${endedGames}">
                             <span>
                                 <span th:class="${ended.winner == null ? 'gray' :
                                 (ended.winner.userName.equals(ended.white?.userName) ? 'green' : 'red')}"
@@ -62,9 +66,8 @@
                                 (ended.winner.userName.equals(ended.black?.userName) ? 'green' : 'red')}"
                                       th:text="${ended.black?.userName ?: 'anonimowy'}"></span>
                             </span>
-                            <span th:text="${time.minutesBetween(ended.start, ended.end)}"></span>
-                        </a>
-                    </div>
+                        <span th:text="${time.minutesBetween(ended.start, ended.end)}"></span>
+                    </a>
                 </div>
             </div>
         </div>

@@ -20,30 +20,43 @@ body {
 
 /* Sidebar dostosowany do wysokości i szerokości ekranu */
 .sidebar {
-    left: 0;
-    top: 0;
-    position: fixed;
-    flex-wrap: wrap;
-    width: 8vw;
-    min-width: 8vw;
     background-color: #4a2c2c;
+    width: 80px;
     height: 100vh;
-    min-height: 100vh;
-    display: flex;
+    position: fixed;
     overflow-y: auto;
     overflow-x: hidden;
+    top: 0;
+    left: 0;
+    display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 25px;
+    box-shadow: 2px 0 6px;
 }
 
-.icon {
-    margin: 2vh 0;
+.sidebar .icon {
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.icon img, .icon input {
-    width: 5vw;
-    height: auto;
-    cursor: pointer;
+.sidebar .icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: #ccc;
+    transition: all 0.3s ease;
+}
+
+.sidebar .icon:hover svg {
+    stroke: #ffc107;
+    transform: scale(1.15);
+}
+
+.title-main{
+    font-weight: bold;
+    font-size: 3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .game-history {
@@ -99,6 +112,19 @@ body {
 }
 
 
+
+
+.custom-table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px #b58863;
+}
+
+.custom-table tbody tr:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px;
+}
+
 .custom-table thead tr {
     border-bottom: 30px solid white;
 }
@@ -106,10 +132,51 @@ body {
 .custom-table thead th {
     background-color: #b58863;
     color: #f0d9b5;
+    font-size: 1.3rem;
 }
+
+.custom-table tbody tr:first-child td:nth-child(1) strong{
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #CFAE00;
+
+}
+
+.custom-table tbody tr:nth-child(2) td:nth-child(1) strong{
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #828282;
+    color: #262626;
+}
+
+.custom-table tbody tr:nth-child(3) td:nth-child(1) strong{
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #804716;
+    color: #3B210A;
+}
+
+
 
 .custom-table tbody td {
     background-color: #f0d9b5;
+    color: #a87551;
+    font-size: 1.2rem;
 }
 
 .custom-table tbody {
@@ -118,7 +185,7 @@ body {
 
 .custom-table tbody td a {
     text-decoration: none;
-    color: black;
+    color: #a87551;
 }
 
 .empty-row td {
@@ -136,10 +203,12 @@ body {
     }
 
     .admin-box {
-        background-color: #f1e1a6;
+        background-color: #f0d9b5;
         height: 20vh;
         margin-top: 8vh;
-        padding: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 8px #a87551;
     }
 
     .top-section .admin-label {
@@ -159,7 +228,6 @@ body {
     .menu-btn {
         display: block;
         width: 100%;
-        padding: 12px;
         background-color: #a87551;
         color: #f3e7b3;
         font-weight: bold;
@@ -170,7 +238,10 @@ body {
         font-size: 2.2em;
         margin-bottom: 10px;
         transition: background-color 0.3s ease;
-        border-radius: 4px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 0 8px #a87551;
+
     }
 
     .menu-btn:hover {
@@ -186,15 +257,37 @@ body {
     font-weight: bold;
 }
 
+
+.admin-table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px #b58863;
+}
+
+.admin-table tbody tr:hover {
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px;
+}
+
 .admin-table {
     thead tr {
         border-bottom: 30px solid white;
+
     }
 
     thead th {
         background-color: #a87551 !important;
         color: #f0d9b5 !important;
         font-size: 1.8rem !important;
+        padding: 12px;
+    }
+    thead th:first-child {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+    thead th:last-child {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
     }
 
     .delete {
@@ -202,7 +295,7 @@ body {
         left: 0;
         height: 24px;
         width: 24px;
-        background-color: #f1e4b3 !important;
+        background-color: #f0d9b5 !important;
         border: 2px solid #a87551 !important;
         border-radius: 4px;
         cursor: pointer;
@@ -247,6 +340,35 @@ body {
         color: black;
     }
 
+}
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination li a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: background-color 0.3s ease;
+}
+.pagination li a:hover {
+    background-color: #dbeeff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.pagination li a:hover .pagination-number {
+    color: #007bff;
+    transform: scale(1.05);
+}
+
+.pagination li a:hover .chess-icon {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
 }
 
 .login-title {
@@ -522,11 +644,11 @@ body {
 }
 
 .green {
-    color: #00c853;
+    color: #0C401B;
 }
 
 .red {
-    color: #f44336;
+    color: #540803;
 }
 
 .gray {
