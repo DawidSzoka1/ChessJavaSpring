@@ -18,7 +18,7 @@ public interface GameService {
 
     void endGame(Game game, GameResult result);
 
-    List<Game> getGamesByPlayer(User user);
+    Page<Game> getGamesByPlayer(int pageNumber, int pageSize, User user);
 
     Page<Game> getAllGames(int pageNumber, int pageSize);
 

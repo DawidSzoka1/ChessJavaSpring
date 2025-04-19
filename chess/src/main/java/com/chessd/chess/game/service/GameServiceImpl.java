@@ -103,8 +103,10 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> getGamesByPlayer(User user) {
-        return gameDao.getGamesByWhiteOrBlack(user, user);
+    public Page<Game> getGamesByPlayer(int pageNumber, int pageSize, User user) {
+        Sort sort = Sort.by(Sort.Order.desc("start"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return gameDao.findAllByWhiteOrBlack(user, user, pageable);
     }
 
     @Override
