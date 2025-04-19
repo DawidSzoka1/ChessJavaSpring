@@ -75,31 +75,52 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/review/games")
-    public String getGames(Model model,
-                           @RequestParam(
-                                   value = "pageNum",
-                                   defaultValue = "0",
-                                   required = false) int pageNum,
-                           @RequestParam(
-                                   value = "pageSize",
-                                   defaultValue = "5",
-                                   required = false) int pageSize
-    ) {
-        Page<Game> page = gameService.getAllEndedGames(pageNum, pageSize);
-        paginationUtil.setPagination(page, model);
-        model.addAttribute("time", timeUtils);
-        return "admin/gameReview";
-    }
-
     @GetMapping("/review/panel")
-    public String getGamePanel(Model model){
+    public String getGamePanel(Model model) {
         Page<Game> pageLive = gameService.getAllLiveGames(0, 7);
         Page<Game> pageEnded = gameService.getAllEndedGames(0, 7);
-        model.addAttribute("liveGame" , pageLive.getContent())
+        model.addAttribute("liveGame", pageLive.getContent())
                 .addAttribute("endedGames", pageEnded.getContent())
                 .addAttribute("time", timeUtils);
 
         return "admin/gamePanel";
     }
+
+    @GetMapping("/review/live/games")
+    public String getLiveGames(Model model,
+                               @RequestParam(
+                                       value = "pageNum",
+                                       defaultValue = "0",
+                                       required = false
+                               ) int pageNum,
+                               @RequestParam(
+                                       value = "pageSize",
+                                       defaultValue = "7",
+                                       required = false
+                               ) int pageSize) {
+
+        Page<Game> page = gameService.getAllLiveGames(pageNum, pageSize);
+        paginationUtil.setPagination(page, model);
+        model.addAttribute("time", timeUtils);
+        return "admin/gameLive";
+    }
+
+    @GetMapping("/review/ended/games")
+    public String getEndedGames(Model model,
+                                @RequestParam(
+                                        value = "pageNum",
+                                        defaultValue = "0",
+                                        required = false
+                                ) int pageNum,
+                                @RequestParam(
+                                        value = "pageSize",
+                                        defaultValue = "5",
+                                        required = false
+                                ) int pageSize) {
+        Page<Game> page = gameService.getAllEndedGames(pageNum, pageSize);
+        paginationUtil.setPagination(page, model);
+        model.addAttribute("time", timeUtils);
+        return "admin/gameEnded";
+    }
+
 }
