@@ -21,19 +21,22 @@
         <div class="row">
             <!-- Lewa kolumna -->
             <div class="col-md-6 mb-4">
-                <a th:href="${#mvc.url('AC#getGames').build()}" class="section-header">
+                <a th:href="${#mvc.url('AC#getLiveGames').build()}" class="section-header">
                     Aktualnie trwające partie
                     <div class="live-dot"></div>
                 </a>
                 <div class="game-list">
+                    <div class="game-item" th:if="${liveGame.size() == 0}">
+                        Brak gier
+                    </div>
                     <div class="game-item" th:each="live : ${liveGame}">
                         <a th:href="${#mvc.url('GC#classic').arg(1, live.gameId).build()}">
                         <span>
                             <span class="white"
-                                  th:text="${live.white != null ? live.white.userName : 'anonimowy'}"></span>
+                                  th:text="${live.white?.userName ?: 'anonimowy'}"></span>
                             vs
                             <span class="black"
-                                  th:text="${live.black != null ? live.black.userName : 'anonimowy'}">
+                                  th:text="${live.black?.userName ?: 'anonimowy'}">
 
                         </span>
                         </span>
@@ -45,26 +48,21 @@
 
             <!-- Prawa kolumna -->
             <div class="col-md-6 mb-4">
-                <a th:href="${#mvc.url('AC#getGames').build()}" class="section-header right">
+                <a th:href="${#mvc.url('AC#getEndedGames').build()}" class="section-header right">
                     <div>Partie rozegrane</div>
                 </a>
                 <div class="game-list right">
                     <div class="game-item" th:each="ended : ${endedGames}">
                         <a th:href="${#mvc.url('GC#classic').arg(1, ended.gameId).build()}">
-                        <span th:if="${ended.winner != null}">
-                            <span th:class="${ended.winner.userName.equals(ended.white.userName) ? 'green' : 'red'}"
-                                  th:text="${ended.white != null ? ended.white.userName : 'anonimowy'}"></span> vs
-                            <span th:class="${ended.winner.userName.equals(ended.black.userName) ? 'green' : 'red'}"
-                                  th:text="${ended.black != null ? ended.black.userName : 'anonimowy'}"></span>
-                        </span>
-                            <span th:if="${ended.winner == null}">
-                             <span class="gray"
-                                   th:text="${ended.white != null ? ended.white.userName : 'anonimowy'}"></span> vs
-                            <span class="gray"
-                                  th:text="${ended.black != null ? ended.black.userName : 'anonimowy'}"></span>
-
-                        </span>
-                            <span th:text="${time.minutesBetween(ended.start, ended.end) + ' minut'}"></span>
+                            <span>
+                                <span th:class="${ended.winner == null ? 'gray' :
+                                (ended.winner.userName.equals(ended.white?.userName) ? 'green' : 'red')}"
+                                      th:text="${ended.white?.userName ?: 'anonimowy'}"></span> vs
+                                <span th:class="${ended.winner == null ? 'gray' :
+                                (ended.winner.userName.equals(ended.black?.userName) ? 'green' : 'red')}"
+                                      th:text="${ended.black?.userName ?: 'anonimowy'}"></span>
+                            </span>
+                            <span th:text="${time.minutesBetween(ended.start, ended.end)}"></span>
                         </a>
                     </div>
                 </div>

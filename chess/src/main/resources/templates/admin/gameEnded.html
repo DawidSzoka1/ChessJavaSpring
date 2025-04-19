@@ -27,17 +27,17 @@
         <th:block th:each="game : ${page.content}">
 
             <div class="row">
-                <div class="col-8" th:if="${game.winner != null}">
-                    <span th:class="${game.winner.userName.equals(game.white.userName) ? 'green' : 'red'}" th:text="${game.white.userName}"></span>
+                <div class="col">
+                    <span th:class="${game.winner == null ? 'gray' :
+                    (game.winner.userName.equals(game.white?.userName) ? 'green' : 'red')}"
+                          th:text="${game.white?.userName ?: 'anonimowy'}"></span>
                     vs
-                    <span th:class="${game.winner.userName.equals(game.black.userName) ? 'green' : 'red'}" th:text="${game.black.userName}"></span>
+                    <span th:class="${game.winner == null ? 'gray' :
+                    (game.winner.userName.equals(game.black?.userName) ? 'green' : 'red')}"
+                          th:text="${game.black?.userName ?: 'anonimowy'}"></span>
                 </div>
-                <div class="col-8" th:if="${game.winner == null}">
-                    <span class="gray" th:text="${game.white.userName}"></span>
-                    vs
-                    <span class="gray" th:text="${game.black.userName}"></span>
-                </div>
-                <div class="col-4 text-end" th:text="${time.minutesBetween(game.start, game.end) + ' minut'}"></div>
+
+                <div class="col text-end" th:text="${time.minutesBetween(game.start, game.end)}"></div>
             </div>
         </th:block>
 
@@ -45,7 +45,7 @@
 
         <ul class="pagination">
             <li th:each="i : ${#numbers.sequence(start, end)}">
-                <a th:href="@{${#mvc.url('AC#getGames').arg(1, i).arg(2, page.size).build()}}">
+                <a th:href="@{${#mvc.url('AC#getEndedGames').arg(1, i).arg(2, page.size).build()}}">
                     <img th:if="${page.number} == ${i}"
                          th:src="@{/images/B/paginationQueen.png}"
                          class="chess-icon" alt="Hetman"/>
