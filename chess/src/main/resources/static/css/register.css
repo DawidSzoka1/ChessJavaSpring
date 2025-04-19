@@ -1,27 +1,29 @@
-.login-container {
+.register-container {
     display: flex;
     align-items: center;
-    gap: 50px;
+    gap: 40px;
     background-color: white;
-    padding: 40px 60px;
+    padding: 40px;
     border-radius: 16px;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.08);
     position: relative;
     z-index: 1;
+    flex-wrap: wrap;
+    max-width: 100%;
 }
 
-.login-container img.chess-icon {
-    width: 130px;
+.register-container img.chess-icon {
+    width: 120px;
     opacity: 0.9;
 }
 
-.login-form {
+.register-form {
     display: flex;
     flex-direction: column;
 }
 
 
-.login-btn {
+.register-btn {
     background-color: #4A2B2B;
     color: white;
     border: none;
@@ -34,19 +36,18 @@
     width: fit-content;
 }
 
-.login-btn:hover {
+.register-btn:hover {
     background-color: #331a1a;
 }
 
-
 @media (max-width: 768px) {
-    .login-container {
+    .register-container {
         flex-direction: column;
         gap: 20px;
         padding: 20px;
     }
 
-    .login-container img.chess-icon {
+    .register-container img.chess-icon {
         display: none;
     }
 }
