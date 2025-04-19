@@ -95,7 +95,7 @@ public class AdminController {
                                ) int pageNum,
                                @RequestParam(
                                        value = "pageSize",
-                                       defaultValue = "7",
+                                       defaultValue = "10",
                                        required = false
                                ) int pageSize) {
 
