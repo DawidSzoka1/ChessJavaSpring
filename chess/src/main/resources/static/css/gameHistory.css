@@ -1,69 +1,200 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background-color: #f6f3ee;
+    margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    color: #3d2b1f;
 }
 
-.main-container {
+.game-history-main-container {
+    margin-left: 80px;
+    padding: 2rem;
+}
+
+.game-history-top-content {
     display: flex;
-    justify-content: center;
-    padding: 2rem;
+    flex-direction: column;
+    gap: 2rem;
 }
 
-.game-card {
-    flex: 2;
-    background-color: #fff;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    padding: 2rem;
-    margin-right: 2rem;
-    margin-left: 100px;
+@media (min-width: 900px) {
+    .game-history-top-content {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+.game-history-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
-.filter {
-    flex: 1;
-    background-color: #fff;
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    max-height: fit-content;
-}
-
-.game-entry {
-    padding: 1rem;
+.game-history-card {
+    background-color: #f9f9f9;
     border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.game-history-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+.game-history-section, .game-history-filter-box {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.game-history-section {
+    flex: 2;
+    width: 100%;
+}
+
+.game-history-filter-box {
+    flex: 1;
+    max-width: 350px;
+    width: 100%;
+}
+
+.game-history-title {
+    font-size: 2rem;
     margin-bottom: 1rem;
-    font-weight: 500;
+    color: #3a2b2b;
+}
+
+.game-history-filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.game-history-filter-buttons button {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.game-history-filter-buttons .game-history-active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.game-history-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: 0.3s ease-in-out;
+    padding: 1rem;
+    border-radius: 10px;
+    color: white;
+    margin-bottom: 1rem;
 }
 
-.game-entry:hover {
-    transform: scale(1.01);
+.game-history-card.game-history-win {
+    background-color: #4CAF50;
 }
 
-.draw {
-    background-color: #e5e5e5;
+.game-history-card.game-history-loss {
+    background-color: #a94442;
+}
+
+.game-history-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    flex-wrap: wrap;
+}
+
+
+
+.game-history-filter-box input,
+.game-history-filter-box select,
+.game-history-filter-box button {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.game-history-filter-box button {
+    margin-top: 1rem;
+    background-color: white;
+    color: #007bff;
+    border: 1px solid #007bff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.game-history-filter-box p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
     color: #555;
 }
-
-.loss {
-    background-color: #9f4c4c;
-    color: white;
+.game-history-pagination-wrapper {
+    margin-top: 20px;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
-.win {
-    background-color: #4c8c4c;
-    color: white;
+.game-history-pagination {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 10px;
 }
-a{
+
+.game-history-pagination li {
+    display: flex;
+}
+
+.game-history-pagination li a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
     text-decoration: none;
+    color: black;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
-h1 {
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+
+.game-history-pagination li a:hover {
+    background-color: #dbeeff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+}
+
+.game-history-pagination li a:hover .game-history-pagination-number {
+    color: #007bff;
+    transform: scale(1.05);
+}
+
+.game-history-pagination li a:hover .game-history-chess-icon {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+
+.game-history-chess-icon {
+    height: 9vh;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    display: block;
 }
