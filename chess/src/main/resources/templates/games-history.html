@@ -25,7 +25,7 @@
             </div>
             <a th:each="game : ${page.content}" class="game-history-card-link"
                th:href="@{${#mvc.url('GC#classic').arg(1, game.gameId).build()}}">
-                <div class="game-history-card" th:classappend="${game.winner == null ? 'draw' :
+                <div class="game-history-card" th:classappend="${game.winner == null ? 'game-history-draw' :
                  (game.winner?.userName.equals(user?.userName) ? 'game-history-win' : 'game-history-loss')}">
                     <div class="game-history-entry">
                         <img th:src="@{${game.winner == null ? '/images/util/draw.png' :
