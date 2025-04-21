@@ -98,15 +98,18 @@ body {
 }
 
 .game-history-card.game-history-draw{
-    background-color: gray;
+    background-color: #6c757d;
+    color: #f0d9b5;
 }
 
 .game-history-card.game-history-win {
-    background-color: #4CAF50;
+    background-color: #0C401B;
+    color: #f0d9b5;
 }
 
 .game-history-card.game-history-loss {
-    background-color: #a94442;
+    background-color: #540803;
+    color: #f0d9b5;
 }
 
 .game-history-entry {
