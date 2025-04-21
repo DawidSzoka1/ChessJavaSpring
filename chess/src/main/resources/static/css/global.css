@@ -53,7 +53,7 @@ body {
     transform: scale(1.15);
 }
 
-.title-main{
+.title-main {
     font-weight: bold;
     font-size: 3rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -112,8 +112,6 @@ body {
 }
 
 
-
-
 .custom-table {
     border-radius: 12px;
     overflow: hidden;
@@ -135,7 +133,7 @@ body {
     font-size: 1.3rem;
 }
 
-.custom-table tbody tr:first-child td:nth-child(1) strong{
+.custom-table tbody tr:first-child td:nth-child(1) strong {
     width: 50px;
     height: 50px;
     margin-right: 10px;
@@ -147,7 +145,7 @@ body {
 
 }
 
-.custom-table tbody tr:nth-child(2) td:nth-child(1) strong{
+.custom-table tbody tr:nth-child(2) td:nth-child(1) strong {
     width: 50px;
     height: 50px;
     margin-right: 10px;
@@ -159,7 +157,7 @@ body {
     color: #262626;
 }
 
-.custom-table tbody tr:nth-child(3) td:nth-child(1) strong{
+.custom-table tbody tr:nth-child(3) td:nth-child(1) strong {
     width: 50px;
     height: 50px;
     margin-right: 10px;
@@ -170,7 +168,6 @@ body {
     background-color: #804716;
     color: #3B210A;
 }
-
 
 
 .custom-table tbody td {
@@ -281,10 +278,12 @@ body {
         font-size: 1.8rem !important;
         padding: 12px;
     }
+
     thead th:first-child {
         border-top-left-radius: 10px;
         border-bottom-left-radius: 10px;
     }
+
     thead th:last-child {
         border-top-right-radius: 10px;
         border-bottom-right-radius: 10px;
@@ -341,6 +340,7 @@ body {
     }
 
 }
+
 .pagination {
     margin-top: 20px;
 }
@@ -352,9 +352,10 @@ body {
     padding: 8px 12px;
 
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: background-color 0.3s ease;
 }
+
 .pagination li a:hover {
     background-color: #dbeeff;
     transform: translateY(-2px);
@@ -484,12 +485,13 @@ body {
         left: 0;
     }
 
-    .right-sidebar-game img{
+    .right-sidebar-game img {
         width: 100%;
         height: auto;
         display: block;
     }
-    .overlay-panel{
+
+    .overlay-panel {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -498,6 +500,7 @@ body {
         width: 250px;
         max-height: 70vh;
     }
+
     .moves-box {
         overflow-y: auto;
         overflow-x: hidden;
@@ -516,6 +519,7 @@ body {
         margin: 0;
         font-weight: bold;
     }
+
     .surrender-btn {
         background-color: #1c1c1c;
         color: white;
@@ -689,7 +693,7 @@ body {
     border-left: 6px solid #d69e2e;
 }
 
-
+/*profile*/
 .profile-main-wrapper {
     margin-left: 80px;
 }
@@ -805,4 +809,102 @@ body {
 .game-history-loss {
     background-color: #540803;
     color: #f0d9b5;
+}
+
+
+/*update*/
+
+.update-main-wrapper {
+    margin-left: 80px;
+}
+
+.update-main-content {
+    padding: 40px;
+}
+
+.update-profile-details {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    animation: fadeIn 0.6s ease;
+}
+
+.update-profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.profile-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.update-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: url('https://cdn-icons-png.flaticon.com/512/149/149071.png') center/cover no-repeat;
+    border: 2px solid #ddd;
+}
+
+.btn-change-avatar {
+    font-size: 0.8rem;
+    padding: 3px 10px;
+}
+
+.update-username {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-section {
+    margin-top: 30px;
+}
+
+.form-label {
+    font-weight: 500;
+}
+
+.form-control {
+    transition: box-shadow 0.2s;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 5px rgba(70, 130, 180, 0.4);
+    border-color: steelblue;
+}
+
+.btn-save {
+    background: linear-gradient(to right, #28a745, #34ce57);
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 8px;
+    transition: 0.3s ease;
+}
+
+.btn-save:hover {
+    background: linear-gradient(to right, #218838, #2ecc71);
+}
+
+.btn-cancel {
+    border-radius: 8px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
