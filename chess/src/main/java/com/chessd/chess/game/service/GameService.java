@@ -20,6 +20,12 @@ public interface GameService {
 
     Page<Game> getGamesByPlayer(int pageNumber, int pageSize, User user);
 
+    int countWonGames(User user);
+
+    int countLostGames(User user);
+
+    int countDrawGames(User user);
+
     Page<Game> getAllGames(int pageNumber, int pageSize);
 
     Page<Game> getAllLiveGames(int pageNumber, int pageSize);

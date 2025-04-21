@@ -17,4 +17,10 @@ public interface GameDao extends JpaRepository<Game, String> {
     Page<Game> findAllByResultIsNot(GameResult result, Pageable pageable);
 
     Page<Game> findAllByWhiteOrBlack(User white, User black, Pageable pageable);
+
+    List<Game> getGamesByWinner(User user);
+
+    List<Game> getGamesByResultAndWhiteOrBlack(GameResult gameResult, User user, User user1);
+
+    List<Game> getGamesByWinnerNotAndWinnerNotNullAndWhiteOrBlack(User user, User user1, User user2);
 }

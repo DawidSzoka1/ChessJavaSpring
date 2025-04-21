@@ -110,6 +110,21 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public int countWonGames(User user) {
+        return gameDao.getGamesByWinner(user).size();
+    }
+
+    @Override
+    public int countLostGames(User user) {
+        return gameDao.getGamesByWinnerNotAndWinnerNotNullAndWhiteOrBlack(user, user, user).size();
+    }
+
+    @Override
+    public int countDrawGames(User user) {
+        return gameDao.getGamesByResultAndWhiteOrBlack(GameResult.DRAW, user, user).size();
+    }
+
+    @Override
     public Page<Game> getAllGames(int pageNumber, int pageSize) {
         Sort sort = Sort.by(Sort.Order.desc("start"));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
