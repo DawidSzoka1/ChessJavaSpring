@@ -45,7 +45,7 @@
             <div class="game-history-pagination-wrapper">
                 <ul class="game-history-pagination">
                     <li th:each="i : ${#numbers.sequence(start, end)}">
-                        <a th:href="@{${#mvc.url('AC#getLiveGames').arg(1, i).arg(2, page.size).build()}}">
+                        <a th:href="@{${'/users/history/' + user.userName + '?pageNum=' + i + '&pageSize=' + page.size}}">
                             <img th:if="${page.number} == ${i}"
                                  th:src="@{/images/B/paginationQueen.png}"
                                  class="game-history-chess-icon" alt="Hetman"/>

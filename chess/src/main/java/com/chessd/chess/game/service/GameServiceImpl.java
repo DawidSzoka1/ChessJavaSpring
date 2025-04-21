@@ -121,7 +121,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public int countDrawGames(User user) {
-        return gameDao.getGamesByResultAndWhiteOrBlack(GameResult.DRAW, user, user).size();
+        return gameDao.getGamesByWhiteOrBlackAndResult(GameResult.DRAW, user).size();
     }
 
     @Override
