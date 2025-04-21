@@ -42,7 +42,7 @@
             </a>
     </div>
 
-    <th:block sec:authorize="!hasRole('ROLE_ADMIN') && hasRole('ROLE_BASE')">
+    <th:block sec:authorize="hasRole('ROLE_BASE')">
         <div class="icon">
             <a th:href="@{/users/profile/{userName}(userName=${#authentication.principal.username})}">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke-width="1.8" viewBox="0 0 24 24" stroke="currentColor">

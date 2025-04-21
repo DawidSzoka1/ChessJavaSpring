@@ -1,54 +1,202 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link th:href="@{/css/chessboardStyle.css}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lobby Szachowe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link th:href="@{/css/global.css}" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
+        .lobby-main-wrapper {
+            margin-left: 80px;
+        }
+
+        .lobby-main-content {
+            padding: 40px;
+        }
+
+        .lobby-game-mode {
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .lobby-game-mode:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .lobby-game-mode h4 {
+            margin-top: 15px;
+        }
+
+        .lobby-profile-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .lobby-profile-card:hover {
+            transform: scale(1.02);
+        }
+
+        .lobby-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .lobby-stat-box {
+            background-color: #e9ecef;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .lobby-searching-animation {
+            display: none;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .lobby-stat-wins {
+            background-color: #0C401B;
+            color: #f0d9b5;
+        }
+
+        .lobby-stat-losses {
+            background-color: #540803;
+            color: #f0d9b5;
+        }
+
+        .lobby-stat-draws {
+            background-color: #6c757d;
+            color: #f0d9b5;
+        }
+
+        .lobby-stat-box img {
+            max-width: 48px;
+            height: auto;
+        }
+        a{
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
 </head>
-<body class="game">
-<div class="container-fluid">
-    <div class="row flex-wrap justify-content-center">
-        <!-- Lewy sidebar -->
+<body>
+<div th:insert="~{fragments/sidebar :: sidebar}">
 
-        <div th:insert="~{fragments/sidebar :: sidebar}"></div>
+</div>
+<div class="lobby-main-wrapper">
+    <div class="container-fluid">
+        <div class="lobby-main-content">
 
-
-        <!-- Główna zawartość (środkowa kolumna) -->
-        <div class="col-7 main-content">
-            <div class="top text-start">
-                <img th:src="@{/images/util/default-user.png}" alt="icon">
-                <h4>Przeciwnik</h4>
+            <div class="lobby-profile-card">
+                <a th:href="@{${user == null ? '/play' : ('/users/profile/' + user.userName)}}">
+                    <div class="d-flex align-items-center">
+                        <img src="https://img.icons8.com/ios-glyphs/60/user-male-circle.png" class="me-3" alt="profil">
+                        <div>
+                            <h4 th:text="${'Witaj ' + (user?.userName ?: 'Guest')}"></h4>
+                            <p>Twój ranking: <strong th:text="${user?.ranking ?: '0'}"></strong></p>
+                        </div>
+                    </div>
+                    <div class="lobby-stats">
+                        <div class="lobby-stat-box lobby-stat-wins">
+                            <img th:src="@{/images/util/win.png}" alt="trophy"/>
+                            <h6>Wygrane</h6>
+                            <p th:text="${won ?: 0}"></p>
+                        </div>
+                        <div class="lobby-stat-box lobby-stat-losses">
+                            <img th:src="@{/images/util/lose.png}" class="mb-1 mt-2" alt="trophy"/>
+                            <h6>Przegrane</h6>
+                            <p th:text="${lost ?: 0}"></p>
+                        </div>
+                        <div class="lobby-stat-box lobby-stat-draws">
+                            <img th:src="@{/images/util/draw.png}" alt="trophy"/>
+                            <h6>Remisy</h6>
+                            <p th:text="${draw ?: 0}"></p>
+                        </div>
+                    </div>
+                </a>
             </div>
-            <div class="middle">
-                <div id="chessboard" class="col-sm-7">
-                    <img class="chessboard" th:src="@{/images/util/board.png}" alt="board">
+
+            <h1 class="mb-4 title-main">Wybierz Tryb Rozgrywki</h1>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="p-4 bg-white lobby-game-mode text-center" onclick="startSearching()">
+                        <img src="https://img.icons8.com/color/48/chessboard.png" alt="klasyczny">
+                        <h4>Klasyczny</h4>
+                        <p>Ograniczony czas: <strong>10 min</strong> na gracza.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-white lobby-game-mode text-center" onclick="startSearching()">
+                        <img src="https://img.icons8.com/ios-filled/50/000000/lightning-bolt.png" alt="blitz">
+                        <h4>Blitz</h4>
+                        <p>Szybka gra, ograniczony czas: <strong>3 min</strong> na gracza.</p>
+                    </div>
                 </div>
             </div>
-            <div class="bottom">
-                <img th:src="@{/images/util/default-user.png}" alt="icon"><h4 th:text="${user}"></h4>
-            </div>
-        </div>
 
-        <!-- Prawy sidebar -->
-        <div class="col-2 right-sidebar-lobby text-center" id="optionDiv">
-            <img th:src="@{/images/util/play-options.png}" alt="img" class="img-fluid w-100">
-            <div class="time-overlay position-absolute top-40 start-50 translate-middle text-white">
-                <div id="lobby-info">
-                <h1 class="responsive-title">10 minut</h1>
-                <a href="#" id="findGame" th:data-user="${user}" class="btn play responsive-button">Graj</a>
+            <!-- Animacja szukania gry -->
+            <div id="searchingGame" class="lobby-searching-animation">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Szukam gry...</span>
                 </div>
-                <div id="searching" class="d-none flex-column align-items-center">
-                    <img th:src="@{/images/B/B_king.png}" alt="Szukaj" class="spinner-img mt-2 mb-2">
-                    <span class="responsive-title">Szukanie przeciwnika...</span>
-                </div>
+                <p class="mt-3">Szukam przeciwnika...</p>
+                <p>Czas oczekiwania: <span id="searchTimer">0</span> sekund</p>
+                <button class="btn btn-danger mt-2" onclick="stopSearching()">Anuluj</button>
             </div>
         </div>
     </div>
 </div>
-<script type="module" th:src="@{/js/findGame.js}"></script>
+<script>
+    let searchInterval;
+    let secondsElapsed = 0;
+
+    function startSearching() {
+        document.getElementById('searchingGame').style.display = 'block';
+        document.getElementById('searchingGame').innerHTML = `
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Szukam gry...</span>
+        </div>
+        <p class="mt-3">Szukam przeciwnika...</p>
+        <p>Czas oczekiwania: <span id="searchTimer">0</span> sekund</p>
+        <button class="btn btn-danger mt-2" onclick="stopSearching()">Anuluj</button>
+      `;
+        secondsElapsed = 0;
+        searchInterval = setInterval(() => {
+            secondsElapsed++;
+            document.getElementById('searchTimer').textContent = secondsElapsed;
+        }, 1000);
+
+        setTimeout(() => {
+            clearInterval(searchInterval);
+            document.getElementById('searchingGame').innerHTML = '<div class="alert alert-success">Znaleziono przeciwnika! Przechodzenie do gry...</div>';
+        }, 3000);
+    }
+
+    function stopSearching() {
+        clearInterval(searchInterval);
+        document.getElementById('searchingGame').style.display = 'none';
+    }
+</script>
 </body>
 </html>
