@@ -1,5 +1,6 @@
 package com.chessd.chess.user.web;
 
+import com.chessd.chess.customAnnotation.NoSpecialChars;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -15,16 +16,19 @@ import java.util.Objects;
 @NoArgsConstructor
 public class RegisterUser {
 
-    @NotNull(message = "is required")
-    @Size(min=1, message = "user name min 1 length")
+    @NotNull(message = "Wymagane!")
+    @Size(min=1, message = "Login minimum długości jeden!")
+    @NoSpecialChars(message = "Nazwa użytkownia zawiera niedozwolone znaki!")
     private String userName;
 
-    @NotNull(message = "is required")
-    @Size(min=1, message = "password min 1 length")
+    @NotNull(message = "Wymagane!")
+    @Size(min=1, message = "Hasło minimum długości jeden!")
+    @NoSpecialChars(message = "Hasło zawiera niedozwolone znaki!")
     private String password;
 
-    @NotNull(message = "is required")
-    @Size(min=1, message = "password2 min 1 length")
+    @NotNull(message = "Wymagane!")
+    @Size(min=1, message = "Powtórzenie hasła minimum długości jeden!")
+    @NoSpecialChars(message = "Powtórzenie hasła zawiera niedozwolone znaki!")
     private String password2;
 
     @Override
