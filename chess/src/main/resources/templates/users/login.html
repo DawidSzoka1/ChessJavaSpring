@@ -21,12 +21,16 @@
                 <h1>LOGOWANIE</h1>
                 <div th:if="${param.logout}" class="alert-box">
                     <div class="alert alert-success">
-                        Wylogowany pomyslnie
+                        Wylogowany pomyślnie
+                    </div>
+                </div>
+                <div th:if="${success}" class="alert-box">
+                    <div class="alert alert-success" th:text="${success}">
                     </div>
                 </div>
                 <div th:if="${param.error}" class="alert-box">
                     <div class="alert alert-error">
-                        Niepoprawny login lub haslo
+                        Niepoprawny login lub hasło
                     </div>
                 </div>
                 <div class="input-group">

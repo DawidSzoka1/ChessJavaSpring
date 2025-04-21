@@ -8,107 +8,7 @@
     <link th:href="@{/css/global.css}" rel="stylesheet">
     <style>
         body {
-            background-color: #f0f2f5;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .lobby-sidebar {
-            background-color: #4a2c2c;
-            width: 80px;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 20px;
-            box-shadow: 2px 0 6px rgba(0,0,0,0.2);
-        }
-        .lobby-icon {
-            margin: 20px 0;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .lobby-icon:hover {
-            transform: scale(1.15);
-        }
-        .lobby-icon svg {
-            stroke: #ccc;
-            width: 28px;
-            height: 28px;
-        }
-        .lobby-main-wrapper {
-            margin-left: 80px;
-        }
-        .lobby-main-content {
-            padding: 40px;
-        }
-        .lobby-profile-details {
-            background: white;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            animation: fadeIn 0.6s ease;
-        }
-        .lobby-profile-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-        }
-        .profile-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .lobby-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: url('https://cdn-icons-png.flaticon.com/512/149/149071.png') center/cover no-repeat;
-            border: 2px solid #ddd;
-        }
-        .btn-change-avatar {
-            font-size: 0.8rem;
-            padding: 3px 10px;
-        }
-        .lobby-username {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-        }
-        .form-section {
-            margin-top: 30px;
-        }
-        .form-label {
-            font-weight: 500;
-        }
-        .form-control {
-            transition: box-shadow 0.2s;
-        }
-        .form-control:focus {
-            box-shadow: 0 0 5px rgba(70, 130, 180, 0.4);
-            border-color: steelblue;
-        }
-        .btn-save {
-            background: linear-gradient(to right, #28a745, #34ce57);
-            border: none;
-            color: white;
-            padding: 10px 25px;
-            border-radius: 8px;
-            transition: 0.3s ease;
-        }
-        .btn-save:hover {
-            background: linear-gradient(to right, #218838, #2ecc71);
-        }
-        .btn-cancel {
-            border-radius: 8px;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -117,22 +17,25 @@
 
 </div>
 
-<div class="lobby-main-wrapper">
+<div class="update-main-wrapper">
     <div class="container">
-        <div class="lobby-main-content">
-            <div class="lobby-profile-details">
-                <div class="lobby-profile-header">
+        <div class="update-main-content">
+            <div class="update-profile-details">
+                <div class="update-profile-header">
                     <div class="profile-left">
-                        <div class="lobby-avatar"></div>
+                        <div class="update-avatar"></div>
                         <div>
-                            <div class="lobby-username" th:text="${'@' + user.userName}"></div>
+                            <div class="update-username" th:text="${'@' + user.userName}"></div>
                             <button class="btn btn-outline-secondary btn-sm btn-change-avatar mt-2">Zmień avatar</button>
                         </div>
                     </div>
                     <h4 class="text-muted">Edycja profilu</h4>
                 </div>
                 <div th:if="${error}" class="alert-box">
-                    <div class="alert alert-error" th:text="${error}">
+                    <div class="alert alert-error">
+                        <th:block th:each="e : ${error}">
+                            <span th:text="${e}"></span><br>
+                        </th:block>
                     </div>
                 </div>
                 <form th:action="@{${#mvc.url('UC#updateProcess').build()}}" method="post" th:object="${user}">

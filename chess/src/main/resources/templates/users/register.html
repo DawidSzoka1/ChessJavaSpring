@@ -17,8 +17,16 @@
     <div class="register-container">
         <img class="chess-icon" th:src="@{/images/index/chess_piece.png}" alt="chess-piece">
         <form th:action="@{/processRegistration}" method="post" th:object="${registerUser}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <div class="register-form">
                 <h1>REJESTRACJA</h1>
+                <div th:if="${error}" class="alert-box">
+                    <div class="alert alert-error">
+                        <th:block th:each="e : ${error}">
+                            <span th:text="${e}"></span> <br>
+                        </th:block>
+                    </div>
+                </div>
                 <div class="input-group">
                     <label for="login">LOGIN:</label>
                     <input type="text" id="login" th:field="*{userName}" placeholder="Wpisz login">
