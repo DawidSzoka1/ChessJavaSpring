@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,137 +13,24 @@
             margin: 0;
             padding: 0;
         }
-
-        .lobby-main-wrapper {
-            margin-left: 80px;
-        }
-
-        .lobby-main-content {
-            padding: 40px;
-        }
-
-        .lobby-profile-details {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .lobby-profile-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .lobby-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: url('https://cdn-icons-png.flaticon.com/512/149/149071.png') center/cover no-repeat;
-            border: 2px solid #ddd;
-        }
-
-        .lobby-username {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
-        .lobby-profile-details h4 {
-            margin-bottom: 20px;
-        }
-
-        .lobby-profile-details .form-control:disabled {
-            background-color: #f9f9f9;
-        }
-
-        .lobby-profile-stats {
-            margin-top: 30px;
-        }
-
-        .lobby-game-history a {
-            transition: 0.3s ease;
-        }
-
-        .lobby-game-history a:hover {
-            cursor: pointer;
-            transform: scale(1.01);
-        }
-
-        .lobby-stat-box {
-            padding: 15px 20px;
-            border-radius: 12px;
-            text-align: center;
-            flex: 1;
-            margin: 0 10px;
-            color: white;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease;
-        }
-
-        .lobby-stat-box:hover {
-            transform: translateY(-5px);
-        }
-
-        .lobby-stat-wins {
-            background-color: #0C401B;
-            color: #f0d9b5;
-        }
-
-        .lobby-stat-losses {
-            background-color: #540803;
-            color: #f0d9b5;
-        }
-
-        .lobby-stat-draws {
-            background-color: #6c757d;
-            color: #f0d9b5;
-        }
-
-        .lobby-stat-box h6 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
-
-        .lobby-stat-box p {
-            font-size: 1.4rem;
-            margin: 0;
-            font-weight: bold;
-        }
-
-        .lobby-stat-box img {
-            max-width: 48px;
-            height: auto;
-        }
-
-        .game-history-draw {
-            background-color: #6c757d;
-            color: #f0d9b5;
-        }
-
-        .game-history-win {
-            background-color: #0C401B;
-            color: #f0d9b5;
-        }
-
-        .game-history-loss {
-            background-color: #540803;
-            color: #f0d9b5;
-        }
     </style>
 </head>
 <body>
 <div th:insert="~{fragments/sidebar :: sidebar}">
 </div>
-<div class="lobby-main-wrapper">
+<div class="profile-main-wrapper">
     <div class="container-fluid">
-        <div class="lobby-main-content">
-            <div class="lobby-profile-details">
-                <div class="lobby-profile-header">
-                    <div class="lobby-avatar"></div>
-                    <div class="lobby-username" th:text="${'@' + user.userName}"></div>
+        <div class="profile-main-content">
+            <div class="profile-profile-details">
+                <div class="profile-profile-header">
+                    <div class="profile-avatar"></div>
+                    <div class="profile-username" th:text="${'@' + user.userName}"></div>
                 </div>
                 <h4 class="title-main">Informacje o użytkowniku</h4>
+                <div th:if="${success}" class="alert-box">
+                    <div class="alert alert-success" th:text="${success}">
+                    </div>
+                </div>
                 <form>
                     <div class="mb-3">
                         <label class="form-label">Imię</label>
@@ -165,27 +53,32 @@
                         <label class="form-label">Kraj</label>
                         <input type="text" class="form-control" th:value="${user.country ?: 'brak danych'}" disabled>
                     </div>
-                    <button type="button" class="btn btn-primary">Zmień dane</button>
-                    <a href="#" class="btn btn-outline-secondary ms-2">Zmień hasło</a>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <th:block th:if="${(#authentication.principal?.username) == user.userName}">
+                            <a th:href="@{${#mvc.url('UC#updateInfo').build()}}" class="btn btn-primary">Zmień dane</a>
+                            <a href="#" class="btn btn-outline-secondary ms-2">Zmień hasło</a>
+                        </th:block>
+                    </th:block>
                 </form>
 
                 <div class="row text-center mt-4">
+                    <h6 class="title-main">Statystyki</h6>
                     <div class="col-md-4">
-                        <div class="lobby-stat-box lobby-stat-wins">
+                        <div class="profile-stat-box profile-stat-wins">
                             <img th:src="@{/images/util/win.png}" alt="trophy"/>
                             <h6>Wygrane</h6>
                             <p th:text="${won ?: 0}"></p>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="lobby-stat-box lobby-stat-losses">
+                        <div class="profile-stat-box profile-stat-losses">
                             <img th:src="@{/images/util/lose.png}" alt="trophy" class="mt-2 mb-2"/>
                             <h6>Przegrane</h6>
                             <p th:text="${lost ?: 0}"></p>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="lobby-stat-box lobby-stat-draws">
+                        <div class="profile-stat-box profile-stat-draws">
                             <img th:src="@{/images/util/draw.png}" alt="trophy"/>
                             <h6>Remisy</h6>
                             <p th:text="${draw ?: 0}"></p>
@@ -193,12 +86,13 @@
                     </div>
                 </div>
 
-                <div class="lobby-profile-stats mt-5">
+                <div class="profile-profile-stats mt-5">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="title-main">Ostatnie mecze</h5>
-                        <a th:href="@{${'/users/history/' + user.userName}}" class="btn btn-outline-dark btn-sm">Zobacz całą historię</a>
+                        <a th:href="@{${'/users/history/' + user.userName}}" class="btn btn-outline-dark btn-sm">Zobacz
+                            całą historię</a>
                     </div>
-                    <div class="list-group lobby-game-history mt-3">
+                    <div class="list-group profile-game-history mt-3">
                         <a th:each="game : ${recentGames}"
                            class="list-group-item d-flex justify-content-between align-items-center"
                            th:classappend="${game.winner == null ? 'game-history-draw' :

@@ -1,5 +1,7 @@
 package com.chessd.chess.user.web;
 
+import com.chessd.chess.customAnnotation.NoSpecialChars;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +15,22 @@ import java.util.HashMap;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateUser {
-
+    @NoSpecialChars(message = "Nazwa użytkownia zawiera niedozwolone znaki!")
     private String userName;
+
+    @NoSpecialChars(message = "Imie zawiera niedozwolone znaki!")
     private String firstName;
+
+    @NoSpecialChars(message = "Nazwisko użytkownia zawiera niedozwolone znaki!")
     private String lastName;
+
+    @Email(message = "Niewlaściwy email")
     private String email;
+
+    @NoSpecialChars(message = "Kraj zawiera niedozwolone znaki!")
     private String country;
+
+    @NoSpecialChars(message = "Płeć zawiera niedozwolone znaki!")
     private String gender;
 
     public HashMap<String, Object> allNotNullFields() {

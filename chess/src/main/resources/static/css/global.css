@@ -654,3 +654,155 @@ body {
 .gray {
     color: lightgrey;
 }
+
+
+.alert-box {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 10px;
+    position: relative;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.alert-success {
+    background-color: #d7f3e3;
+    color: #276749;
+    border-left: 6px solid #38a169;
+}
+
+.alert-error {
+    background-color: #ffe5e5;
+    color: #9b2c2c;
+    border-left: 6px solid #e53e3e;
+}
+
+.alert-warning {
+    background-color: #fff8dc;
+    color: #975a16;
+    border-left: 6px solid #d69e2e;
+}
+
+
+.profile-main-wrapper {
+    margin-left: 80px;
+}
+
+.profile-main-content {
+    padding: 40px;
+}
+
+.profile-profile-details {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: url('https://cdn-icons-png.flaticon.com/512/149/149071.png') center/cover no-repeat;
+    border: 2px solid #ddd;
+}
+
+.profile-username {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.profile-profile-details h4 {
+    margin-bottom: 20px;
+}
+
+.profile-profile-details .form-control:disabled {
+    background-color: #f9f9f9;
+}
+
+.profile-profile-stats {
+    margin-top: 30px;
+}
+
+.profile-game-history a {
+    transition: 0.3s ease;
+}
+
+.profile-game-history a:hover {
+    cursor: pointer;
+    transform: scale(1.01);
+}
+
+.profile-stat-box {
+    padding: 15px 20px;
+    border-radius: 12px;
+    text-align: center;
+    flex: 1;
+    margin: 0 10px;
+    color: white;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.profile-stat-box:hover {
+    transform: translateY(-5px);
+}
+
+.profile-stat-wins {
+    background-color: #0C401B;
+    color: #f0d9b5;
+}
+
+.profile-stat-losses {
+    background-color: #540803;
+    color: #f0d9b5;
+}
+
+.profile-stat-draws {
+    background-color: #6c757d;
+    color: #f0d9b5;
+}
+
+.profile-stat-box h6 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.profile-stat-box p {
+    font-size: 1.4rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+.profile-stat-box img {
+    max-width: 48px;
+    height: auto;
+}
+
+.game-history-draw {
+    background-color: #6c757d;
+    color: #f0d9b5;
+}
+
+.game-history-win {
+    background-color: #0C401B;
+    color: #f0d9b5;
+}
+
+.game-history-loss {
+    background-color: #540803;
+    color: #f0d9b5;
+}

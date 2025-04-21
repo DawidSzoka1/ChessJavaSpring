@@ -79,40 +79,6 @@ h1 {
 }
 
 
-
-.alert-box {
-    margin-bottom: 20px;
-}
-
-.alert {
-    padding: 15px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 10px;
-    position: relative;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.4s ease-in-out;
-}
-
-.alert-success {
-    background-color: #d7f3e3;
-    color: #276749;
-    border-left: 6px solid #38a169;
-}
-
-.alert-error {
-    background-color: #ffe5e5;
-    color: #9b2c2c;
-    border-left: 6px solid #e53e3e;
-}
-
-.alert-warning {
-    background-color: #fff8dc;
-    color: #975a16;
-    border-left: 6px solid #d69e2e;
-}
-
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
