@@ -45,6 +45,7 @@ body {
 .home-card .btn-lobby:hover {
     background-color: #3e2c21;
 }
+
 .tagline {
     font-size: 1.2rem;
     color: #5C4033;
@@ -58,8 +59,13 @@ body {
     animation: fadeInUp 0.8s ease forwards;
 }
 
-.fade-in.delay-1 { animation-delay: 0.3s; }
-.fade-in.delay-2 { animation-delay: 0.6s; }
+.fade-in.delay-1 {
+    animation-delay: 0.3s;
+}
+
+.fade-in.delay-2 {
+    animation-delay: 0.6s;
+}
 
 @keyframes fadeInUp {
     to {
@@ -68,7 +74,6 @@ body {
     }
 }
 
-/* Szachowe ozdoby po bokach */
 .chess-decor-left,
 .chess-decor-right {
     position: absolute;
@@ -86,6 +91,7 @@ body {
 .chess-decor-right {
     right: 30px;
 }
+
 @media (max-width: 991px) {
     .chess-decor-left,
     .chess-decor-right {

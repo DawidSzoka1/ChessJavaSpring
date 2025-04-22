@@ -11,16 +11,13 @@
 </head>
 <body>
 
-<!-- Sidebar -->
 <div th:insert="~{fragments/sidebar :: sidebar}"></div>
 
-<!-- Główna zawartość -->
 <div class="main-content">
     <div class="container-fluid">
         <div class="title title-main">PRZEGLĄD GIER</div>
 
         <div class="row">
-            <!-- Lewa kolumna -->
             <div class="col-md-6 mb-4">
                 <a th:href="${#mvc.url('AC#getLiveGames').build()}" class="section-header">
                     Aktualnie trwające partie

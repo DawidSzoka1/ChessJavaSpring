@@ -885,3 +885,87 @@ body {
         transform: translateY(0);
     }
 }
+
+/*lobby*/
+
+.lobby-main-wrapper {
+    margin-left: 80px;
+}
+
+.lobby-main-content {
+    padding: 40px;
+}
+
+.lobby-game-mode {
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.lobby-game-mode:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.lobby-game-mode h4 {
+    margin-top: 15px;
+}
+
+.lobby-profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+
+.lobby-profile-card:hover {
+    transform: scale(1.02);
+}
+
+.lobby-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.lobby-stat-box {
+    background-color: #e9ecef;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-align: center;
+    flex: 1;
+    margin: 0 5px;
+}
+
+.lobby-searching-animation {
+    display: none;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+.lobby-stat-wins {
+    background-color: #0C401B;
+    color: #f0d9b5;
+}
+
+.lobby-stat-losses {
+    background-color: #540803;
+    color: #f0d9b5;
+}
+
+.lobby-stat-draws {
+    background-color: #6c757d;
+    color: #f0d9b5;
+}
+
+.lobby-stat-box img {
+    max-width: 48px;
+    height: auto;
+}

@@ -24,7 +24,8 @@
                         (${iterStat.index == 1 && page.number == 0} ? 'podium-second' :
                         (${iterStat.index == 2 && page.number == 0} ? 'podium-third' : '')))">
                     <div class="game-history-ranking-entry">
-                        <span class="game-history-ranking-position" th:text="${iterStat.index + 1 + page.size * page.number} + '.'"></span>
+                        <span class="game-history-ranking-position"
+                              th:text="${iterStat.index + 1 + page.size * page.number} + '.'"></span>
                         <span class="game-history-ranking-username" th:text="${player.userName}"></span>
                         <span class="game-history-ranking-points" th:text="${player.ranking} + ' pts'"></span>
                     </div>

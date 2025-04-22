@@ -7,23 +7,9 @@
     <link th:href="@{/css/global.css}" rel="stylesheet">
     <link th:href="@{/css/gamePanel.css}" rel="stylesheet">
     <style>
-        body {
-            background-color: #fafafa;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-
         .section-title {
             background-color: #a87551;
             color: #f0d9b5;
-            font-weight: bold;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            border-radius: 10px;
             box-shadow: 0 0 8px #a87551;
         }
 
@@ -34,68 +20,30 @@
         .game-list {
             background-color: #a87551;
             color: #f0d9b5;
-            padding: 15px;
-            border-radius: 10px;
             box-shadow: 0 0 8px #a87551;
 
         }
 
         .live-button {
             background-color: #f5e6c5;
-            color: #5a0a18;
-            font-weight: bold;
-            padding: 10px 16px;
-            border-radius: 30px;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #5a0a18;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .live-button:hover {
-            background-color: #2b2b2b;
-            color: white;
-            box-shadow: 0 4px 10px;
-        }
-        .main-content-ended{
-            margin-left: 10vw;
-        }
-        .dot {
-            height: 10px;
-            width: 10px;
-            background-color: #4cd137;
-            border-radius: 50%;
-            display: inline-block;
         }
     </style>
 </head>
 <body>
 <div class="container-fluid">
     <div class="row">
-
-        <!-- Sidebar -->
         <div th:insert="~{fragments/sidebar :: sidebar}"></div>
-
-
-        <!-- Main content -->
         <div class="col-md-10 p-4 main-content-ended">
-
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2 class="m-0 title-main">PRZEGLĄD GIER</h2>
                 <a th:href="${#mvc.url('AC#getLiveGames').build()}" class="live-button">Aktualnie trwające partie
                     <span class="dot"></span>
                 </a>
             </div>
-
-
-            <!-- Partie rozegrane sekcja -->
             <div class="section-title">
                 Partie rozegrane
                 <input type="text" class="form-control form-control-sm search-input" placeholder="Szukaj partii">
             </div>
-
             <div class="game-list">
                 <a class="game-item justify-content-space-between"
                    th:href="${#mvc.url('GC#classic').arg(1, game.gameId).build()}"
@@ -129,6 +77,5 @@
         </ul>
     </div>
 </div>
-
 </body>
 </html>

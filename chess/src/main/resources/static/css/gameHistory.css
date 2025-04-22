@@ -24,6 +24,7 @@ body {
         align-items: flex-start;
     }
 }
+
 .game-history-card-link {
     text-decoration: none;
     color: inherit;
@@ -34,7 +35,7 @@ body {
     background-color: #f9f9f9;
     border-radius: 12px;
     padding: 16px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
 }
@@ -43,6 +44,7 @@ body {
     transform: scale(1.02);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
+
 .game-history-section, .game-history-filter-box {
     background: white;
     padding: 2rem;
@@ -97,7 +99,7 @@ body {
     margin-bottom: 1rem;
 }
 
-.game-history-card.game-history-draw{
+.game-history-card.game-history-draw {
     background-color: #6c757d;
     color: #f0d9b5;
 }
@@ -119,7 +121,6 @@ body {
     font-weight: bold;
     flex-wrap: wrap;
 }
-
 
 
 .game-history-filter-box input,
@@ -147,6 +148,7 @@ body {
     font-size: 0.9rem;
     color: #555;
 }
+
 .game-history-pagination-wrapper {
     margin-top: 20px;
     text-align: center;
@@ -224,7 +226,7 @@ body {
     background-color: #f2f2f2;
     border-radius: 12px;
     padding: 16px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
 }

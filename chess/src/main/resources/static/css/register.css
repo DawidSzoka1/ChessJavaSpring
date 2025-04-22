@@ -22,24 +22,6 @@
     flex-direction: column;
 }
 
-
-.register-btn {
-    background-color: #4A2B2B;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 18px;
-    margin: 16px auto 0;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 0.3s;
-    width: fit-content;
-}
-
-.register-btn:hover {
-    background-color: #331a1a;
-}
-
 @media (max-width: 768px) {
     .register-container {
         flex-direction: column;

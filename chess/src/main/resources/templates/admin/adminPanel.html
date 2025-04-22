@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -16,7 +16,8 @@
                 <div th:insert="~{fragments/sidebar :: sidebar}"></div>
             </div>
             <div class="col-9 d-flex flex-column p-0 admin-panel">
-                <div th:if="${success}" class="alert alert-success alert-dismissible fade show mt-3 fixed-top" role="alert">
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show mt-3 fixed-top"
+                     role="alert">
                     <i class="bi bi-check-circle-fill"></i>
                     <span th:text="${success}">Użytkownicy zostali usunięci.</span>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Zamknij"></button>
@@ -43,7 +44,8 @@
                                     </a>
                                 </td>
                                 <td th:text="${user.getRoles()[user.getRoles().size()-1].getName().split('_')[1]}"></td>
-                                <td><input class="admin-table-delete form-check-input" name="userIds" type="checkbox" th:value="${user.id}"> <span class="custom-checkmark"></span></td>
+                                <td><input class="admin-table-delete form-check-input" name="userIds" type="checkbox"
+                                           th:value="${user.id}"> <span class="custom-checkmark"></span></td>
                             </tr>
                             </tbody>
                         </table>
