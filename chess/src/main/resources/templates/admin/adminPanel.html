@@ -36,14 +36,14 @@
                             </thead>
                             <tbody>
                             <tr th:each="user, count : ${page.content}">
-                                <td class="userName">
+                                <td class="admin-table-userName">
                                     <strong th:text="${count.count}+'.'"></strong>
                                     <a th:href="@{/users/profile/{username}(username=${user.userName})}">
                                         <strong th:text="${user.userName}"></strong>
                                     </a>
                                 </td>
                                 <td th:text="${user.getRoles()[user.getRoles().size()-1].getName().split('_')[1]}"></td>
-                                <td><input class="delete form-check-input" name="userIds" type="checkbox" th:value="${user.id}"> <span class="custom-checkmark"></span></td>
+                                <td><input class="admin-table-delete form-check-input" name="userIds" type="checkbox" th:value="${user.id}"> <span class="custom-checkmark"></span></td>
                             </tr>
                             </tbody>
                         </table>

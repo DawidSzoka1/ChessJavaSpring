@@ -15,15 +15,15 @@
         </div>
 
         <div class="col-9 d-flex flex-column p-0 admin-profile">
-            <div class="top-section">
-                <div class="admin-box">
-                    <div class="admin-label">Administrator</div>
-                    <div class="admin-name" th:text="${admin.userName}"></div>
+            <div class="admin-profile-top-section">
+                <div class="admin-profile-admin-box">
+                    <div class="admin-profile-admin-label">Administrator</div>
+                    <div class="admin-profile-admin-name" th:text="${admin.userName}"></div>
                 </div>
             </div>
-            <div class="bottom-section">
-                <a class="menu-btn" th:href="@{${#mvc.url('AC#adminPanel').build()}}">LISTA UŻYTKOWNIKÓW</a>
-                <a class="menu-btn" th:href="@{${#mvc.url('AC#getGamePanel').build()}}">PRZEGLĄD GRY</a>
+            <div class="admin-profile-bottom-section">
+                <a class="admin-profile-menu-btn" th:href="@{${#mvc.url('AC#adminPanel').build()}}">LISTA UŻYTKOWNIKÓW</a>
+                <a class="admin-profile-menu-btn" th:href="@{${#mvc.url('AC#getGamePanel').build()}}">PRZEGLĄD GRY</a>
             </div>
 
         </div>
