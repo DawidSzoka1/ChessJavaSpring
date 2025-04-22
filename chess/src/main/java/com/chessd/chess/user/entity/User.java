@@ -1,7 +1,9 @@
 package com.chessd.chess.user.entity;
 
+import com.chessd.chess.customAnnotation.NoSpecialChars;
 import com.chessd.chess.game.entity.Game;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,18 +22,23 @@ public class User {
     private int id;
 
     @Column(name = "username", unique = true)
+    @NoSpecialChars
     private String userName;
 
     @Column(name = "password")
+    @NoSpecialChars
     private String password;
 
     @Column(name = "first_name")
+    @NoSpecialChars
     private String firstName;
 
     @Column(name = "last_name")
+    @NoSpecialChars
     private String lastName;
 
     @Column(name = "email")
+    @Email
     private String email;
 
     @Column(name = "is_guest")
@@ -43,6 +50,7 @@ public class User {
     private String gender;
 
     @Column(name = "country")
+    @NoSpecialChars
     private String country;
 
     @Column(name = "enable")
