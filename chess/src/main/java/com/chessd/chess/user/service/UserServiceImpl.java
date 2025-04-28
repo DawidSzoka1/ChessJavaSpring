@@ -15,7 +15,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -117,6 +126,28 @@ public class UserServiceImpl implements UserService {
         user.setEmail(updateUser.getEmail());
         user.setCountry(updateUser.getCountry());
         user.setGender(updateUser.getGender());
+        MultipartFile profilePicture = updateUser.getProfilePicture();
+        if(profilePicture.isEmpty()){
+            userDao.save(user);
+            return;
+        }
+        try {
+            System.out.println("Zaczynamy zabawe");
+            String directoryPath = "/uploads/" + user.getUserName();
+            File dir = new File(directoryPath);
+            if(!dir.exists()) {
+                dir.mkdirs();
+            }
+            Path path = Paths.get(dir.getPath() + "/"
+                    + profilePicture.getOriginalFilename());
+            Files.write(path, profilePicture.getBytes());
+            user.setProfilePictureFilename(directoryPath + "/"
+                    + profilePicture.getOriginalFilename());
+            System.out.println("Przeszlo zabawe");
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+
         userDao.save(user);
     }
 

@@ -23,7 +23,10 @@
         <div class="profile-main-content">
             <div class="profile-profile-details">
                 <div class="profile-profile-header">
-                    <div class="profile-avatar"></div>
+                    <div class="profile-avatar">
+                        <img th:src="@{${user.profilePictureFilename}}"
+                             alt="Zdjecie profilowe">
+                    </div>
                     <div class="profile-username" th:text="${'@' + user.userName}"></div>
                 </div>
                 <h4 class="title-main">Informacje o użytkowniku</h4>

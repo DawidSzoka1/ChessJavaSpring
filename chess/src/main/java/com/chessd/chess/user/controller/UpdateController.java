@@ -50,7 +50,8 @@ public class UpdateController {
     @GetMapping("/update")
     public String updateInfo(Model model, Principal principal) {
         User user = userService.findByUserName(principal.getName());
-        model.addAttribute("user", user);
+        UpdateUser updateUser = UpdateUser.fromUser(user);
+        model.addAttribute("user", updateUser);
         return "users/update";
     }
 
