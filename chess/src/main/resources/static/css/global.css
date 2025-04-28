@@ -474,7 +474,7 @@ body {
     border: none;
 }
 
-. #chessboard {
+#chessboard {
     border: 3px solid #343a40;
     border-radius: 10px;
     overflow: hidden;
@@ -822,11 +822,10 @@ body {
     gap: 20px;
 }
 
-.update-avatar {
+.update-avatar img{
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: url('https://cdn-icons-png.flaticon.com/512/149/149071.png') center/cover no-repeat;
     border: 2px solid #ddd;
 }
 
