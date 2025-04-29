@@ -1,4 +1,4 @@
-package com.chessd.chess.user.storage;
+package com.chessd.chess.storage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,5 +8,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @ConfigurationProperties("storage")
 public class StorageProperties {
-    private String location = "upload-dir";
+    private String location = "uploads";
 }

@@ -24,7 +24,7 @@
             <div class="profile-profile-details">
                 <div class="profile-profile-header">
                     <div class="profile-avatar">
-                        <img th:src="@{${user.profilePictureFilename}}"
+                        <img th:src="@{/files/{fileName}(fileName=${user.profilePictureFilename})}"
                              alt="Zdjecie profilowe">
                     </div>
                     <div class="profile-username" th:text="${'@' + user.userName}"></div>

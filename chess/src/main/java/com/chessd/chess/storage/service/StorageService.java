@@ -1,4 +1,4 @@
-package com.chessd.chess.user.storage.service;
+package com.chessd.chess.storage.service;
 
 import com.chessd.chess.user.entity.User;
 import org.springframework.core.io.Resource;

@@ -4,6 +4,7 @@ import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.repository.RoleDao;
 import com.chessd.chess.user.repository.UserDao;
 import com.chessd.chess.user.CustomUserDetails;
+import com.chessd.chess.storage.service.StorageService;
 import com.chessd.chess.user.web.RegisterUser;
 import com.chessd.chess.user.web.UpdateUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -37,12 +31,14 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final RoleDao roleDao;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final StorageService storageService;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserDao userDao, RoleDao roleDao, BCryptPasswordEncoder passwordEncoder, StorageService storageService) {
         this.userDao = userDao;
         this.roleDao = roleDao;
         this.passwordEncoder = passwordEncoder;
+        this.storageService = storageService;
     }
 
     @Override
@@ -76,15 +72,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(User user){
+    public void delete(User user) {
         userDao.delete(user);
     }
 
     @Override
     public void deleteUsers(List<Integer> userIds) {
-        for(int id: userIds){
+        for (int id : userIds) {
             Optional<User> temp = this.findById(id);
-            if(temp.isEmpty()){
+            if (temp.isEmpty()) {
                 continue;
             }
             this.delete(temp.get());
@@ -127,26 +123,13 @@ public class UserServiceImpl implements UserService {
         user.setCountry(updateUser.getCountry());
         user.setGender(updateUser.getGender());
         MultipartFile profilePicture = updateUser.getProfilePicture();
-        if(profilePicture.isEmpty()){
+        if (profilePicture.isEmpty()) {
             userDao.save(user);
             return;
         }
-        try {
-            System.out.println("Zaczynamy zabawe");
-            String directoryPath = "/uploads/" + user.getUserName();
-            File dir = new File(directoryPath);
-            if(!dir.exists()) {
-                dir.mkdirs();
-            }
-            Path path = Paths.get(dir.getPath() + "/"
-                    + profilePicture.getOriginalFilename());
-            Files.write(path, profilePicture.getBytes());
-            user.setProfilePictureFilename(directoryPath + "/"
-                    + profilePicture.getOriginalFilename());
-            System.out.println("Przeszlo zabawe");
-        }catch (IOException e){
-            System.out.println(e.getMessage());
-        }
+        Path path = storageService.store(updateUser.getProfilePicture(), user);
+        user.setProfilePictureFilename(user.getId() + "/" + updateUser.getProfilePicture().getOriginalFilename());
+        System.out.println(path.toAbsolutePath());
 
         userDao.save(user);
     }

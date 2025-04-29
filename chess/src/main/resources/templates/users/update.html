@@ -25,7 +25,7 @@
                     <div class="update-profile-header">
                         <div class="profile-left">
                             <div class="update-avatar">
-                                <img th:src="@{/users/profile-picture/{userName}(userName=${user.userName})}"
+                                <img th:src="@{/files/{fileName}(fileName=${profilePicture})}"
                                      alt="Zdjecie profilowe">
                             </div>
                             <div>

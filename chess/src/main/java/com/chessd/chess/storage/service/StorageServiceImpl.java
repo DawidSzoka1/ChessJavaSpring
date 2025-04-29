@@ -1,9 +1,9 @@
-package com.chessd.chess.user.storage.service;
+package com.chessd.chess.storage.service;
 
 import com.chessd.chess.user.entity.User;
-import com.chessd.chess.user.storage.StorageProperties;
-import com.chessd.chess.user.storage.exception.StorageException;
-import com.chessd.chess.user.storage.exception.StorageFileNotFoundException;
+import com.chessd.chess.storage.StorageProperties;
+import com.chessd.chess.storage.exception.StorageException;
+import com.chessd.chess.storage.exception.StorageFileNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -77,6 +77,7 @@ public class StorageServiceImpl implements StorageService {
             Path file = this.load(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
+                System.out.println("ZWRACAM TO CO TRZEBA");
                 return resource;
             }
             else {

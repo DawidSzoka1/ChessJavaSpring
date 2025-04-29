@@ -1,4 +1,4 @@
-package com.chessd.chess.user.storage.exception;
+package com.chessd.chess.storage.exception;
 
 public class StorageFileNotFoundException extends RuntimeException {
     public StorageFileNotFoundException(String message) {
