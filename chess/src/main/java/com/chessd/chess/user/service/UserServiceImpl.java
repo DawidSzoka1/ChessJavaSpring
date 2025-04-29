@@ -119,7 +119,11 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(updateUser.getFirstName());
         user.setUserName(updateUser.getUserName());
         user.setLastName(updateUser.getLastName());
-        user.setEmail(updateUser.getEmail());
+        if(updateUser.getEmail() != null && !updateUser.getEmail().trim().isEmpty()){
+            user.setEmail(updateUser.getEmail());
+        }else{
+            user.setEmail(null);
+        }
         user.setCountry(updateUser.getCountry());
         user.setGender(updateUser.getGender());
         MultipartFile profilePicture = updateUser.getProfilePicture();

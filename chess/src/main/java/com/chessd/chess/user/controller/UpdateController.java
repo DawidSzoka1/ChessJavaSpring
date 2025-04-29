@@ -33,13 +33,23 @@ public class UpdateController {
         this.userService = userService;
         this.sessionHelper = sessionHelper;
     }
-
-    private String validUpdateUser(UpdateUser updateUser, User user) {
-        User emailTaken = userService.findByEmail(updateUser.getEmail());
-        User userNameTaken = userService.findByUserName(updateUser.getUserName());
-        if (emailTaken != null && emailTaken.getId() != user.getId()) {
+    private String validEmail(String email, User user){
+        if(email == null || email.trim().isEmpty()){
+            return "";
+        }
+        User emailTaken = userService.findByEmail(email);
+        if (emailTaken != null &&  emailTaken.getId() != user.getId()) {
             return "Email jest zajęty!!";
         }
+        return "";
+    }
+    private String validUpdateUser(UpdateUser updateUser, User user) {
+        String email = updateUser.getEmail();
+        String validResult = this.validEmail(email, user);
+        if(!validResult.isEmpty()){
+            return validResult;
+        }
+        User userNameTaken = userService.findByUserName(updateUser.getUserName());
         if (userNameTaken != null && userNameTaken.getId() != user.getId()) {
             return "Pseudonim jest zajęty!!";
         }
@@ -73,7 +83,7 @@ public class UpdateController {
         }
         User user = sessionHelper.getUserFromPrincipal(session);
         String check = this.validUpdateUser(updateUser, user);
-        System.out.println("Przeszlo checka");
+
         if (!check.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", check);
             return new RedirectView("/users/update");
