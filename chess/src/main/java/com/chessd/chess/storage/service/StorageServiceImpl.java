@@ -77,7 +77,6 @@ public class StorageServiceImpl implements StorageService {
             Path file = this.load(filename);
             Resource resource = new UrlResource(file.toUri());
             if (resource.exists() || resource.isReadable()) {
-                System.out.println("ZWRACAM TO CO TRZEBA");
                 return resource;
             }
             else {

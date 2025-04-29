@@ -27,8 +27,13 @@
                     <div class="update-profile-header">
                         <div class="profile-left">
                             <div class="update-avatar">
-                                <img th:src="@{/files/{fileName}(fileName=${profilePicture})}"
-                                     alt="Zdjecie profilowe" id="thumbnail">
+                                <th:block th:if="${profilePicture == null || profilePicture.isEmpty()}">
+                                    <img th:src="@{/images/util/default-user.png}" alt="user" id="thumbnail">
+                                </th:block>
+                                <th:block th:if="${profilePicture != null}">
+                                    <img th:src="@{/files/{fileName}(fileName=${profilePicture})}"
+                                         alt="Zdjecie profilowe" id="thumbnail">
+                                </th:block>
                             </div>
                             <div>
                                 <div class="update-username" th:text="${'@' + user.userName}"></div>

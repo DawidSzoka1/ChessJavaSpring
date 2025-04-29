@@ -24,8 +24,13 @@
             <div class="profile-profile-details">
                 <div class="profile-profile-header">
                     <div class="profile-avatar">
-                        <img th:src="@{/files/{fileName}(fileName=${user.profilePictureFilename})}"
-                             alt="Zdjecie profilowe">
+                        <th:block th:if="${user.profilePictureFilename == null || user.profilePictureFilename.isEmpty()}">
+                            <img th:src="@{/images/util/default-user.png}" alt="user">
+                        </th:block>
+                        <th:block th:if="${user.profilePictureFilename != null}">
+                            <img th:src="@{/files/{fileName}(fileName=${user.profilePictureFilename})}"
+                                 alt="Zdjecie profilowe">
+                        </th:block>
                     </div>
                     <div class="profile-username" th:text="${'@' + user.userName}"></div>
                 </div>
