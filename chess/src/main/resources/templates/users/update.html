@@ -11,6 +11,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body>
 <div th:insert="~{fragments/sidebar :: sidebar}">
@@ -26,11 +28,11 @@
                         <div class="profile-left">
                             <div class="update-avatar">
                                 <img th:src="@{/files/{fileName}(fileName=${profilePicture})}"
-                                     alt="Zdjecie profilowe">
+                                     alt="Zdjecie profilowe" id="thumbnail">
                             </div>
                             <div>
                                 <div class="update-username" th:text="${'@' + user.userName}"></div>
-                                <input th:field="*{profilePicture}" accept="image/*" type="file"
+                                <input th:field="*{profilePicture}" id="fileImage" accept="image/*" type="file"
                                        class="btn btn-outline-secondary btn-sm btn-change-avatar mt-2">
                             </div>
                         </div>
@@ -87,5 +89,22 @@
         </div>
     </div>
 </form>
+<script>
+    $(document).ready(function() {
+        $('#fileImage').change(function () {
+            console.log(this.files)
+            showImageThumbnail(this);
+        });
+    });
+    function showImageThumbnail(fileInput) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            $('#thumbnail').attr("src", e.target.result);
+        };
+        reader.readAsDataURL(file);
+
+    }
+</script>
 </body>
 </html>
