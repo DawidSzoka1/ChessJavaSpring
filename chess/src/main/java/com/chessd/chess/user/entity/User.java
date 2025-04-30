@@ -71,9 +71,8 @@ public class User {
 
     @PreRemove
     public void nullifGames(){
-        gamesAsBlack.forEach((game) -> game.setBlack(null));
-        gamesAsWhite.forEach((game) -> game.setWhite(null));
-        //TODO delete profile picture for this user
+        gamesAsBlack.forEach(game -> game.setBlack(null));
+        gamesAsWhite.forEach(game -> game.setWhite(null));
     }
 
     public User(String userName, String password, boolean enabled, int ranking) {

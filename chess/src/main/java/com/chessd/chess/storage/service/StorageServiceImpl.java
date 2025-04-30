@@ -43,7 +43,7 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public Path store(MultipartFile file, User user) {
+    public void store(MultipartFile file, User user) {
         try {
             if(file.isEmpty()){
                 throw new StorageException("Failed to store empty file");
@@ -60,7 +60,6 @@ public class StorageServiceImpl implements StorageService {
             try(InputStream inputStream = file.getInputStream()){
                 Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING);
             }
-            return path;
         }catch (Exception e){
             throw new StorageException("Failed to store file", e);
         }
@@ -85,6 +84,15 @@ public class StorageServiceImpl implements StorageService {
         }
         catch (MalformedURLException e) {
             throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+        }
+    }
+
+    @Override
+    public void deleteUserFile(User user) {
+        Path path = rootLocation.resolve(String.valueOf(user.getId()));
+        File dir = path.toFile();
+        if(dir.exists() && dir.isDirectory()){
+            FileSystemUtils.deleteRecursively(dir);
         }
     }
 

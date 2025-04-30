@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -74,6 +73,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(User user) {
         userDao.delete(user);
+        storageService.deleteUserFile(user);
     }
 
     @Override
@@ -131,10 +131,8 @@ public class UserServiceImpl implements UserService {
             userDao.save(user);
             return;
         }
-        Path path = storageService.store(updateUser.getProfilePicture(), user);
+        storageService.store(updateUser.getProfilePicture(), user);
         user.setProfilePictureFilename(user.getId() + "/" + updateUser.getProfilePicture().getOriginalFilename());
-        System.out.println(path.toAbsolutePath());
-
         userDao.save(user);
     }
 

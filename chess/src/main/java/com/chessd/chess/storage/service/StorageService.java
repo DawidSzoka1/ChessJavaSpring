@@ -9,11 +9,13 @@ import java.nio.file.Path;
 public interface StorageService {
     void init();
 
-    Path store(MultipartFile file, User user);
+    void store(MultipartFile file, User user);
 
     Path load(String filename);
 
     Resource loadAsResource(String filename);
+
+    void deleteUserFile(User user);
 
     void deleteAll();
 }
