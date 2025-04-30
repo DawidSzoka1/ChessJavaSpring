@@ -28,8 +28,10 @@
 
             <div class="lobby-profile-card">
                 <a th:href="@{${user == null ? '/play' : ('/users/profile/' + user.userName)}}">
-                    <div class="d-flex align-items-center">
-                        <img src="https://img.icons8.com/ios-glyphs/60/user-male-circle.png" class="me-3" alt="profil">
+                    <div class="d-flex align-items-center profile-avatar">
+                        <img th:src="@{${user == null ? '/images/util/default-user.png':
+                            ('/files/' + user.profilePictureFilename) }}"
+                             class="me-3" alt="profil">
                         <div>
                             <h4 th:text="${'Witaj ' + (user?.userName ?: 'Guest')}"></h4>
                             <p>Twój ranking: <strong th:text="${user?.ranking ?: '0'}"></strong></p>

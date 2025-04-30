@@ -63,8 +63,11 @@
             <div class="row">
                 <div class="col-12 col-md-4">
                     <a th:href="@{${white != null ? ('/users/profile/' + white.userName) : '#'}}">
-                        <div class="player-info">
-                            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Gracz Biały">
+                        <div class="player-info profile-avatar">
+                            <img th:src="@{${white == null ? '/images/util/default-user.png':
+                            (white.profilePictureFilename == null ? '/images/util/default-user.png' :
+                              '/files/' + white.profilePictureFilename) }}"
+                                 class="me-3" alt="profil">
                             <div>
                                 <h5 th:text="${white?.userName ?: 'Anonimowy'}"></h5>
                                 <p class="mb-0">Czas: 09:55</p>
@@ -89,12 +92,15 @@
                         </div>
                     </div>
                     <a th:href="@{${black != null ? ('/users/profile/' + black?.userName) : '#'}}">
-                        <div class="player-info mt-3 justify-content-end text-end">
+                        <div class="player-info mt-3 justify-content-end text-end profile-avatar">
                             <div>
                                 <h5 th:text="${black?.userName ?: 'Anonimowy'}"></h5>
                                 <p class="mb-0">Czas: 10:00</p>
                             </div>
-                            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Gracz Czarny">
+                            <img th:src="@{${black == null ? '/images/util/default-user.png':
+                            (black.profilePictureFilename == null ? '/images/util/default-user.png' :
+                              '/files/' + black.profilePictureFilename) }}"
+                                 class="me-3" alt="profil">
                         </div>
                     </a>
                 </div>
