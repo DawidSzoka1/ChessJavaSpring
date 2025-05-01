@@ -7,13 +7,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
 @Table(name = "user")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +56,10 @@ public class User {
     @Column(name = "country")
     private String country;
 
+    @Column(name = "created", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Timestamp created;
+
     @Column(name = "enable")
     private boolean enable;
 
@@ -63,6 +73,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
+    @Column(name = "authorization")
+    private String authorization;
+
     @OneToMany(mappedBy = "white")
     private List<Game> gamesAsWhite = new ArrayList<>();
 
@@ -70,7 +83,7 @@ public class User {
     private List<Game> gamesAsBlack = new ArrayList<>();
 
     @PreRemove
-    public void nullifGames(){
+    public void nullifGames() {
         gamesAsBlack.forEach(game -> game.setBlack(null));
         gamesAsWhite.forEach(game -> game.setWhite(null));
     }
