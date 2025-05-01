@@ -38,7 +38,9 @@ public class AdminController {
     @GetMapping("/profile")
     public String getProfile(Model model, Principal principal) {
         User admin = userService.findByUserName(principal.getName());
-        model.addAttribute("admin", admin);
+        List<Game> lastGames = gameService.getAllEndedGames(0, 3).getContent();
+        model.addAttribute("admin", admin)
+                .addAttribute("games", lastGames);
         return "admin/adminProfile";
     }
 
@@ -77,8 +79,8 @@ public class AdminController {
 
     @GetMapping("/review/panel")
     public String getGamePanel(Model model) {
-        Page<Game> pageLive = gameService.getAllLiveGames(0, 7);
-        Page<Game> pageEnded = gameService.getAllEndedGames(0, 7);
+        Page<Game> pageLive = gameService.getAllLiveGames(0, 5);
+        Page<Game> pageEnded = gameService.getAllEndedGames(0, 5);
         model.addAttribute("liveGame", pageLive.getContent())
                 .addAttribute("endedGames", pageEnded.getContent())
                 .addAttribute("time", timeUtils);

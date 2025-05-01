@@ -16,7 +16,20 @@ body {
     overflow: auto;
     position: relative;
 }
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
+tr {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+tr:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #f8f1ee;
+}
 
 .sidebar {
     background-color: #4a2c2c;
@@ -189,130 +202,91 @@ body {
 }
 
 
-.admin-profile-bottom-section {
-    height: 66vh;
+/*admin-profile*/
+.admin-panel {
+    flex: 1;
+    padding: 3rem 4rem;
+    overflow-y: auto;
+    margin-left: 60px;
 }
 
-.admin-profile-top-section {
-    height: 33vh;
+.admin-info {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(8px);
+    padding: 2rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-.admin-profile-admin-box {
-    background-color: #f0d9b5;
-    height: 20vh;
-    margin-top: 8vh;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px #a87551;
-}
-
-.admin-profile-top-section .admin-profile-admin-label {
+.role {
     font-style: italic;
-    font-weight: bold;
-    font-size: 1.8rem;
-    color: #7d4f3f;
+    font-weight: 600;
+    color: #4e342e;
+    font-size: 1rem;
 }
 
-.admin-profile-top-section .admin-profile-admin-name {
-    font-weight: 900;
-    font-size: 2.2rem;
-    color: #7d4f3f;
+.admin-username {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #3e2723;
+    margin-top: 0.5rem;
 }
 
-
-.admin-profile-menu-btn {
-    display: block;
-    width: 100%;
-    background-color: #a87551;
-    color: #f3e7b3;
-    font-weight: bold;
-    text-align: center;
-    border: none;
-    text-decoration: none;
-    font-family: 'YourFontName', sans-serif;
-    font-size: 2.2em;
-    margin-bottom: 10px;
-    transition: background-color 0.3s ease;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px #a87551;
-
+.admin-section {
+    margin-bottom: 2.5rem;
+    animation: fadeIn 1s ease;
 }
 
-.admin-profile-menu-btn:hover {
-    background-color: #8d6245;
-    cursor: pointer;
+.admin-section h2 {
+    font-size: 1.4rem;
+    color: #3e2723;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #d7ccc8;
+    padding-bottom: 0.4rem;
 }
-
-
-.admin-panel .label {
-    font-size: 3.2rem;
-    margin: 5vh;
-    font-style: italic;
-    font-weight: bold;
-}
-
 
 .admin-table {
-    border-radius: 12px;
+    width: 100%;
+    border-collapse: collapse;
+    background: #fffefc;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 12px #b58863;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-.admin-table tbody tr:hover {
-    transform: translateX(5px);
-    box-shadow: 0 2px 8px;
+.admin-table th, .admin-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #efebe9;
+    text-align: left;
 }
 
-
-.admin-table thead tr {
-    border-bottom: 30px solid white;
-
+.admin-table tr:nth-child(even) {
+    background-color: #f8efec;
+}
+.admin-table th {
+    background-color: #d7ccc8;
+    color: #3e2723;
 }
 
-.admin-table thead th {
-    background-color: #a87551 !important;
-    color: #f0d9b5 !important;
-    font-size: 1.8rem !important;
-    padding: 12px;
+.admin-btn {
+    background: linear-gradient(145deg, #6d4c41, #8d6e63);
+    color: #fff8e1;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 1rem;
 }
 
-.admin-tablet head th:first-child {
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-.admin-table thead th:last-child {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-.admin-table-delete {
-    top: 0;
-    left: 0;
-    height: 24px;
-    width: 24px;
-    background-color: #f0d9b5 !important;
-    border: 2px solid #a87551 !important;
-    border-radius: 4px;
+.admin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     cursor: pointer;
-}
-
-
-.admin-table tbody td {
-    background-color: #f0d9b5;
-    color: #a87551;
-    font-size: 1.5rem;
-}
-
-.admin-table-userName {
-    align-items: start;
-    text-align: start;
-}
-
-.admin-table tbody td a {
-    text-decoration: none;
-    color: #a87551;
 }
 
 
