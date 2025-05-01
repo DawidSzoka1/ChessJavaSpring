@@ -42,7 +42,7 @@ public class AdminController {
         return "admin/adminProfile";
     }
 
-    @GetMapping("/panel")
+    @GetMapping("/users/list")
     public String adminPanel(Model model,
                              @RequestParam(
                                      value = "pageNumber", defaultValue = "0", required = false
@@ -53,7 +53,7 @@ public class AdminController {
     ) {
         Page<User> page = userService.findAllSortedByNameASC(pageNumber, pageSize);
         paginationUtil.setPagination(page, model);
-        return "admin/adminPanel";
+        return "admin/adminUsersList";
     }
 
     @PostMapping("delete/users")

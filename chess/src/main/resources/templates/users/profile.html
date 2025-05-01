@@ -61,6 +61,10 @@
                         <label class="form-label">Kraj</label>
                         <input type="text" class="form-control" th:value="${user.country ?: 'brak danych'}" disabled>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Data dołączenia</label>
+                        <input type="text" class="form-control" th:value="${user.created ?: 'brak danych'}" disabled>
+                    </div>
                     <th:block sec:authorize="isAuthenticated()">
                         <th:block th:if="${(#authentication.principal?.username) == user.userName}">
                             <a th:href="@{${#mvc.url('UC#updateInfo').build()}}" class="btn btn-primary">Zmień dane</a>

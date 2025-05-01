@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Lista użytkowników</title>
+    <link th:href="@{/css/global.css}" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: #fdfcfa;
+            --card-shadow: rgba(0, 0, 0, 0.08);
+            --text-dark: #2e1d18;
+            --btn-bg: #8b5e4c;
+            --btn-hover: #744b3d;
+            --header-bg: #e3d5cf;
+            --row-alt: #f2eae7;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text-dark);
+            display: flex;
+        }
+
+        .content {
+            margin-left: 140px;
+            margin-right: 45px;
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .btn-back {
+            background-color: var(--btn-bg);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-back:hover {
+            background-color: var(--btn-hover);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 10px var(--card-shadow);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: var(--header-bg);
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--row-alt);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .badge.active {
+            background-color: #4caf50;
+        }
+
+        .badge.banned {
+            background-color: #d32f2f;
+        }
+
+        .actions button {
+            background-color: var(--btn-bg);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            margin-right: 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .actions button:hover {
+            background-color: var(--btn-hover);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+    </style>
+</head>
+<body>
+<div th:insert="~{fragments/sidebar :: sidebar}">
+
+</div>
+
+<main class="content">
+    <div class="top-bar">
+        <h1 class="title-main">Lista użytkowników</h1>
+        <a class="btn-back" th:href="@{${(#mvc.url('AC#getProfile')).build()}}">← Powrót do panelu</a>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nazwa</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Rola</th>
+                <th>Rejestracja</th>
+                <th>Akcje</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user, count : ${page.content}">
+                <td th:text="${'#' + user.id}"></td>
+                <td>
+                    <a th:text="${user.userName}"
+                       th:href="@{/users/profile/{userName}(userName=${user.userName})}">
+                    </a>
+                </td>
+                <td th:text="${user.email ?: 'brak danych'}"></td>
+                <td><span class="badge active"> Aktywny</span></td>
+                <td th:text="${user.authorization ?: 'Użytkownik'}"></td>
+                <td th:text="${user.created}"></td>
+                <td class="actions">
+                    <button>Usuń</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <ul class="pagination">
+                <li th:each="i : ${#numbers.sequence(start, end)}">
+                    <a th:href="@{${#mvc.url('AC#adminPanel').arg(1, i).arg(2, page.size).build()}}">
+                        <img th:if="${page.number} == ${i}"
+                             th:src="@{/images/B/paginationQueen.png}"
+                             class="chess-icon" alt="Hetman"/>
+                        <img th:if="${page.number} != ${i}"
+                             th:src="@{/images/B/paginationPawn.png}"
+                             class="chess-icon pawn" alt="Pionek"/>
+                        <span th:text="${i+1}" class="pagination-number"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>
