@@ -8,119 +8,21 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
             display: flex;
-        }
-
-        .container {
-            margin-left: 100px;
-            padding: 40px;
-            width: 100%;
-            font-size: 1.2rem;
-        }
-
-        .btn-back {
-            background-color: #8c5d4a;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 20px;
-            cursor: pointer;
-            float: right;
-            margin-bottom: 20px;
-            font-size: 1rem;
-        }
-
-        .btn-back:hover {
-            background-color: #7b4f3f;
-        }
-
-        .section {
-            margin-top: 40px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
-            padding: 20px;
-        }
-
-        .section h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #2e1c1c;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            text-align: left;
-            padding: 12px;
-        }
-
-        th {
-            background-color: #eedfd9;
-            color: #2e1c1c;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f8efec;
-        }
-
-        tr {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        tr:hover {
-            transform: scale(1.01);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            background-color: #f8f1ee;
-        }
-
-        .status {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            color: white;
-        }
-
-        .ongoing {
-            background-color: #2196f3;
-        }
-
-        .ended {
-            background-color: #9e9e9e;
-        }
-
-        .winner {
-            font-weight: bold;
-            color: #105221;
-        }
-
-        .draw {
-            color: #6c757d;
-            font-weight: bold;
-            background: inherit;
-        }
-
-        .score {
-            font-style: italic;
-            color: #555;
         }
     </style>
 </head>
 <body>
-<div th:insert="~{fragments/sidebar :: sidebar}">
-</div>
-<div class="container">
-    <a class="btn-back"
+<div th:insert="~{fragments/sidebar :: sidebar}"></div>
+
+<div class="game-panel-container">
+    <a class="game-panel-btn-back"
        th:href="@{${(#mvc.url('AC#getProfile')).build()}}">← Powrót do panelu</a>
-    <h1 class="title-main">Przegląd gier</h1>
-    <div class="section">
+    <h1 class="game-panel-title-main">Przegląd gier</h1>
+
+    <div class="game-panel-section">
         <h2>Aktualnie trwające partie</h2>
-        <table>
+        <table class="game-panel-table">
             <thead>
             <tr>
                 <th>Gracz Biały</th>
@@ -130,18 +32,20 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="live : ${liveGame}">
+            <tr th:each="live : ${liveGame}" class="clickable-row"
+                th:attr="data-href=@{${#mvc.url('GC#classic').arg(1, live.gameId).build()}}">>
                 <td th:text="${live.white?.userName ?: 'Anonimowy'}"></td>
                 <td th:text="${live.black?.userName ?: 'Anonimowy'}"></td>
-                <td><span class="status ongoing">Trwa</span></td>
+                <td><span class="game-panel-status game-panel-ongoing">Trwa</span></td>
                 <td th:text="${time.minutesBetween(live.start)}"></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="section">
+
+    <div class="game-panel-section">
         <h2>Partie rozegrane</h2>
-        <table>
+        <table class="game-panel-table">
             <thead>
             <tr>
                 <th>Gracz Biały</th>
@@ -152,28 +56,28 @@
             </tr>
             </thead>
             <tbody>
-
-            <tr th:each="ended : ${endedGames}">
+            <tr th:each="ended : ${endedGames}" class="clickable-row"
+                th:attr="data-href=@{${#mvc.url('GC#classic').arg(1, ended.gameId).build()}}">
                 <td th:text="${ended.white?.userName ?: 'Anonimowy'}"></td>
                 <td th:text="${ended.black?.userName ?: 'Anonimowy'}"></td>
                 <td>
-                    <span th:class="${ended.winner == null ? 'draw' : 'winner'}"
+                    <span th:class="${ended.winner == null ? 'game-panel-draw' : 'game-panel-winner'}"
                           th:text="${ended.winner?.userName ?: 'Brak'}">
                     </span>
                 </td>
                 <td>
-                    <span class="score">
-                    <th:block th:if="${ended.winner == null}">
-                        0.5 - 0.5
-                    </th:block>
+                    <span class="game-panel-score">
+                        <th:block th:if="${ended.winner == null}">
+                            0.5 - 0.5
+                        </th:block>
                         <th:block th:if="${ended.winner != null}">
-                        <th:block th:if="${ended.winner.userName.equals(ended.white.userName)}">
-                            1 - 0
-                        </th:block>
+                            <th:block th:if="${ended.winner.userName.equals(ended.white.userName)}">
+                                1 - 0
+                            </th:block>
                             <th:block th:if="${ended.winner.userName.equals(ended.black.userName)}">
-                            0 - 1
+                                0 - 1
+                            </th:block>
                         </th:block>
-                    </th:block>
                     </span>
                 </td>
                 <td th:text="${time.minutesBetween(ended.start, ended.end)}"></td>
@@ -183,4 +87,5 @@
     </div>
 </div>
 </body>
+<script type="module" th:src="@{/js/clickableRow.js}"></script>
 </html>

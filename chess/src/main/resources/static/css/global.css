@@ -939,3 +939,183 @@ tr:hover {
     max-width: 48px;
     height: auto;
 }
+
+/*updatePassword*/
+
+.password-container {
+    max-width: 700px;
+    margin: 150px auto;
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.password-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.password-form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.password-form-row label {
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.password-form-row input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+.password-form-row input:focus {
+    border-color: #28c445;
+    outline: none;
+}
+
+.password-form-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.password-btn-save {
+    background-color: #28c445;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.password-btn-save:hover {
+    background-color: #24b03d;
+}
+
+.password-btn-cancel {
+    background-color: transparent;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.password-btn-cancel:hover {
+    border-color: #999;
+}
+
+/*game-panel*/
+.game-panel-container {
+    margin-left: 100px;
+    padding: 40px;
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+.game-panel-btn-back {
+    background-color: #8c5d4a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    float: right;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.game-panel-btn-back:hover {
+    background-color: #7b4f3f;
+}
+
+.game-panel-section {
+    margin-top: 40px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.07);
+    padding: 20px;
+}
+
+.game-panel-section h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #2e1c1c;
+}
+
+.game-panel-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.game-panel-table th,
+.game-panel-table td {
+    text-align: left;
+    padding: 12px;
+}
+
+.game-panel-table th {
+    background-color: #eedfd9;
+    color: #2e1c1c;
+}
+
+.game-panel-table tr:nth-child(even) {
+    background-color: #f8efec;
+}
+
+.game-panel-table tr {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.game-panel-table tr:hover {
+    transform: scale(1.01);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #f8f1ee;
+}
+
+.game-panel-status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+}
+
+.game-panel-ongoing {
+    background-color: #2196f3;
+}
+
+.game-panel-ended {
+    background-color: #9e9e9e;
+}
+
+.game-panel-winner {
+    font-weight: bold;
+    color: #105221;
+}
+
+.game-panel-draw {
+    color: #6c757d;
+    font-weight: bold;
+    background: inherit;
+}
+
+.game-panel-score {
+    font-style: italic;
+    color: #555;
+}
+
+.clickable-row {
+    cursor: pointer;
+}

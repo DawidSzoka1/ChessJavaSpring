@@ -175,12 +175,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user, count : ${page.content}">
+            <tr th:each="user, count : ${page.content}" class="clickable-row"
+                th:attr="data-href=@{/users/profile/{userName}(userName=${user.userName})}">
                 <td th:text="${'#' + user.id}"></td>
-                <td>
-                    <a th:text="${user.userName}"
-                       th:href="@{/users/profile/{userName}(userName=${user.userName})}">
-                    </a>
+                <td th:text="${user.userName}">
                 </td>
                 <td th:text="${user.email ?: 'brak danych'}"></td>
                 <td><span class="badge active"> Aktywny</span></td>
@@ -210,6 +208,6 @@
     </div>
 
 </main>
-
 </body>
+<script type="module" th:src="@{/js/clickableRow.js}"></script>
 </html>

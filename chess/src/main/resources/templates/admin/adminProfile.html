@@ -66,7 +66,8 @@
                 <th>Wynik</th>
                 <th>Data</th>
             </tr>
-            <tr th:each="game : ${games}">
+            <tr th:each="game : ${games}" class="clickable-row"
+                th:attr="data-href=@{${#mvc.url('GC#classic').arg(1, game.gameId).build()}}">
                 <td th:text="${game.white?.userName ?: 'Anonimowy'}"></td>
                 <td th:text="${game.black?.userName ?: 'Anonimowy'}"></td>
                 <td>
@@ -96,4 +97,5 @@
     </div>
 </div>
 </body>
+<script type="module" th:src="@{/js/clickableRow.js}"></script>
 </html>

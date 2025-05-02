@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -49,10 +50,9 @@ public class UpdateUser {
         return updateUser;
     }
 
-    public HashMap<String, Object> allNotNullFields() {
+    public Map<String, Object> allNotNullFields() {
         HashMap<String, Object> result = new HashMap<>();
         for (Field field : this.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
             try {
                 if (field.get(this) != null) {
                     result.put(field.getName(), field.get(this));
