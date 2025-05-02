@@ -2,7 +2,6 @@ package com.chessd.chess.user.web;
 
 import com.chessd.chess.customAnnotation.NoSpecialChars;
 import com.chessd.chess.user.entity.User;
-import jakarta.persistence.Lob;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

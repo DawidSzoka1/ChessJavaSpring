@@ -9,7 +9,7 @@ import java.nio.file.Path;
 public interface StorageService {
     void init();
 
-    void store(MultipartFile file, User user);
+    String store(MultipartFile file, User user);
 
     Path load(String filename);
 

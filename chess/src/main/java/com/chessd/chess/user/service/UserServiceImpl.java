@@ -131,8 +131,8 @@ public class UserServiceImpl implements UserService {
             userDao.save(user);
             return;
         }
-        storageService.store(updateUser.getProfilePicture(), user);
-        user.setProfilePictureFilename(user.getId() + "/" + updateUser.getProfilePicture().getOriginalFilename());
+        String fileName = storageService.store(updateUser.getProfilePicture(), user);
+        user.setProfilePictureFilename(user.getId() + "/" + fileName);
         userDao.save(user);
     }
 
