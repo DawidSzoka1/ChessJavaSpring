@@ -2,11 +2,13 @@ package com.chessd.chess.user.controller;
 
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
+import com.chessd.chess.user.web.ChangePasswordUser;
 import com.chessd.chess.user.web.UpdateUser;
 import com.chessd.chess.webSocket.utils.SessionHelper;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,26 +29,32 @@ import java.util.List;
 public class UpdateController {
     private final UserService userService;
     private final SessionHelper sessionHelper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final String RETURN_TYPE = "error";
+    private static final String UPDATE_PASSWORD_URL = "/users/update/password";
 
     @Autowired
-    public UpdateController(UserService userService, SessionHelper sessionHelper) {
+    public UpdateController(UserService userService, SessionHelper sessionHelper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.sessionHelper = sessionHelper;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-    private String validEmail(String email, User user){
-        if(email == null || email.trim().isEmpty()){
+
+    private String validEmail(String email, User user) {
+        if (email == null || email.trim().isEmpty()) {
             return "";
         }
         User emailTaken = userService.findByEmail(email);
-        if (emailTaken != null &&  emailTaken.getId() != user.getId()) {
+        if (emailTaken != null && emailTaken.getId() != user.getId()) {
             return "Email jest zajęty!!";
         }
         return "";
     }
+
     private String validUpdateUser(UpdateUser updateUser, User user) {
         String email = updateUser.getEmail();
         String validResult = this.validEmail(email, user);
-        if(!validResult.isEmpty()){
+        if (!validResult.isEmpty()) {
             return validResult;
         }
         User userNameTaken = userService.findByUserName(updateUser.getUserName());
@@ -75,17 +83,17 @@ public class UpdateController {
             RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             List<String> errorMessages = new ArrayList<>();
-            for(ObjectError error : bindingResult.getAllErrors()){
+            for (ObjectError error : bindingResult.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
-            redirectAttributes.addFlashAttribute("error", errorMessages);
+            redirectAttributes.addFlashAttribute(RETURN_TYPE, errorMessages);
             return new RedirectView("/users/update");
         }
         User user = sessionHelper.getUserFromPrincipal(session);
         String check = this.validUpdateUser(updateUser, user);
 
         if (!check.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", check);
+            redirectAttributes.addFlashAttribute(RETURN_TYPE, check);
             return new RedirectView("/users/update");
         }
         if (!updateUser.getUserName().equals(user.getUserName())) {
@@ -94,6 +102,45 @@ public class UpdateController {
         userService.update(user.getId(), updateUser);
 
         redirectAttributes.addFlashAttribute("success", "Dane zostały zmienione pomyślnie");
-        return new RedirectView("/users/profile/"+ user.getUserName());
+        return new RedirectView("/users/profile/" + user.getUserName());
+    }
+
+    @GetMapping("/update/password")
+    public String updatePassword(Model model, Principal principal) {
+        User user = userService.findByUserName(principal.getName());
+        ChangePasswordUser updateUser = new ChangePasswordUser();
+        model.addAttribute("user", updateUser)
+                .addAttribute("userName", user.getUserName());
+        return "users/changePassword";
+    }
+
+    @PostMapping("/update/password")
+    public RedirectView updatePasswordProcess(
+            @Valid @ModelAttribute("user") ChangePasswordUser updateUser,
+            BindingResult bindingResult,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()){
+            List<String> errorMessages = new ArrayList<>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorMessages.add(error.getDefaultMessage());
+            }
+            redirectAttributes.addFlashAttribute(RETURN_TYPE, errorMessages);
+            return new RedirectView(UPDATE_PASSWORD_URL);
+        }
+        User user = sessionHelper.getUserFromPrincipal(session);
+        if(!bCryptPasswordEncoder.matches(updateUser.getCurrentPassword(), user.getPassword())){
+            redirectAttributes.addFlashAttribute(RETURN_TYPE, "Obecne hasło jest inne niż podane!");
+            return new RedirectView(UPDATE_PASSWORD_URL);
+        }
+        if(!updateUser.getNewPassword().equals(updateUser.getNewPasswordRepeat())){
+            redirectAttributes.addFlashAttribute(RETURN_TYPE,
+                    "Hasła nie są takie same!");
+            return new RedirectView(UPDATE_PASSWORD_URL);
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(updateUser.getNewPassword()));
+        userService.save(user);
+        redirectAttributes.addFlashAttribute("success", "Hasło zmieniono pomyślnie");
+        return new RedirectView("/users/profile/" + user.getUserName());
     }
 }
