@@ -68,7 +68,7 @@
                     <th:block sec:authorize="isAuthenticated()">
                         <th:block th:if="${(#authentication.principal?.username) == user.userName}">
                             <a th:href="@{${#mvc.url('UC#updateInfo').build()}}" class="btn btn-primary">Zmień dane</a>
-                            <a href="#" class="btn btn-outline-secondary ms-2">Zmień hasło</a>
+                            <a th:href="@{${#mvc.url('UC#updatePassword').build()}}" class="btn btn-outline-secondary ms-2">Zmień hasło</a>
                         </th:block>
                     </th:block>
                 </form>
