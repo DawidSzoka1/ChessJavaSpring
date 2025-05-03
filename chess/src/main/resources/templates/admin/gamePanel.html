@@ -21,7 +21,7 @@
     <h1 class="game-panel-title-main">Przegląd gier</h1>
 
     <div class="game-panel-section">
-        <h2>Aktualnie trwające partie</h2>
+        <h2><a th:href="@{${#mvc.url('AC#getLiveGames').build()}}">Aktualnie trwające partie 🟢</a></h2>
         <table class="game-panel-table">
             <thead>
             <tr>
@@ -44,7 +44,7 @@
     </div>
 
     <div class="game-panel-section">
-        <h2>Partie rozegrane</h2>
+        <h2><a th:href="${#mvc.url('AC#getEndedGames').build()}">Partie rozegrane</a></h2>
         <table class="game-panel-table">
             <thead>
             <tr>
