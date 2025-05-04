@@ -1,4 +1,4 @@
-package com.chessd.chess.customAnnotation;
+package com.chessd.chess.custom_annotation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

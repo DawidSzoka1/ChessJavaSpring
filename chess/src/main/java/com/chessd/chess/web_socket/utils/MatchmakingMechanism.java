@@ -1,11 +1,9 @@
-package com.chessd.chess.webSocket.utils;
+package com.chessd.chess.web_socket.utils;
 
 import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.game.service.RandomUniqIdGenerator;
-import com.chessd.chess.user.service.UserService;
 import com.chessd.chess.game.service.GameService;
-import com.chessd.chess.webSocket.message.MessageToJS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;

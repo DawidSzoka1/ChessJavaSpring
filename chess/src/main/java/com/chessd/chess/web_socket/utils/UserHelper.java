@@ -1,4 +1,4 @@
-package com.chessd.chess.webSocket.utils;
+package com.chessd.chess.web_socket.utils;
 
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;

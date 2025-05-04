@@ -1,7 +1,7 @@
-package com.chessd.chess.webSocket.handler;
+package com.chessd.chess.web_socket.handler;
 
-import com.chessd.chess.webSocket.message.CustomHandleTextMessage;
-import com.chessd.chess.webSocket.message.MessageToJS;
+import com.chessd.chess.web_socket.message.CustomHandleTextMessage;
+import com.chessd.chess.web_socket.message.MessageToJS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;

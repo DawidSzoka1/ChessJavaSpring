@@ -1,7 +1,7 @@
-package com.chessd.chess.webSocket.config;
+package com.chessd.chess.web_socket.config;
 
-import com.chessd.chess.webSocket.handler.ChessWebSocketHandler;
-import com.chessd.chess.webSocket.handler.MatchmakingHandler;
+import com.chessd.chess.web_socket.handler.ChessWebSocketHandler;
+import com.chessd.chess.web_socket.handler.MatchmakingHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

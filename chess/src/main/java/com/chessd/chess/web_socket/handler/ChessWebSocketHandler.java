@@ -1,7 +1,7 @@
-package com.chessd.chess.webSocket.handler;
+package com.chessd.chess.web_socket.handler;
 
-import com.chessd.chess.webSocket.message.CustomHandleTextMessage;
-import com.chessd.chess.webSocket.message.MessageToJS;
+import com.chessd.chess.web_socket.message.CustomHandleTextMessage;
+import com.chessd.chess.web_socket.message.MessageToJS;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,6 +45,8 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
         customHandleTextMessage.setGameId(gh.getGameId());
         customHandleTextMessage.setMessage(gh.getMessage());
         customHandleTextMessage.setMessageType(gh.getMessageType());
+        customHandleTextMessage.setUserName(gh.getUserName());
+
 
         // Process the message and send a response back to the client
         session.sendMessage(new TextMessage(customHandleTextMessage.handleMessage().toJson()));
