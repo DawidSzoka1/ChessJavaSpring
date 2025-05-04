@@ -1,6 +1,6 @@
 package com.chessd.chess.user.web;
 
-import com.chessd.chess.customAnnotation.NoSpecialChars;
+import com.chessd.chess.custom_annotation.NoSpecialChars;
 import com.chessd.chess.user.entity.User;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;

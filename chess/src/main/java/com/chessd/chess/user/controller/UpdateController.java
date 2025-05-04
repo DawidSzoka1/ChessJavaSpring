@@ -4,7 +4,7 @@ import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
 import com.chessd.chess.user.web.ChangePasswordUser;
 import com.chessd.chess.user.web.UpdateUser;
-import com.chessd.chess.webSocket.utils.SessionHelper;
+import com.chessd.chess.web_socket.utils.SessionHelper;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

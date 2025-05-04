@@ -1,6 +1,6 @@
 package com.chessd.chess.user.web;
 
-import com.chessd.chess.customAnnotation.NoSpecialChars;
+import com.chessd.chess.custom_annotation.NoSpecialChars;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

@@ -38,6 +38,7 @@ public class GameController {
         if(principal != null){
             g.setWhite(userService.findByUserName(principal.getName()));
         }
+        g.setBlack(userService.findById(2).get());
         gameService.save(g);
         gameService.startGame(g);
 
