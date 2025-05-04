@@ -3,6 +3,7 @@ package com.chessd.chess.figure.entity;
 
 import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.figure.utils.Position;
+import com.chessd.chess.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import lombok.*;
@@ -50,10 +51,14 @@ public abstract class Figure {
     @CollectionTable(name = "figure_moves", joinColumns = @JoinColumn(name = "figure_id"))
     private List<String> moves;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
+    private User ownerId;
+
     @Column(name = "opponent", columnDefinition = "varchar(1) check(opponent in ('W', 'B'))")
     private String opponent;
 
-    public Figure(String name, String color, Position position, String imageName, Game game) {
+    Figure(String name, String color, Position position, String imageName, Game game) {
         this.name = name;
         this.color = color;
         this.position = position;
@@ -62,7 +67,7 @@ public abstract class Figure {
         this.opponent = color.equals("W") ? "B" : "W";
     }
 
-    public Figure(String name, String color, int row, int col, Game game) {
+    Figure(String name, String color, int row, int col, Game game) {
         this(
                 name,
                 color,
@@ -72,7 +77,7 @@ public abstract class Figure {
         );
     }
 
-    public Figure(String name, String color, Position position, Game game) {
+    Figure(String name, String color, Position position, Game game) {
         this(name, color, position, color.toUpperCase() + "_" + name + ".png", game);
     }
 
@@ -85,7 +90,8 @@ public abstract class Figure {
     public int getRow() {
         return position.getRow();
     }
-    public int getCol(){
+
+    public int getCol() {
         return position.getCol();
     }
 }
