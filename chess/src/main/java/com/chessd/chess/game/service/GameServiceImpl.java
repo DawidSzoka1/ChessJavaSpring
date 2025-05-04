@@ -8,6 +8,7 @@ import com.chessd.chess.figure.utils.Position;
 import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.game.event.ValidateMoveEvent;
 import com.chessd.chess.figure.repository.FigureDao;
+import com.chessd.chess.game.exception.InvalidPlayer;
 import com.chessd.chess.game.repository.GameDao;
 import com.chessd.chess.game.utils.GameResult;
 import com.chessd.chess.user.entity.User;
@@ -57,15 +58,32 @@ public class GameServiceImpl implements GameService {
                     Position.fromColumnRow(colName, 1).orElseThrow(),
                     game,
                     List.of(new String[]{Position.fromColumnRow(colName, 2).get().toString(),
-                            Position.fromColumnRow(colName, 3).get().toString()})
+                            Position.fromColumnRow(colName, 3).get().toString()}),
+                    game.getWhite()
             ));
-            figureDao.save(new Pawn("B", Position.fromColumnRow(colName, 6).orElseThrow(), game,
+            figureDao.save(new Pawn("B",
+                    Position.fromColumnRow(colName, 6).orElseThrow(),
+                    game,
                     List.of(new String[]{Position.fromColumnRow(colName, 5).get().toString(),
-                            Position.fromColumnRow(colName, 4).get().toString()})));
+                            Position.fromColumnRow(colName, 4).get().toString()}),
+                    game.getBlack()
+            ));
 
             //Putting other figures on a1, b1, ..., h1 and a8, b8, ..., h8
-            figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "W", Position.fromColumnRow(colName, 0).orElseThrow(), game));
-            figureDao.save(CreatingFigures.putFigure(this.figuresName[i], "B", Position.fromColumnRow(colName, 7).orElseThrow(), game));
+            figureDao.save(
+                    CreatingFigures.putFigure(this.figuresName[i],
+                            "W",
+                            Position.fromColumnRow(colName, 0).orElseThrow(),
+                            game,
+                            game.getWhite()
+                    ));
+            figureDao.save(
+                    CreatingFigures.putFigure(this.figuresName[i],
+                            "B",
+                            Position.fromColumnRow(colName, 7).orElseThrow(),
+                            game,
+                            game.getBlack()
+                    ));
         }
     }
 
@@ -76,11 +94,15 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void move(String gameId, String from, String to, String color, boolean take) throws Exception {
+    public void move(String gameId, String from, String to, String color, boolean take, User user) throws Exception {
         Game game = this.getGameIfExists(gameId);
         System.out.println("Status gry: " + game.getResult().name());
         if (!game.getResult().name().equals("ONGOING")) {
             throw new Exception("Game is over");
+        }
+        if (!game.getWhite().getUserName().equals(user.getUserName())
+                && !game.getBlack().getUserName().equals(user.getUserName())) {
+            throw new InvalidPlayer("Nie ten gracz");
         }
         Figure figure = figureDao.getFigureByPosition(Position.fromString(from).orElseThrow(), game);
         applicationEventPublisher.publishEvent(
@@ -90,7 +112,8 @@ public class GameServiceImpl implements GameService {
                         to,
                         game,
                         this.getBoard(game),
-                        take ? "take" : "move"
+                        take ? "take" : "move",
+                        user
                 )
         );
     }
