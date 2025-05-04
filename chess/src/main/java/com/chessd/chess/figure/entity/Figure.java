@@ -58,28 +58,31 @@ public abstract class Figure {
     @Column(name = "opponent", columnDefinition = "varchar(1) check(opponent in ('W', 'B'))")
     private String opponent;
 
-    Figure(String name, String color, Position position, String imageName, Game game) {
+    Figure(String name, String color, Position position, String imageName, Game game, User owner) {
         this.name = name;
         this.color = color;
         this.position = position;
         this.imageName = imageName;
         this.game = game;
         this.opponent = color.equals("W") ? "B" : "W";
+        this.ownerId = owner;
     }
 
-    Figure(String name, String color, int row, int col, Game game) {
+    Figure(String name, String color, int row, int col, Game game, User owner) {
         this(
                 name,
                 color,
                 Position.fromRowCol(row, col).orElseThrow(),
                 color.toUpperCase() + "_" + name + ".png",
-                game
+                game,
+                owner
         );
     }
 
-    Figure(String name, String color, Position position, Game game) {
-        this(name, color, position, color.toUpperCase() + "_" + name + ".png", game);
+    Figure(String name, String color, Position position, Game game, User owner) {
+        this(name, color, position, color.toUpperCase() + "_" + name + ".png", game, owner);
     }
+
 
     @Override
     public String toString() {
