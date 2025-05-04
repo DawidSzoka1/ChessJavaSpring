@@ -29,9 +29,13 @@
             <div class="lobby-profile-card">
                 <a th:href="@{${user == null ? '/play' : ('/users/profile/' + user.userName)}}">
                     <div class="d-flex align-items-center profile-avatar">
-                        <img th:src="@{${user == null ? '/images/util/default-user.png':
-                            ('/files/' + user.profilePictureFilename) }}"
-                             class="me-3" alt="profil">
+                        <th:block th:if="${user.profilePictureFilename == null || user.profilePictureFilename.isEmpty()}">
+                            <img th:src="@{/images/util/default-user.png}" alt="user">
+                        </th:block>
+                        <th:block th:if="${user.profilePictureFilename != null}">
+                            <img th:src="@{/files/{fileName}(fileName=${user.profilePictureFilename})}"
+                                 alt="Zdjecie profilowe">
+                        </th:block>
                         <div>
                             <h4 th:text="${'Witaj ' + (user?.userName ?: 'Guest')}"></h4>
                             <p>Twój ranking: <strong th:text="${user?.ranking ?: '0'}"></strong></p>

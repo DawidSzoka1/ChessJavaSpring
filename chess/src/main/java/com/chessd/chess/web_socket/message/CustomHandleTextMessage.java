@@ -1,11 +1,11 @@
-package com.chessd.chess.webSocket.message;
+package com.chessd.chess.web_socket.message;
 
 import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.game.service.GameService;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
-import com.chessd.chess.webSocket.utils.MatchmakingMechanism;
-import com.chessd.chess.webSocket.utils.UserHelper;
+import com.chessd.chess.web_socket.utils.MatchmakingMechanism;
+import com.chessd.chess.web_socket.utils.UserHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,6 +34,7 @@ public class CustomHandleTextMessage {
     private String message;
     private String messageType;
     private String gameId;
+    private String userName;
     /**
      * The service used to manage chess game logic and state.
      */
@@ -63,13 +64,19 @@ public class CustomHandleTextMessage {
      */
     public MessageToJS handleMessageMove() {
         System.out.println("Handle message " + messageType + ": " + message);
+        User user = userService.findByUserName(userName);
+        if(user == null){
+            return new MessageToJS("ERROR", "Zaloguj sie!", false);
+        }
+        System.out.println(user);
         String[] moveDetails = message.split("-");
         try {
             gameService.move(gameId,
                     moveDetails[0],
                     moveDetails[1],
                     String.valueOf(message.charAt(0)),
-                    messageType.equals("take"));
+                    messageType.equals("take"),
+                    user);
         } catch (Exception e) {
             StackTraceElement stackTraceElement = e.getStackTrace()[0];
             return new MessageToJS("ERROR", stackTraceElement.getClassName() + " " +

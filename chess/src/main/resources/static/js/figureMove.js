@@ -3,10 +3,13 @@ import CustomWebSocket from "./connectionWithWebSocket.js";
 document.addEventListener("DOMContentLoaded", () => {
     const game = document.querySelector("#game")
     const gameId = game.getAttribute('data-id')
+    let userName = document.querySelector("#user").getAttribute('data-username')
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
-
+    if (userName == null){
+        userName = '';
+    }
     const ws = new CustomWebSocket(gameId, "ws://localhost:8080/ws/chess");
     ws.connect();
 
@@ -49,12 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
     function dragDrop(e) {
         ws.eventForMove = e; // Set the event for the move
         ws.setPieceToMove(selectedPiece); // Set the piece being moved
-
         // Send the move message to the server
         ws.send({
             message: `${selectedPiece.id}-${e.target.id.split('-')[0]}`,
             messageType: e.target.tagName === 'DIV' ? 'move' : 'take',
             gameId: gameId,
+            userName: userName
         });
 
         e.preventDefault();

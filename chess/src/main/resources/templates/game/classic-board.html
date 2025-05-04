@@ -82,7 +82,6 @@
                                 <div class="square-content"
                                      th:id="${columns[statCol.index] + '' + (statRow.index+1) + '-'}">
                                     <th:block th:if="${col != null}">
-                                        <!--white pawns and black back rows -->
                                         <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure"
                                              class="piece"
                                              draggable="true" th:id="${col.position}">
@@ -130,6 +129,10 @@
     </div>
 </div>
 <div hidden="hidden" id="game" th:data-id="${game.gameId}"></div>
+
+<div hidden="hidden" id="user"
+     th:data-username="${#authentication.principal != 'anonymousUser' ? #authentication.principal?.username : ''}"></div>
+
 </body>
 <script type="module" th:src="@{/js/figureMove.js}"></script>
 </html>
