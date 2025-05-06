@@ -15,35 +15,34 @@
     <div class="game-history-top-content">
 
         <section class="game-history-section">
-            <h1 class="game-history-title title-main">RANKING</h1>
-            <a th:each="player, iterStat : ${page.content}"
-               th:href="@{${'/users/profile/' + player?.userName}}" class="game-history-card-link">
-
+            <h1 class="game-history-title title-main" th:text="${ranking.name}"></h1>
+            <a th:each="rankingPosition : ${page.content}"
+                class="game-history-card-link">
                 <div class="game-history-ranking-card" th:classappend="'game-history-ranking-card ' +
-                        (${iterStat.index == 0 && page.number == 0} ? 'podium-first' :
-                        (${iterStat.index == 1 && page.number == 0} ? 'podium-second' :
-                        (${iterStat.index == 2 && page.number == 0} ? 'podium-third' : '')))">
+                        (${rankingPosition.position == 1} ? 'podium-first' :
+                        (${rankingPosition.position == 2} ? 'podium-second' :
+                        (${rankingPosition.position == 3} ? 'podium-third' : '')))">
                     <div class="game-history-ranking-entry">
                         <span class="game-history-ranking-position"
-                              th:text="${iterStat.index + 1 + page.size * page.number} + '.'"></span>
-                        <span class="game-history-ranking-username" th:text="${player.userName}"></span>
-                        <span class="game-history-ranking-points" th:text="${player.ranking} + ' pts'"></span>
+                              th:text="${rankingPosition.position} + '.'"></span>
+                        <span class="game-history-ranking-username" th:text="${rankingPosition.user.userName}"></span>
+                        <span class="game-history-ranking-points" th:text="${rankingPosition.points} + ' pts'"></span>
                     </div>
                 </div>
             </a>
             <div class="game-history-pagination-wrapper">
                 <ul class="game-history-pagination">
-                    <li th:each="i : ${#numbers.sequence(start, end)}">
-                        <a th:href="@{${#mvc.url('RC#rankings').arg(1, i).arg(2, page.size).build()}}">
-                            <img th:if="${page.number} == ${i}"
-                                 th:src="@{/images/B/paginationQueen.png}"
-                                 class="game-history-chess-icon" alt="Hetman"/>
-                            <img th:if="${page.number} != ${i}"
-                                 th:src="@{/images/B/paginationPawn.png}"
-                                 class="game-history-chess-icon" alt="Pionek"/>
-                            <span th:text="${i+1}" class="game-history-pagination-number"></span>
-                        </a>
-                    </li>
+<!--                    <li th:each="i : ${#numbers.sequence(start, end)}">-->
+<!--                        <a th:href="@{${#mvc.url('RC#allByRankingName').arg(1, i).arg(2, page.size).build()}}">-->
+<!--                            <img th:if="${page.number} == ${i}"-->
+<!--                                 th:src="@{/images/B/paginationQueen.png}"-->
+<!--                                 class="game-history-chess-icon" alt="Hetman"/>-->
+<!--                            <img th:if="${page.number} != ${i}"-->
+<!--                                 th:src="@{/images/B/paginationPawn.png}"-->
+<!--                                 class="game-history-chess-icon" alt="Pionek"/>-->
+<!--                            <span th:text="${i+1}" class="game-history-pagination-number"></span>-->
+<!--                        </a>-->
+<!--                    </li>-->
                 </ul>
             </div>
         </section>
