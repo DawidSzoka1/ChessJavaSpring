@@ -1,6 +1,7 @@
 package com.chessd.chess.user.entity;
 
 import com.chessd.chess.game.entity.Game;
+import com.chessd.chess.ranking.entity.RankingPosition;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -81,6 +83,10 @@ public class User {
 
     @OneToMany(mappedBy = "black")
     private List<Game> gamesAsBlack = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "user")
+    Set<RankingPosition> rankings;
 
     @PreRemove
     public void nullifGames() {
