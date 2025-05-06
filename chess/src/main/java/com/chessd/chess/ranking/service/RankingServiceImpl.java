@@ -37,4 +37,9 @@ public class RankingServiceImpl implements RankingService {
     public List<Ranking> findAll() {
         return rankingDao.findAll();
     }
+
+    @Override
+    public Ranking findByName(String name) {
+        return rankingDao.findByName(name);
+    }
 }

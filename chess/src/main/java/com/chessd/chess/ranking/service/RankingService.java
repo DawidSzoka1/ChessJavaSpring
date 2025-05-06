@@ -12,4 +12,6 @@ public interface RankingService {
     void delete(Ranking ranking);
 
     List<Ranking> findAll();
+
+    Ranking findByName(String name);
 }
