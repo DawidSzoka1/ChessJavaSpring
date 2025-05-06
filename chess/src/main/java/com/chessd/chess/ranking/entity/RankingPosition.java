@@ -25,8 +25,7 @@ public class RankingPosition {
     @ManyToOne
     @MapsId("rankingId")
     @JoinColumn(name = "ranking_id")
-    private Ranking course;
-
+    private Ranking ranking;
 
     @Column(name = "position")
     private int position;
