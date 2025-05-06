@@ -5,6 +5,8 @@ import com.chessd.chess.ranking.repository.RankingDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class RankingServiceImpl implements RankingService {
@@ -29,5 +31,10 @@ public class RankingServiceImpl implements RankingService {
     @Override
     public void delete(Ranking ranking) {
         rankingDao.delete(ranking);
+    }
+
+    @Override
+    public List<Ranking> findAll() {
+        return rankingDao.findAll();
     }
 }

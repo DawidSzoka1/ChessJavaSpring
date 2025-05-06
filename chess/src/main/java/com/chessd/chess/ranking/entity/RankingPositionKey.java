@@ -18,20 +18,20 @@ import java.util.Objects;
 public class RankingPositionKey implements Serializable {
 
     @Column(name = "user_id")
-    private Long userId;
+    private int userId;
 
     @Column(name = "ranking_id")
-    private Long rakingId;
+    private int rankingId;
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         RankingPositionKey that = (RankingPositionKey) o;
-        return Objects.equals(userId, that.userId) && Objects.equals(rakingId, that.rakingId);
+        return Objects.equals(userId, that.userId) && Objects.equals(rankingId, that.rankingId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, rakingId);
+        return Objects.hash(userId, rankingId);
     }
 }

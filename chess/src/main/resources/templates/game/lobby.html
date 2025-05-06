@@ -29,10 +29,10 @@
             <div class="lobby-profile-card">
                 <a th:href="@{${user == null ? '/play' : ('/users/profile/' + user.userName)}}">
                     <div class="d-flex align-items-center profile-avatar">
-                        <th:block th:if="${user.profilePictureFilename == null || user.profilePictureFilename.isEmpty()}">
+                        <th:block th:if="${user?.profilePictureFilename == null || user?.profilePictureFilename.isEmpty()}">
                             <img th:src="@{/images/util/default-user.png}" alt="user">
                         </th:block>
-                        <th:block th:if="${user.profilePictureFilename != null}">
+                        <th:block th:if="${user?.profilePictureFilename != null}">
                             <img th:src="@{/files/{fileName}(fileName=${user.profilePictureFilename})}"
                                  alt="Zdjecie profilowe">
                         </th:block>
