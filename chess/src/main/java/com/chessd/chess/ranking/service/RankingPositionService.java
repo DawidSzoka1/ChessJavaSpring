@@ -2,8 +2,9 @@ package com.chessd.chess.ranking.service;
 
 import com.chessd.chess.ranking.entity.Ranking;
 import com.chessd.chess.ranking.entity.RankingPosition;
+import com.chessd.chess.user.entity.User;
 import org.springframework.data.domain.Page;
-
+import java.util.List;
 public interface RankingPositionService {
     void save(RankingPosition rankingPosition);
 
@@ -12,4 +13,6 @@ public interface RankingPositionService {
     void update(RankingPosition rankingPosition);
 
     Page<RankingPosition> findAllByRanking(Ranking ranking, int pageNumber, int pageSize);
+
+    List<RankingPosition> findAllByUser(User user);
 }

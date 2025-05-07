@@ -3,12 +3,15 @@ package com.chessd.chess.ranking.service;
 import com.chessd.chess.ranking.entity.Ranking;
 import com.chessd.chess.ranking.entity.RankingPosition;
 import com.chessd.chess.ranking.repository.RankingPositionDao;
+import com.chessd.chess.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RankingPositionServiceImpl implements RankingPositionService {
@@ -40,5 +43,10 @@ public class RankingPositionServiceImpl implements RankingPositionService {
         Sort sort = Sort.by(Sort.Order.asc("position"));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return rankingPositionDao.findAllByRanking(ranking, pageable);
+    }
+
+    @Override
+    public List<RankingPosition> findAllByUser(User user) {
+        return rankingPositionDao.findAllByUser(user);
     }
 }
