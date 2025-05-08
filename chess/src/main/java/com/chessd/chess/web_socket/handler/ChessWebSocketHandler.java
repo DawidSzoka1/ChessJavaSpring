@@ -49,7 +49,7 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
 
 
         // Process the message and send a response back to the client
-        session.sendMessage(new TextMessage(customHandleTextMessage.handleMessage().toJson()));
+        session.sendMessage(new TextMessage(customHandleTextMessage.handleMessage(session).toJson()));
 
         // Log the current state of the message handler
         System.out.println(customHandleTextMessage);
@@ -58,5 +58,6 @@ public class ChessWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(@NotNull WebSocketSession session, @NotNull CloseStatus status) throws Exception {
         System.out.println("Connection closed: " + status.getReason());
+        customHandleTextMessage.closeConnection(session);
     }
 }

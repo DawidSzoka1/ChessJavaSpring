@@ -12,7 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const ws = new CustomWebSocket(gameId, "ws://localhost:8080/ws/chess");
     ws.connect();
-
+    ws.socket.onopen = () =>{
+        ws.send({
+            message: 'start',
+            messageType: 'start',
+            gameId: gameId,
+        });
+    }
     pieces.forEach(piece => {
         piece.addEventListener("drag", dragging)
         piece.addEventListener("dragstart", dragStart)
@@ -65,4 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function dragEnd(e) {
     }
+
+
 });

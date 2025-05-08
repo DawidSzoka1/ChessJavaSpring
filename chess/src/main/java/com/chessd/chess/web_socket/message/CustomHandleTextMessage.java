@@ -18,8 +18,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * Handles WebSocket text messages related to chess game operations.
@@ -43,6 +42,7 @@ public class CustomHandleTextMessage {
     private MatchmakingMechanism matchmakingMechanism;
     private UserService userService;
     private UserHelper userHelper;
+    private final Map<String, Set<WebSocketSession>> sessionsByGame = new HashMap<>();
 
     @Autowired
     public CustomHandleTextMessage(GameService gameService,
@@ -57,17 +57,40 @@ public class CustomHandleTextMessage {
         this.userHelper = userHelper;
     }
 
+    WebSocketSession opponent(Set<WebSocketSession> playersSession, User user) {
+        WebSocketSession opponent = null;
+        for (WebSocketSession session : playersSession) {
+            User temp = userHelper.userFromWebSession(session);
+            if (!temp.getUserName().equals(user.getUserName())) {
+                opponent = session;
+                break;
+            }
+        }
+        return opponent;
+    }
+
+    public MessageToJS registerSession(WebSocketSession session) {
+        MessageToJS messageToJS = new MessageToJS("START", "Dodano graczy", true);
+        if (!sessionsByGame.containsKey(gameId)) {
+            sessionsByGame.put(gameId, new LinkedHashSet<>(List.of(session)));
+            return messageToJS;
+        }
+        sessionsByGame.get(gameId).add(session);
+        return messageToJS;
+    }
+
     /**
      * Processes a "move" message, validates the move, and updates the game state.
      *
      * @return a {@link MessageToJS} object representing the response to the client.
      */
-    public MessageToJS handleMessageMove() {
+    public MessageToJS handleMessageMove() throws IOException {
         System.out.println("Handle message " + messageType + ": " + message);
         User user = userService.findByUserName(userName);
-        if(user == null){
+        if (user == null) {
             return new MessageToJS("ERROR", "Zaloguj sie!", false);
         }
+        WebSocketSession opponentSesion = this.opponent(this.sessionsByGame.get(gameId), user);
         String[] moveDetails = message.split("-");
         try {
             gameService.move(gameId,
@@ -81,6 +104,12 @@ public class CustomHandleTextMessage {
             return new MessageToJS("ERROR", stackTraceElement.getClassName() + " " +
                     stackTraceElement.getMethodName() + " " + stackTraceElement.getLineNumber()
                     , e.getMessage(), false);
+        }
+        if (opponentSesion.isOpen()) {
+            opponentSesion.sendMessage(
+                    new TextMessage(
+                            new MessageToJS(messageType.toUpperCase(), moveDetails[1], true).toJson())
+            );
         }
         return new MessageToJS(messageType.toUpperCase(), moveDetails[1], true);
     }
@@ -104,42 +133,50 @@ public class CustomHandleTextMessage {
 
     public MessageToJS queueMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
         Map<String, Object> response = matchmakingMechanism.lookForOpponent(session, waitingPlayers);
-        System.out.println(waitingPlayers);
-        if(!(Boolean)response.get("result")){
+        if (!(Boolean) response.get("result")) {
             waitingPlayers.add(session);
-            System.out.println(waitingPlayers);
             return new MessageToJS("QUEUE", "waiting for other player..", true);
         }
-        User player1 = userHelper.userFromWebSession((WebSocketSession)response.get("player1"));
-        User player2 = userHelper.userFromWebSession((WebSocketSession)response.get("player2"));
+        User player1 = userHelper.userFromWebSession((WebSocketSession) response.get("player1"));
+        User player2 = userHelper.userFromWebSession((WebSocketSession) response.get("player2"));
         String createdId = matchmakingMechanism.createGame(player1, player2);
-        System.out.println("GAMEID: " + createdId);
-        ((WebSocketSession)response.get("player2"))
+        ((WebSocketSession) response.get("player2"))
                 .sendMessage(new TextMessage(new MessageToJS("FOUND", createdId, true).toJson()));
         return new MessageToJS("FOUND", createdId, true);
     }
-    public MessageToJS cancelMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers){
+
+    public MessageToJS cancelMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) {
         waitingPlayers.removeIf(player -> player.equals(session));
         return new MessageToJS("CANCEL", gameId, true);
     }
+
+
+    public void closeConnection(WebSocketSession session) {
+        this.sessionsByGame.get(gameId).remove(session);
+        if (this.sessionsByGame.get(gameId).isEmpty()){
+            this.sessionsByGame.remove(gameId);
+        }
+    }
+
     /**
      * Handles the received message based on its type.
      * Delegates to appropriate handlers (e.g., move handling, pong response).
      *
      * @return a {@link MessageToJS} object representing the response to the client.
      */
-    public MessageToJS handleMessage() {
+    public MessageToJS handleMessage(WebSocketSession session) throws IOException {
         return switch (messageType) {
-            case "move", "take" -> handleMessageMove();
-            default -> pongMessage();
+            case "move", "take" -> this.handleMessageMove();
+            case "start" -> this.registerSession(session);
+            default -> this.pongMessage();
         };
     }
 
     public MessageToJS handleMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
         return switch (messageType) {
-            case "queue" -> queueMessage(session, waitingPlayers);
+            case "queue" -> this.queueMessage(session, waitingPlayers);
             case "cancel" -> this.cancelMessage(session, waitingPlayers);
-            default -> pongMessage();
+            default -> this.pongMessage();
         };
     }
 
