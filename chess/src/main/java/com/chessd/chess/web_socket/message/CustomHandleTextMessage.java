@@ -68,7 +68,6 @@ public class CustomHandleTextMessage {
         if(user == null){
             return new MessageToJS("ERROR", "Zaloguj sie!", false);
         }
-        System.out.println(user);
         String[] moveDetails = message.split("-");
         try {
             gameService.move(gameId,
@@ -105,9 +104,10 @@ public class CustomHandleTextMessage {
 
     public MessageToJS queueMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
         Map<String, Object> response = matchmakingMechanism.lookForOpponent(session, waitingPlayers);
-        System.out.println(matchmakingMechanism);
+        System.out.println(waitingPlayers);
         if(!(Boolean)response.get("result")){
             waitingPlayers.add(session);
+            System.out.println(waitingPlayers);
             return new MessageToJS("QUEUE", "waiting for other player..", true);
         }
         User player1 = userHelper.userFromWebSession((WebSocketSession)response.get("player1"));
@@ -117,7 +117,10 @@ public class CustomHandleTextMessage {
                 .sendMessage(new TextMessage(new MessageToJS("FOUND", gameId, true).toJson()));
         return new MessageToJS("FOUND", gameId, true);
     }
-
+    public MessageToJS cancelMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers){
+        waitingPlayers.removeIf(player -> player.equals(session));
+        return new MessageToJS("CANCEL", gameId, true);
+    }
     /**
      * Handles the received message based on its type.
      * Delegates to appropriate handlers (e.g., move handling, pong response).
@@ -134,6 +137,7 @@ public class CustomHandleTextMessage {
     public MessageToJS handleMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
         return switch (messageType) {
             case "queue" -> queueMessage(session, waitingPlayers);
+            case "cancel" -> this.cancelMessage(session, waitingPlayers);
             default -> pongMessage();
         };
     }

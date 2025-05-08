@@ -8,7 +8,6 @@ export default class CustomWebSocket {
      * The unique game ID associated with this WebSocket connection.
      */
     #gameId = "";
-
     /**
      * @private
      * @type {Event|null}
@@ -34,17 +33,11 @@ export default class CustomWebSocket {
      */
     pieceToMove = null;
 
+    interval = null;
     /**
      * @type {HTMLElement|null}
      */
     infoObject = null
-
-    /**
-     * @private
-     * @type {Object|null}
-     * The current state of the game board.
-     */
-    #board = null;
 
     /**
      * Creates an instance of CustomWebSocket.
@@ -62,22 +55,6 @@ export default class CustomWebSocket {
      */
     setPieceToMove(pieceToMove) {
         this.pieceToMove = pieceToMove;
-    }
-
-    /**
-     * Sets the current state of the game board.
-     * @param {Object} board - The updated game board.
-     */
-    set board(board) {
-        this.#board = board;
-    }
-
-    /**
-     * Gets the current state of the game board.
-     * @returns {Object|null} The game board state.
-     */
-    get board() {
-        return this.#board;
     }
 
     /**
@@ -162,6 +139,7 @@ export default class CustomWebSocket {
 
     messageFound(data) {
         console.log(`Found message ${data}`)
+        clearInterval(this.interval)
         window.location.href = `/play/${data.content}`
     }
 

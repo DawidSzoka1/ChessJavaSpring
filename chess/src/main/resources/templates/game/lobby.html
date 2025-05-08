@@ -64,14 +64,14 @@
             <h1 class="mb-4 title-main">Wybierz Tryb Rozgrywki</h1>
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="p-4 bg-white lobby-game-mode text-center" onclick="startSearching()">
+                    <div class="p-4 bg-white lobby-game-mode text-center" id="game-classic">
                         <img src="https://img.icons8.com/color/48/chessboard.png" alt="klasyczny">
                         <h4>Klasyczny</h4>
                         <p>Ograniczony czas: <strong>10 min</strong> na gracza.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="p-4 bg-white lobby-game-mode text-center" onclick="startSearching()">
+                    <div class="p-4 bg-white lobby-game-mode text-center" id="game-blitz">
                         <img src="https://img.icons8.com/ios-filled/50/000000/lightning-bolt.png" alt="blitz">
                         <h4>Blitz</h4>
                         <p>Szybka gra, ograniczony czas: <strong>3 min</strong> na gracza.</p>
@@ -86,41 +86,11 @@
                 </div>
                 <p class="mt-3">Szukam przeciwnika...</p>
                 <p>Czas oczekiwania: <span id="searchTimer">0</span> sekund</p>
-                <button class="btn btn-danger mt-2" onclick="stopSearching()">Anuluj</button>
+                <button class="btn btn-danger mt-2" id="cancel">Anuluj</button>
             </div>
         </div>
     </div>
 </div>
-<script>
-    let searchInterval;
-    let secondsElapsed = 0;
-
-    function startSearching() {
-        document.getElementById('searchingGame').style.display = 'block';
-        document.getElementById('searchingGame').innerHTML = `
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Szukam gry...</span>
-        </div>
-        <p class="mt-3">Szukam przeciwnika...</p>
-        <p>Czas oczekiwania: <span id="searchTimer">0</span> sekund</p>
-        <button class="btn btn-danger mt-2" onclick="stopSearching()">Anuluj</button>
-      `;
-        secondsElapsed = 0;
-        searchInterval = setInterval(() => {
-            secondsElapsed++;
-            document.getElementById('searchTimer').textContent = secondsElapsed;
-        }, 1000);
-
-        setTimeout(() => {
-            clearInterval(searchInterval);
-            document.getElementById('searchingGame').innerHTML = '<div class="alert alert-success">Znaleziono przeciwnika! Przechodzenie do gry...</div>';
-        }, 3000);
-    }
-
-    function stopSearching() {
-        clearInterval(searchInterval);
-        document.getElementById('searchingGame').style.display = 'none';
-    }
-</script>
+<script type="module" th:src="@{/js/findGame.js}"></script>
 </body>
 </html>
