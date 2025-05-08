@@ -18,6 +18,7 @@ public class MatchmakingMechanism {
 
     private final GameService gameService;
     private final RandomUniqIdGenerator randomUniqIdGenerator;
+    private final Random random = new Random();
 
     @Autowired
     public MatchmakingMechanism(GameService gameService,
@@ -42,8 +43,7 @@ public class MatchmakingMechanism {
     }
 
     private void randomSideSelection(Game game, User first, User second) {
-        Random random = new Random();
-        if (random.nextInt(0, 2) == 0) {
+        if (this.random.nextInt(0, 2) == 0) {
             game.setBlack(first == null ? new User() : first);
             game.setWhite(second);
         } else {

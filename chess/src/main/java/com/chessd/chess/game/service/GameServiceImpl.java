@@ -11,7 +11,9 @@ import com.chessd.chess.figure.repository.FigureDao;
 import com.chessd.chess.game.exception.InvalidPlayer;
 import com.chessd.chess.game.repository.GameDao;
 import com.chessd.chess.game.utils.GameResult;
+import com.chessd.chess.user.entity.Role;
 import com.chessd.chess.user.entity.User;
+import com.chessd.chess.user.repository.RoleDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -31,15 +33,17 @@ import java.util.*;
  */
 @Service
 public class GameServiceImpl implements GameService {
-    private GameDao gameDao;
-    private FigureDao figureDao;
+    private final GameDao gameDao;
+    private final FigureDao figureDao;
+    private final RoleDao roleDao;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final String[] figuresName = {"rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"};
 
     @Autowired
-    public GameServiceImpl(GameDao gameDao, FigureDao figureDao, ApplicationEventPublisher applicationEventPublisher) {
+    public GameServiceImpl(GameDao gameDao, FigureDao figureDao, RoleDao roleDao, ApplicationEventPublisher applicationEventPublisher) {
         this.gameDao = gameDao;
         this.figureDao = figureDao;
+        this.roleDao = roleDao;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 

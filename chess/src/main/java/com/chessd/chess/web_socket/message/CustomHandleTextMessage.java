@@ -112,10 +112,11 @@ public class CustomHandleTextMessage {
         }
         User player1 = userHelper.userFromWebSession((WebSocketSession)response.get("player1"));
         User player2 = userHelper.userFromWebSession((WebSocketSession)response.get("player2"));
-        String gameId = matchmakingMechanism.createGame(player1, player2);
+        String createdId = matchmakingMechanism.createGame(player1, player2);
+        System.out.println("GAMEID: " + createdId);
         ((WebSocketSession)response.get("player2"))
-                .sendMessage(new TextMessage(new MessageToJS("FOUND", gameId, true).toJson()));
-        return new MessageToJS("FOUND", gameId, true);
+                .sendMessage(new TextMessage(new MessageToJS("FOUND", createdId, true).toJson()));
+        return new MessageToJS("FOUND", createdId, true);
     }
     public MessageToJS cancelMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers){
         waitingPlayers.removeIf(player -> player.equals(session));
