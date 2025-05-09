@@ -4,14 +4,14 @@ import com.chessd.chess.figure.entity.Figure;
 import com.chessd.chess.move.service.MoveService;
 import com.chessd.chess.figure.utils.Column;
 import com.chessd.chess.figure.utils.Position;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+@Slf4j
 @Service
 public class KnightMoveService implements FigureMoveService {
     private final MoveService moveService;
@@ -32,7 +32,12 @@ public class KnightMoveService implements FigureMoveService {
             int newRow = currentRow + rowPossibilities[i];
             int newCol = currentCol + colPossibilities[i];
             if (moveService.validRowCol(newRow, newCol)) {
-                moves.add(Column.fromIndex(newCol).orElseThrow().name() + newRow);
+                Position pos = Position.fromRowCol(newRow, newCol).orElseThrow();
+                Figure fig = board.get(pos);
+                if(fig != null && fig.getColor().equals(figure.getColor())){
+                    continue;
+                }
+                moves.add(Column.fromIndex(newCol).orElseThrow().name() + (newRow + 1));
             }
         }
         return moves;

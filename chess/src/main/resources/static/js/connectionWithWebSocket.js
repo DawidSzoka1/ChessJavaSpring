@@ -143,11 +143,11 @@ export default class CustomWebSocket {
         };
     }
 
-    messageMoves(data){
+    messageMoves(data) {
         this.clearHighlights()
         const allMoves = data.content.split(',');
-        allMoves.forEach(targetId  => {
-            if(targetId === "") return;
+        allMoves.forEach(targetId => {
+            if (targetId === "") return;
             const square = document.querySelector(`#${targetId}-`);
             if (!square) return;
 
@@ -170,18 +170,19 @@ export default class CustomWebSocket {
         });
     }
 
-    messageEnemy(data){
+    messageEnemy(data) {
         const move = data.content.split('-')
         const pieceToMove = document.getElementById(move[0])
         const squareToMove = document.getElementById(move[1] + '-')
         const test = document.getElementById(move[1])
-        if(test == null){
+        if (test == null) {
             squareToMove.appendChild(pieceToMove);
-        }else{
+        } else {
             squareToMove.removeChild(test)
             squareToMove.appendChild(pieceToMove)
         }
         pieceToMove.id = move[1]
+        this.addMoveToList(move[0], move[1], true)
     }
 
     messageFound(data) {
@@ -232,13 +233,28 @@ export default class CustomWebSocket {
             console.log(data)
             return null;
         }
+        const from = this.pieceToMove.id
         this.pieceToMove.id = data.content;
-        console.log(this.pieceToMove.id);
         this.#eventForMove.target.appendChild(this.pieceToMove);
-        console.log("Successful move");
         this.clearHighlights()
+        this.addMoveToList(from, data.content, true)
     }
 
+    addMoveToList(from, to, isWhite) {
+        const moveList = document.getElementById("move-list");
+
+        const moveText = `${from}-${to}`;
+        const span = document.createElement("span");
+        span.className = isWhite ? "white-move" : "black-move";
+        span.textContent = moveText;
+        const moveCount = moveList.lastElementChild !== null ? parseInt(moveList.lastElementChild.id) : 0;
+        const li = document.createElement("li");
+        li.id = String(moveCount + 1);
+        li.textContent = `${moveCount + 1}. `;
+        li.appendChild(span);
+        moveList.appendChild(li);
+
+    }
 
     messageTake(data) {
         if (!this.validData(data)) {
@@ -246,6 +262,7 @@ export default class CustomWebSocket {
             console.log(data)
             return null;
         }
+        const from = this.pieceToMove.id
         const pieceToRemove = document.getElementById(data.content);
         const contentSquare = document.getElementById(data.content + '-')
         this.pieceToMove.id = data.content;
@@ -253,6 +270,7 @@ export default class CustomWebSocket {
         contentSquare.appendChild(this.pieceToMove);
         console.log("successful take")
         this.clearHighlights()
+        this.addMoveToList(from, data.content, true)
     }
 
     /**

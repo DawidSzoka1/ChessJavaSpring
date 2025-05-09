@@ -7,12 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
     let selectedPiece;
-    if (userName == null){
+    if (userName == null) {
         userName = '';
     }
     const ws = new CustomWebSocket(gameId, "ws://localhost:8080/ws/chess");
     ws.connect();
-    ws.socket.onopen = () =>{
+    ws.socket.onopen = () => {
         ws.send({
             message: 'start',
             messageType: 'start',

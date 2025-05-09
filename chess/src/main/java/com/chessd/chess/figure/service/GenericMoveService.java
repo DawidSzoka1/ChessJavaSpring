@@ -34,7 +34,7 @@ public class GenericMoveService {
             if (check != null && check.getColor().equals(figure.getColor())) {
                 break;
             }
-            moves.add(p.toString());
+            moves.add(p.get().toString());
             if (check != null && check.getOpponent().equals(figure.getColor())) {
                 break;
             }
