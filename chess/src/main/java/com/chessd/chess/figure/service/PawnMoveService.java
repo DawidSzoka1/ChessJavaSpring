@@ -5,6 +5,7 @@ import com.chessd.chess.figure.entity.Pawn;
 import com.chessd.chess.move.service.MoveService;
 import com.chessd.chess.figure.utils.Column;
 import com.chessd.chess.figure.utils.Position;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Service
 public class PawnMoveService implements FigureMoveService {
     private final MoveService moveService;
@@ -29,12 +31,14 @@ public class PawnMoveService implements FigureMoveService {
         int row = figure.getRow();
         String col = Column.fromIndex(figure.getCol()).orElseThrow().name();
         Figure possibleBlock = board.get(Position.fromRowCol(row + direction, figure.getCol()).orElseThrow());
+        log.info("ZMIENIAMY DLA: {}", figure);
+        log.info(Position.fromRowCol(row + direction, figure.getCol()).get().toString());
         if (possibleBlock == null) {
-            moves.add(col + (row + direction));
+            moves.add(col + (row + direction + 1));
         }
         if ((row == 1 && figure.getColor().equals("W")) ||
                 (row == 6 && figure.getColor().equals("B"))) {
-            moves.add(col + (row + direction * 2));
+            moves.add(col + (row + direction * 2 + 1));
         }
         moves.addAll(availableTakes(figure, board));
         return moves;

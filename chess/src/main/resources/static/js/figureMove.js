@@ -22,6 +22,13 @@ document.addEventListener("DOMContentLoaded", () => {
     pieces.forEach(piece => {
         piece.addEventListener("drag", dragging)
         piece.addEventListener("dragstart", dragStart)
+        piece.addEventListener("click", (e) => {
+            ws.send({
+                message: e.target.id,
+                messageType: "getMoves",
+                gameId: gameId
+            })
+        })
     })
 
     function dragStart(e) {

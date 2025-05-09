@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * Represents a message object for communication between the backend and JavaScript (frontend).
  * This class supports serialization and deserialization of JSON messages using Jackson.
@@ -22,6 +24,10 @@ public class MessageToJS {
         this.content = content;
         this.type = type;
         this.valid = valid;
+    }
+
+    public MessageToJS(String type, List<String> moves, boolean valid) {
+        this(type, moves.toString(), valid);
     }
 
     /**

@@ -134,12 +134,41 @@ export default class CustomWebSocket {
                 case "ENEMY":
                     this.messageEnemy(data);
                     break;
+                case "MOVES":
+                    this.messageMoves(data);
+                    break;
                 default:
                     this.messagePong();
             }
         };
     }
 
+    messageMoves(data){
+        this.clearHighlights()
+        const allMoves = data.content.split(',');
+        allMoves.forEach(targetId  => {
+            if(targetId === "") return;
+            const square = document.querySelector(`#${targetId}-`);
+            if (!square) return;
+
+            const hasPiece = square.querySelector("img") !== null;
+            square.classList.add("highlight");
+            // if (hasPiece) {
+            //     square.classList.add("highlight-take");
+            // } else {
+            //     square.classList.add("highlight-move");
+            // }
+
+        })
+
+
+    }
+
+    clearHighlights() {
+        document.querySelectorAll('.highlight').forEach(el => {
+            el.classList.remove('highlight');
+        });
+    }
 
     messageEnemy(data){
         const move = data.content.split('-')
@@ -152,6 +181,7 @@ export default class CustomWebSocket {
             squareToMove.removeChild(test)
             squareToMove.appendChild(pieceToMove)
         }
+        pieceToMove.id = move[1]
     }
 
     messageFound(data) {
@@ -206,6 +236,7 @@ export default class CustomWebSocket {
         console.log(this.pieceToMove.id);
         this.#eventForMove.target.appendChild(this.pieceToMove);
         console.log("Successful move");
+        this.clearHighlights()
     }
 
 
@@ -221,6 +252,7 @@ export default class CustomWebSocket {
         contentSquare.removeChild(pieceToRemove);
         contentSquare.appendChild(this.pieceToMove);
         console.log("successful take")
+        this.clearHighlights()
     }
 
     /**

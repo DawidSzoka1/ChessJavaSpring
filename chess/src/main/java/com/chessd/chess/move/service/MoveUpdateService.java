@@ -24,13 +24,12 @@ public class MoveUpdateService {
 
     public void updateAffectedFigures(Figure movedFigure, HashMap<Position, Figure> board, String prevPosition) {
         FigureMoveService figureMoveService;
-        Set<Figure> toUpdate = getFiguresAffectedByMove(movedFigure, board, prevPosition);
+        List<Figure> toUpdate = figureDao.getAllFigureByGame(movedFigure.getGame());
         for(Figure f: toUpdate){
             figureMoveService = serviceFactory.getMoveService(f.getName());
             f.setMoves(figureMoveService.getAvailableMoves(f, board));
             figureDao.update(f);
         }
-
     }
 
     public Set<Figure> getFiguresAffectedByMove(Figure movedFigure, HashMap<Position, Figure> board, String prevPosition) {
@@ -54,6 +53,7 @@ public class MoveUpdateService {
                 movedFigure.getPosition().toString()
         ));
         affected.addAll(this.blockedInPreviousPosition(movedFigure.getGame(), movedFigure, board));
+        affected.add(movedFigure);
         return affected;
     }
 
@@ -66,10 +66,7 @@ public class MoveUpdateService {
             if (f.equals(movedFigure)) continue;
             figureMoveService = serviceFactory.getMoveService(f.getName());
             List<String> moves = figureMoveService.getAvailableMoves(f, board);
-            if (moves.size() > f.getMoves().size()) {
-                affected.add(f);
-            }
-
+            affected.add(f);
         }
         return affected;
     }

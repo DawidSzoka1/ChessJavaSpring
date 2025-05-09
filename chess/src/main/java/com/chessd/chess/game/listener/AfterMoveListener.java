@@ -5,12 +5,14 @@ import com.chessd.chess.game.event.EndGameEvent;
 import com.chessd.chess.game.service.CheckService;
 import com.chessd.chess.move.service.MoveService;
 import com.chessd.chess.move.service.MoveUpdateService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 
+@Slf4j
 @Component
 public class AfterMoveListener {
     private final CheckService checkService;

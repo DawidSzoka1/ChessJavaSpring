@@ -1,5 +1,10 @@
 package com.chessd.chess.web_socket.message;
 
+import com.chessd.chess.figure.entity.Figure;
+import com.chessd.chess.figure.repository.FigureDao;
+import com.chessd.chess.figure.repository.FigureDaoImpl;
+import com.chessd.chess.figure.utils.Position;
+import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.game.service.GameService;
 import com.chessd.chess.user.entity.User;
@@ -12,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
@@ -25,6 +31,7 @@ import java.util.*;
  * This component processes messages received from the client, performs appropriate actions
  * (e.g., handling moves, responding to pings), and returns a response to the client.
  */
+@Slf4j
 @Component
 @Getter
 @Setter
@@ -43,18 +50,20 @@ public class CustomHandleTextMessage {
     private UserService userService;
     private UserHelper userHelper;
     private final Map<String, Set<WebSocketSession>> sessionsByGame = new HashMap<>();
+    private FigureDao figureDao;
 
     @Autowired
     public CustomHandleTextMessage(GameService gameService,
                                    RandomUniqIdGenerator randomUniqIdGenerator,
                                    MatchmakingMechanism matchmakingMechanism,
                                    UserService userService,
-                                   UserHelper userHelper) {
+                                   UserHelper userHelper, FigureDao figureDao) {
         this.gameService = gameService;
         this.matchmakingMechanism = matchmakingMechanism;
         this.randomUniqIdGenerator = randomUniqIdGenerator;
         this.userService = userService;
         this.userHelper = userHelper;
+        this.figureDao = figureDao;
     }
 
     WebSocketSession opponent(Set<WebSocketSession> playersSession, User user) {
@@ -105,7 +114,7 @@ public class CustomHandleTextMessage {
                     stackTraceElement.getMethodName() + " " + stackTraceElement.getLineNumber()
                     , e.getMessage(), false);
         }
-        if (opponentSession.isOpen()) {
+        if (opponentSession != null && opponentSession.isOpen()) {
             opponentSession.sendMessage(
                     new TextMessage(
                             new MessageToJS("ENEMY", message, true).toJson())
@@ -151,9 +160,40 @@ public class CustomHandleTextMessage {
     }
 
 
+    public MessageToJS checkMoves() {
+        String moveDetails = message;
+        Optional<Game> temp = gameService.getGameById(this.gameId);
+        if (temp.isEmpty()) {
+            return new MessageToJS("MOVES", "", false);
+        }
+        Game game = temp.get();
+        log.info(moveDetails);
+        Optional<Position> tempPos = Position.fromString(moveDetails);
+        if (tempPos.isEmpty()) {
+            return new MessageToJS("MOVES", "", false);
+        }
+        Position position = tempPos.get();
+        Figure current = figureDao.getFigureByPosition(
+                position,
+                game);
+        if (current == null) {
+            return new MessageToJS("MOVES", "", false);
+        }
+        StringBuilder moves = new StringBuilder();
+        Iterator<String> iterator = current.getMoves().iterator();
+        while (iterator.hasNext()) {
+            moves.append(iterator.next());
+            if (iterator.hasNext()) {
+                moves.append(",");
+            }
+        }
+        return new MessageToJS("MOVES", moves.toString(), true);
+    }
+
+
     public void closeConnection(WebSocketSession session) {
         this.sessionsByGame.get(gameId).remove(session);
-        if (this.sessionsByGame.get(gameId).isEmpty()){
+        if (this.sessionsByGame.get(gameId).isEmpty()) {
             this.sessionsByGame.remove(gameId);
         }
     }
@@ -168,6 +208,7 @@ public class CustomHandleTextMessage {
         return switch (messageType) {
             case "move", "take" -> this.handleMessageMove();
             case "start" -> this.registerSession(session);
+            case "getMoves" -> this.checkMoves();
             default -> this.pongMessage();
         };
     }

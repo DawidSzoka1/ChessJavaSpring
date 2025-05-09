@@ -1119,3 +1119,8 @@ tr:hover {
 .clickable-row {
     cursor: pointer;
 }
+
+.highlight {
+    background-color: rgba(255, 255, 0, 0.5);
+    border: 2px solid gold;
+}
