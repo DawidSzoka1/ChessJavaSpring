@@ -90,7 +90,7 @@ public class CustomHandleTextMessage {
         if (user == null) {
             return new MessageToJS("ERROR", "Zaloguj sie!", false);
         }
-        WebSocketSession opponentSesion = this.opponent(this.sessionsByGame.get(gameId), user);
+        WebSocketSession opponentSession = this.opponent(this.sessionsByGame.get(gameId), user);
         String[] moveDetails = message.split("-");
         try {
             gameService.move(gameId,
@@ -105,10 +105,10 @@ public class CustomHandleTextMessage {
                     stackTraceElement.getMethodName() + " " + stackTraceElement.getLineNumber()
                     , e.getMessage(), false);
         }
-        if (opponentSesion.isOpen()) {
-            opponentSesion.sendMessage(
+        if (opponentSession.isOpen()) {
+            opponentSession.sendMessage(
                     new TextMessage(
-                            new MessageToJS(messageType.toUpperCase(), moveDetails[1], true).toJson())
+                            new MessageToJS("ENEMY", message, true).toJson())
             );
         }
         return new MessageToJS(messageType.toUpperCase(), moveDetails[1], true);

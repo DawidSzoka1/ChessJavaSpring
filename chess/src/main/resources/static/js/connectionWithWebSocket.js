@@ -131,10 +131,27 @@ export default class CustomWebSocket {
                 case "FOUND":
                     this.messageFound(data);
                     break;
+                case "ENEMY":
+                    this.messageEnemy(data);
+                    break;
                 default:
                     this.messagePong();
             }
         };
+    }
+
+
+    messageEnemy(data){
+        const move = data.content.split('-')
+        const pieceToMove = document.getElementById(move[0])
+        const squareToMove = document.getElementById(move[1] + '-')
+        const test = document.getElementById(move[1])
+        if(test == null){
+            squareToMove.appendChild(pieceToMove);
+        }else{
+            squareToMove.removeChild(test)
+            squareToMove.appendChild(pieceToMove)
+        }
     }
 
     messageFound(data) {
