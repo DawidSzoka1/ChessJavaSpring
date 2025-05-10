@@ -1,5 +1,6 @@
 package com.chessd.chess.web_socket.handler;
 
+import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.web_socket.message.CustomHandleTextMessage;
 import com.chessd.chess.web_socket.message.MessageToJS;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,15 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Component
 public class MatchmakingHandler extends TextWebSocketHandler {
 
-    private static Queue<WebSocketSession> waitingPlayers = new ConcurrentLinkedQueue<>();
+    private static Map<GameType, Queue<WebSocketSession>> waitingPlayers = new LinkedHashMap<>();
     private final CustomHandleTextMessage customHandleTextMessage;
 
     @Autowired

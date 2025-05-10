@@ -1,6 +1,7 @@
 package com.chessd.chess.web_socket.utils;
 
 import com.chessd.chess.game.entity.Game;
+import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.game.service.GameService;
@@ -52,9 +53,10 @@ public class MatchmakingMechanism {
         }
     }
 
-    public String createGame(User player1, User player2) {
+    public String createGame(User player1, User player2, GameType gameType) {
         Game game = new Game(randomUniqIdGenerator.generateUniqId());
         randomSideSelection(game, player1, player2);
+        game.setGameType(gameType);
         gameService.save(game);
         gameService.startGame(game);
         return game.getGameId();

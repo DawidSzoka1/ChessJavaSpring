@@ -2,9 +2,10 @@ package com.chessd.chess.web_socket.message;
 
 import com.chessd.chess.figure.entity.Figure;
 import com.chessd.chess.figure.repository.FigureDao;
-import com.chessd.chess.figure.repository.FigureDaoImpl;
 import com.chessd.chess.figure.utils.Position;
 import com.chessd.chess.game.entity.Game;
+import com.chessd.chess.game.entity.GameType;
+import com.chessd.chess.game.service.GameTypeService;
 import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.game.service.GameService;
 import com.chessd.chess.user.entity.User;
@@ -51,19 +52,21 @@ public class CustomHandleTextMessage {
     private UserHelper userHelper;
     private final Map<String, Set<WebSocketSession>> sessionsByGame = new HashMap<>();
     private FigureDao figureDao;
+    private GameTypeService gameTypeService;
 
     @Autowired
     public CustomHandleTextMessage(GameService gameService,
                                    RandomUniqIdGenerator randomUniqIdGenerator,
                                    MatchmakingMechanism matchmakingMechanism,
                                    UserService userService,
-                                   UserHelper userHelper, FigureDao figureDao) {
+                                   UserHelper userHelper, FigureDao figureDao, GameTypeService gameTypeService) {
         this.gameService = gameService;
         this.matchmakingMechanism = matchmakingMechanism;
         this.randomUniqIdGenerator = randomUniqIdGenerator;
         this.userService = userService;
         this.userHelper = userHelper;
         this.figureDao = figureDao;
+        this.gameTypeService = gameTypeService;
     }
 
     WebSocketSession opponent(Set<WebSocketSession> playersSession, User user) {
@@ -140,22 +143,30 @@ public class CustomHandleTextMessage {
     }
 
 
-    public MessageToJS queueMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
-        Map<String, Object> response = matchmakingMechanism.lookForOpponent(session, waitingPlayers);
+    public MessageToJS queueMessage(WebSocketSession session, Map<GameType, Queue<WebSocketSession>> waitingPlayers) throws IOException {
+        GameType gameType = gameTypeService.findByType(message);
+        if(gameType == null){
+            return new MessageToJS("BADREQUEST", "", false);
+        }
+        Queue<WebSocketSession> waitingByGameType = waitingPlayers
+                .computeIfAbsent(gameType, _ -> new LinkedList<>());
+        Map<String, Object> response = matchmakingMechanism.lookForOpponent(session, waitingByGameType);
         if (!(Boolean) response.get("result")) {
-            waitingPlayers.add(session);
+            waitingByGameType.add(session);
             return new MessageToJS("QUEUE", "waiting for other player..", true);
         }
         User player1 = userHelper.userFromWebSession((WebSocketSession) response.get("player1"));
         User player2 = userHelper.userFromWebSession((WebSocketSession) response.get("player2"));
-        String createdId = matchmakingMechanism.createGame(player1, player2);
+        String createdId = matchmakingMechanism.createGame(player1, player2, gameType);
         ((WebSocketSession) response.get("player2"))
                 .sendMessage(new TextMessage(new MessageToJS("FOUND", createdId, true).toJson()));
         return new MessageToJS("FOUND", createdId, true);
     }
 
-    public MessageToJS cancelMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) {
-        waitingPlayers.removeIf(player -> player.equals(session));
+    public MessageToJS cancelMessage(WebSocketSession session, Map<GameType, Queue<WebSocketSession>> waitingPlayers) {
+        GameType gameType = gameTypeService.findByType(message);
+        Queue<WebSocketSession> waitingByGameType = waitingPlayers.get(gameType);
+        waitingByGameType.removeIf(player -> player.equals(session));
         return new MessageToJS("CANCEL", gameId, true);
     }
 
@@ -213,7 +224,7 @@ public class CustomHandleTextMessage {
         };
     }
 
-    public MessageToJS handleMessage(WebSocketSession session, Queue<WebSocketSession> waitingPlayers) throws IOException {
+    public MessageToJS handleMessage(WebSocketSession session, Map<GameType, Queue<WebSocketSession>> waitingPlayers) throws IOException {
         return switch (messageType) {
             case "queue" -> this.queueMessage(session, waitingPlayers);
             case "cancel" -> this.cancelMessage(session, waitingPlayers);
