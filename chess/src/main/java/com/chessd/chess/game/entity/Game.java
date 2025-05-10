@@ -48,6 +48,10 @@ public class Game {
     @Column(name = "next_move", columnDefinition = "varchar(1) check(next_move in ('W', 'B'))")
     private String nextMove = "W";
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "game_type_id", nullable = false)
+    private GameType gameType;
+
     public Game(String gameId) {
         this.gameId = gameId;
     }
