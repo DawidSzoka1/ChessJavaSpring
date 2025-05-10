@@ -145,7 +145,7 @@ public class CustomHandleTextMessage {
 
     public MessageToJS queueMessage(WebSocketSession session, Map<GameType, Queue<WebSocketSession>> waitingPlayers) throws IOException {
         GameType gameType = gameTypeService.findByType(message);
-        if(gameType == null){
+        if (gameType == null) {
             return new MessageToJS("BADREQUEST", "", false);
         }
         Queue<WebSocketSession> waitingByGameType = waitingPlayers
@@ -165,7 +165,8 @@ public class CustomHandleTextMessage {
 
     public MessageToJS cancelMessage(WebSocketSession session, Map<GameType, Queue<WebSocketSession>> waitingPlayers) {
         GameType gameType = gameTypeService.findByType(message);
-        Queue<WebSocketSession> waitingByGameType = waitingPlayers.get(gameType);
+        Queue<WebSocketSession> waitingByGameType = waitingPlayers
+                .computeIfAbsent(gameType, _ -> new LinkedList<>());
         waitingByGameType.removeIf(player -> player.equals(session));
         return new MessageToJS("CANCEL", gameId, true);
     }

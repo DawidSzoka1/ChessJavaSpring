@@ -3,6 +3,7 @@ package com.chessd.chess.web_socket.handler;
 import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.web_socket.message.CustomHandleTextMessage;
 import com.chessd.chess.web_socket.message.MessageToJS;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+@Slf4j
 @Component
 public class MatchmakingHandler extends TextWebSocketHandler {
 
