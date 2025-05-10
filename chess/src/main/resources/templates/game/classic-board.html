@@ -70,7 +70,7 @@
                                  class="me-3" alt="profil">
                             <div>
                                 <h5 th:text="${white?.userName ?: 'Anonimowy'}"></h5>
-                                <p class="mb-0">Czas: 09:55</p>
+                                <p class="mb-0" th:text="${'Czas: ' + game.gameType.timePerPlayer}"></p>
                             </div>
                         </div>
                     </a>
@@ -94,7 +94,7 @@
                         <div class="player-info mt-3 justify-content-end text-end profile-avatar">
                             <div>
                                 <h5 th:text="${black?.userName ?: 'Anonimowy'}"></h5>
-                                <p class="mb-0">Czas: 10:00</p>
+                                <p class="mb-0" th:text="${'Czas: ' + game.gameType.timePerPlayer}"></p>
                             </div>
                             <img th:src="@{${black == null ? '/images/util/default-user.png':
                             (black.profilePictureFilename == null ? '/images/util/default-user.png' :
