@@ -146,10 +146,17 @@ export default class CustomWebSocket {
                 case "DRAWREJECT":
                     this.messageDrawReject(data);
                     break;
+                case "SURRENDER":
+                    this.messageSurrender(data);
+                    break;
                 default:
                     this.messagePong();
             }
         };
+    }
+
+    messageSurrender(data){
+        document.getElementById("buttons-area").style.display = 'none';
     }
 
     messageDrawRequest(data) {

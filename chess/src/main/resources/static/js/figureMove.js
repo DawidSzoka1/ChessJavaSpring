@@ -20,6 +20,16 @@ document.addEventListener("DOMContentLoaded", () => {
             gameId: gameId,
         });
     }
+    document.getElementById("surrender-btn")
+        .addEventListener('click', (e) => {
+            e.preventDefault();
+            ws.send({
+                message: 'surrender',
+                messageType: 'surrender',
+                gameId: gameId,
+                userName: userName
+            })
+        })
     drawPropose.addEventListener("click", (e) => {
         e.preventDefault()
         drawPropose.style.display = 'none'
