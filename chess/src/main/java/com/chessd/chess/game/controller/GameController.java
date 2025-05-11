@@ -4,6 +4,7 @@ import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.game.service.GameService;
 import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.figure.utils.Column;
+import com.chessd.chess.game.utils.GameResult;
 import com.chessd.chess.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,7 +55,7 @@ public class GameController {
         if(optional.isEmpty()){
             return "game/lobby";
         }
-        Game g = gameService.getGameById(gamId).get();
+        Game g = optional.get();
         model
                 .addAttribute("white", g.getWhite())
                 .addAttribute("black", g.getBlack())

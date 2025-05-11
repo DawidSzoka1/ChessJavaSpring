@@ -176,7 +176,9 @@
                         <ul class="list-unstyled mb-0 move-list" id="move-list">
                         </ul>
                     </div>
-                    <div class="panel text-center buttons-area" id="buttons-area">
+
+                    <div class="panel text-center buttons-area" id="buttons-area"
+                         th:if="${game.result.name().equals('ONGOING')}">
                         <button id="offer-draw-btn">Zaproponuj remis</button>
                         <div id="draw-request-sent" class="info-box" style="display: none;">
                             Propozycja remisu została wysłana

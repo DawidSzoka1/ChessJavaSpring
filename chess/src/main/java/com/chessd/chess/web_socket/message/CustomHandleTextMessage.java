@@ -240,6 +240,31 @@ public class CustomHandleTextMessage {
     public MessageToJS rejectDraw() throws IOException{
         return this.drawHandle(new MessageToJS("DRAWREJECT", "Remis odrzucony", true));
     }
+
+
+    public MessageToJS surrender() throws IOException {
+        Optional<Game> opt = gameService.getGameById(this.gameId);
+        if(opt.isEmpty()){
+            return new MessageToJS("ERROR", "Nie ma takiej gry", false);
+        }
+        Game game = opt.get();
+        User user = userService.findByUserName(this.userName);
+        User winner = game.getWhite().equals(user) ? game.getBlack() : game.getWhite();
+        GameResult gameResult = game.getWhite().equals(user) ? GameResult.BLACK_WINS
+                : GameResult.WHITE_WINS;
+        game.setWinner(winner);
+        game.setResult(gameResult);
+        gameService.save(game);
+
+        for(WebSocketSession s: this.sessionsByGame.get(this.gameId)){
+            if(s.isOpen()){
+                s.sendMessage(new TextMessage(
+                        new MessageToJS("SURRENDER", "Gracz: " + userName + " sie poddal" , true).toJson()
+                ));
+            }
+        }
+        return new MessageToJS("SURRENDER", "Gracz: " + userName + " sie poddal" , true);
+    }
     /**
      * Handles the received message based on its type.
      * Delegates to appropriate handlers (e.g., move handling, pong response).
@@ -254,6 +279,7 @@ public class CustomHandleTextMessage {
             case "offer_draw" -> this.sendDrawRequest();
             case "accept_draw" -> this.acceptDraw();
             case "reject_draw" -> this.rejectDraw();
+            case "surrender" -> this.surrender();
             default -> this.pongMessage();
         };
     }
