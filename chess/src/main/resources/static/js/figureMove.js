@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let userName = document.querySelector("#user").getAttribute('data-username')
     const pieces = document.querySelectorAll(".piece")
     const squares = document.querySelectorAll(".square-content")
+    const drawPropose = document.getElementById("offer-draw-btn")
     let selectedPiece;
     if (userName == null) {
         userName = '';
@@ -19,6 +20,41 @@ document.addEventListener("DOMContentLoaded", () => {
             gameId: gameId,
         });
     }
+    drawPropose.addEventListener("click", (e) => {
+        e.preventDefault()
+        drawPropose.style.display = 'none'
+        document.getElementById("draw-request-sent").style.display = 'block'
+        ws.send({
+            message: 'Propozycja remisu',
+            messageType: 'offer_draw',
+            gameId: gameId,
+            userName: userName
+        })
+    })
+    document.getElementById("accept-draw-btn")
+        .addEventListener('click', (e) => {
+            e.preventDefault();
+            ws.send({
+                message: 'Akceptacja remisu',
+                messageType: 'accept_draw',
+                gameId: gameId,
+                userName: userName
+            })
+            document.getElementById("buttons-area").style.display = "none";
+        })
+    document.getElementById("reject-draw-btn")
+        .addEventListener('click', (e) => {
+            e.preventDefault();
+            ws.send({
+                message: 'Odrzucono remis',
+                messageType: 'reject_draw',
+                gameId: gameId,
+                userName: userName
+            })
+            drawPropose.style.display = 'block'
+            document.getElementById("draw-request-container").style.display = "none";
+        })
+
     pieces.forEach(piece => {
         piece.addEventListener("drag", dragging)
         piece.addEventListener("dragstart", dragStart)

@@ -8,6 +8,7 @@ import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.game.service.GameTypeService;
 import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.game.service.GameService;
+import com.chessd.chess.game.utils.GameResult;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
 import com.chessd.chess.web_socket.utils.MatchmakingMechanism;
@@ -210,6 +211,35 @@ public class CustomHandleTextMessage {
         }
     }
 
+    public MessageToJS drawHandle(MessageToJS messageToJS) throws  IOException{
+        User user = userService.findByUserName(this.userName);
+        WebSocketSession opponent = this.opponent(this.sessionsByGame.get(this.gameId), user);
+        if(opponent != null && opponent.isOpen()){
+            opponent.sendMessage(new TextMessage(
+                    messageToJS.toJson()
+            ));
+        }
+        return new MessageToJS("ERROR", "NIE MA OPPONENTA", false);
+    }
+
+    public MessageToJS sendDrawRequest() throws IOException {
+       return this.drawHandle(new MessageToJS("DRAWOFFER", "Propozycja remisu", true));
+    }
+
+    public MessageToJS acceptDraw() throws IOException {
+        Optional<Game> opt = gameService.getGameById(this.gameId);
+        if(opt.isEmpty()){
+            return new MessageToJS("ERROR", "Nie ma takiej gry", false);
+        }
+        Game game = opt.get();
+        game.setResult(GameResult.DRAW);
+        gameService.save(game);
+        return this.drawHandle(new MessageToJS("DRAWACCEPT", "Remis zaakceptowany", true));
+    }
+
+    public MessageToJS rejectDraw() throws IOException{
+        return this.drawHandle(new MessageToJS("DRAWREJECT", "Remis odrzucony", true));
+    }
     /**
      * Handles the received message based on its type.
      * Delegates to appropriate handlers (e.g., move handling, pong response).
@@ -221,6 +251,9 @@ public class CustomHandleTextMessage {
             case "move", "take" -> this.handleMessageMove();
             case "start" -> this.registerSession(session);
             case "getMoves" -> this.checkMoves();
+            case "offer_draw" -> this.sendDrawRequest();
+            case "accept_draw" -> this.acceptDraw();
+            case "reject_draw" -> this.rejectDraw();
             default -> this.pongMessage();
         };
     }

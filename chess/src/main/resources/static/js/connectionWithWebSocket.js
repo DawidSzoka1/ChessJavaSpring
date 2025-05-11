@@ -137,10 +137,34 @@ export default class CustomWebSocket {
                 case "MOVES":
                     this.messageMoves(data);
                     break;
+                case "DRAWOFFER":
+                    this.messageDrawRequest(data);
+                    break;
+                case "DRAWACCEPT":
+                    this.messageDrawAccept(data);
+                    break;
+                case "DRAWREJECT":
+                    this.messageDrawReject(data);
+                    break;
                 default:
                     this.messagePong();
             }
         };
+    }
+
+    messageDrawRequest(data) {
+        document.getElementById("offer-draw-btn").style.display = 'none';
+        document.getElementById("draw-request-container").style.display = 'block';
+    }
+
+    messageDrawAccept(data) {
+        document.getElementById("buttons-area").style.display = 'none';
+
+    }
+
+    messageDrawReject(data) {
+        document.getElementById("draw-request-container").style.display = 'none';
+        document.getElementById("offer-draw-btn").style.display = 'block';
     }
 
     messageMoves(data) {

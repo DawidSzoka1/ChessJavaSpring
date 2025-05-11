@@ -26,7 +26,73 @@
             text-decoration: none;
             color: inherit;
         }
+        #offer-draw-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin: 10px 0;
+        }
 
+        #offer-draw-btn:hover {
+            background-color: #45a049;
+        }
+
+        #draw-request-container {
+            background-color: #f8f9fa;
+            border: 2px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 300px;
+            text-align: center;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        #draw-request-container p {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        #accept-draw-btn, #reject-draw-btn {
+            padding: 8px 14px;
+            margin: 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        #accept-draw-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #accept-draw-btn:hover {
+            background-color: #0069d9;
+        }
+
+        #reject-draw-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #reject-draw-btn:hover {
+            background-color: #c82333;
+        }
+        .buttons-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 15px;
+        }
         @media (max-width: 768px) {
             body {
                 font-size: 1.1rem;
@@ -110,8 +176,16 @@
                         <ul class="list-unstyled mb-0 move-list" id="move-list">
                         </ul>
                     </div>
-                    <div class="panel text-center">
-                        <p class="text-muted">Opcja cofnięcia ruchu niedostępna</p>
+                    <div class="panel text-center buttons-area" id="buttons-area">
+                        <button id="offer-draw-btn">Zaproponuj remis</button>
+                        <div id="draw-request-sent" class="info-box" style="display: none;">
+                            Propozycja remisu została wysłana
+                        </div>
+                        <div id="draw-request-container" style="display: none">
+                            <p>Przeciwnik proponuje remis</p>
+                            <button id="accept-draw-btn">Akceptuj</button>
+                            <button id="reject-draw-btn">Odrzuć</button>
+                        </div>
                         <button class="btn btn-outline-danger">Poddaj się</button>
                     </div>
                     <div class="chat-box">
