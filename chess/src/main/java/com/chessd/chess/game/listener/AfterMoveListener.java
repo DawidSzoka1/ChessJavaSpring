@@ -49,12 +49,12 @@ public class AfterMoveListener {
     private void saveMove(AfterMoveEvent event){
         Move move = new Move();
         Game game = event.getGame();
-        move.setGame(game);
-        move.setUser(event.getFigure().getOwnerId());
+        move.setGameId(game);
+        move.setUserId(event.getFigure().getOwnerId());
         move.setStartPosition(event.getFrom());
         move.setEndPosition(event.getTo());
         move.setTime(Timestamp.from(Instant.now()));
-        move.setMoveId(game.getGameId().substring(0, 20) + move.getUser().getId() + game.getMoveCount());
+        move.setMoveId(game.getGameId().substring(0, 20) + move.getUserId().getId() + game.getMoveCount());
         game.setMoveCount(game.getMoveCount() + 1);
         moveService.save(move);
         gameService.save(game);

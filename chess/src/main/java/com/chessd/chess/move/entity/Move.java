@@ -21,11 +21,11 @@ public class Move {
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private User userId;
 
     @ManyToOne
     @JoinColumn(name = "game_id", referencedColumnName = "game_id")
-    private Game game;
+    private Game gameId;
 
     @Column(name = "start_position", columnDefinition = "varchar(4)")
     private String startPosition;
@@ -38,13 +38,6 @@ public class Move {
 
     @Override
     public String toString() {
-        return "Move{" +
-                "moveId='" + moveId + '\'' +
-                ", user=" + user +
-                ", game=" + game +
-                ", startPosition='" + startPosition + '\'' +
-                ", endPosition='" + endPosition + '\'' +
-                ", time=" + time +
-                '}';
+        return this.startPosition  + "-" + this.endPosition;
     }
 }

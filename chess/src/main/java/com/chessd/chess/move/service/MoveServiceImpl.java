@@ -114,7 +114,7 @@ public class MoveServiceImpl implements MoveService {
 
     @Override
     public List<Move> getAllByGame(Game game) {
-        return moveDao.getAllByGame(game);
+        return moveDao.findAllByGameId_GameId_OrderByTimeDesc(game.getGameId());
     }
 
 }
