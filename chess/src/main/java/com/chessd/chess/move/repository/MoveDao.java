@@ -1,17 +1,15 @@
 package com.chessd.chess.move.repository;
 
+import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.move.entity.Move;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface MoveDao {
-    List<Move> getMovesByGameId(String gameId);
 
-    List<Move> getMovesByGameIdAndPlayerId(String gameId, String playerId);
+public interface MoveDao  extends JpaRepository<Move, String> {
 
-    void save(Move move);
+    List<Move> getAllByGame(Game game);
 
-    void update(Move move);
-
-    void delete(Move move);
+    Move findByMoveId(String moveId);
 }

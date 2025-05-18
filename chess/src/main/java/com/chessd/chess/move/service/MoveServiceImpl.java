@@ -7,6 +7,8 @@ import com.chessd.chess.figure.repository.FigureDao;
 import com.chessd.chess.figure.service.FigureMoveService;
 import com.chessd.chess.figure.service.FigureMoveServiceFactory;
 import com.chessd.chess.figure.utils.Position;
+import com.chessd.chess.move.entity.Move;
+import com.chessd.chess.move.repository.MoveDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +19,16 @@ import java.util.Optional;
 @Service
 public class MoveServiceImpl implements MoveService {
     private final GameService gameService;
-    private FigureDao figureDao;
+    private final FigureDao figureDao;
     private final FigureMoveServiceFactory figureMoveServiceFactory;
+    private final MoveDao moveDao;
 
     @Autowired
-    public MoveServiceImpl(FigureDao figureDao, FigureMoveServiceFactory figureMoveServiceFactory, GameService gameService) {
+    public MoveServiceImpl(FigureDao figureDao, FigureMoveServiceFactory figureMoveServiceFactory, GameService gameService, MoveDao moveDao) {
         this.figureDao = figureDao;
         this.figureMoveServiceFactory = figureMoveServiceFactory;
         this.gameService = gameService;
+        this.moveDao = moveDao;
     }
 
     @Override
@@ -96,6 +100,21 @@ public class MoveServiceImpl implements MoveService {
         FigureMoveService figureMoveService = figureMoveServiceFactory.getMoveService(figure.getName());
         figure.setPosition(Position.fromString(move).orElseThrow());
         figure.setMoves(figureMoveService.getAvailableMoves(figure, board));
+    }
+
+    @Override
+    public void save(Move move) {
+        moveDao.save(move);
+    }
+
+    @Override
+    public Move findByMoveId(String moveId) {
+        return moveDao.findByMoveId(moveId);
+    }
+
+    @Override
+    public List<Move> getAllByGame(Game game) {
+        return moveDao.getAllByGame(game);
     }
 
 }

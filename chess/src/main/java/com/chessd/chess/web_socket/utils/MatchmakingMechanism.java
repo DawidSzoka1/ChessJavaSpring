@@ -57,6 +57,7 @@ public class MatchmakingMechanism {
         Game game = new Game(randomUniqIdGenerator.generateUniqId());
         randomSideSelection(game, player1, player2);
         game.setGameType(gameType);
+        game.setMoveCount(0);
         gameService.save(game);
         gameService.startGame(game);
         return game.getGameId();

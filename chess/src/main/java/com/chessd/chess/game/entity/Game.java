@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
@@ -47,6 +48,10 @@ public class Game {
 
     @Column(name = "next_move", columnDefinition = "varchar(1) check(next_move in ('W', 'B'))")
     private String nextMove = "W";
+
+    @Column(name = "move_count")
+    @ColumnDefault("0")
+    private int moveCount;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "game_type_id", nullable = false)
