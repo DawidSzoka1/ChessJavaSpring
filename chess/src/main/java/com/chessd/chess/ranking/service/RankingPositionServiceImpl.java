@@ -17,10 +17,12 @@ import java.util.List;
 @Service
 public class RankingPositionServiceImpl implements RankingPositionService {
     private final RankingPositionDao rankingPositionDao;
+    private final RankingService rankingService;
 
     @Autowired
-    public RankingPositionServiceImpl(RankingPositionDao rankingPositionDao) {
+    public RankingPositionServiceImpl(RankingPositionDao rankingPositionDao, RankingService rankingService) {
         this.rankingPositionDao = rankingPositionDao;
+        this.rankingService = rankingService;
     }
 
 
@@ -53,11 +55,18 @@ public class RankingPositionServiceImpl implements RankingPositionService {
 
     @Override
     public RankingPosition findByUserAndGameType(User user, GameType gameType) {
-        return null;
+        Ranking ranking = rankingService.findByGameType(gameType);
+        return rankingPositionDao.findByUserAndRanking(user, ranking);
     }
 
     @Override
-    public List<RankingPosition> findAllLowerThanAndRanking(int points, Ranking ranking) {
+    public List<RankingPosition> findAllLowerThanAndRanking(int points, GameType gameType) {
+        Ranking ranking = rankingService.findByGameType(gameType);
         return rankingPositionDao.findAllByRankingAndPointsLessThan(ranking, points);
+    }
+
+    @Override
+    public List<RankingPosition> findAllByPointsAndRanking(int points, Ranking ranking) {
+        return rankingPositionDao.findAllByPointsAndRanking(points, ranking);
     }
 }

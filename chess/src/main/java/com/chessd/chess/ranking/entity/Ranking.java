@@ -1,5 +1,6 @@
 package com.chessd.chess.ranking.entity;
 
+import com.chessd.chess.game.entity.GameType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +24,9 @@ public class Ranking {
     @Column(name = "name", unique = true)
     private String name;
 
-    @Column(name = "game_type")
-    private String gameType;
+    @ManyToOne
+    @JoinColumn(name = "game_type")
+    private GameType gameType;
 
     @Column(name = "ranking_icon_file_name")
     private String rankingIconFileName;

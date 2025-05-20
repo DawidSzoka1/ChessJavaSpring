@@ -1,11 +1,14 @@
 package com.chessd.chess.ranking.entity;
 
+import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "ranking_position")
@@ -32,4 +35,14 @@ public class RankingPosition {
 
     @Column(name = "points")
     private int points;
+
+    public static int bestPosition(List<RankingPosition> samePosition) {
+        int result = samePosition.getFirst().getPosition();
+        for(RankingPosition position: samePosition){
+            if(position.getPosition() < result){
+                result = position.getPosition();
+            }
+        }
+        return result;
+    }
 }
