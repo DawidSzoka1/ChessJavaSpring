@@ -24,7 +24,7 @@ public class EndGameListener {
         if(!result){
             return;
         }
-        //ToDo some info after end of the game
+        endGameService.handleAfterGame(event.getGame());
         log.info("Game has ended");
     }
 }

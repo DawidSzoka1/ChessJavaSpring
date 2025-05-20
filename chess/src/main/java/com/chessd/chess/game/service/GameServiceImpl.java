@@ -126,6 +126,9 @@ public class GameServiceImpl implements GameService {
     public void endGame(Game game, GameResult result) {
         game.setEnd(Timestamp.from(Instant.now()));
         game.setResult(result);
+        User winner = result.equals(GameResult.BLACK_WINS) ? game.getBlack()
+                : (result.equals(GameResult.WHITE_WINS) ? game.getWhite() : null);
+        game.setWinner(winner);
         gameDao.save(game);
     }
 

@@ -6,17 +6,12 @@ import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.figure.utils.Column;
 import com.chessd.chess.move.entity.Move;
 import com.chessd.chess.move.service.MoveService;
-import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
-import com.chessd.chess.web_socket.utils.UserHelper;
-import jakarta.servlet.http.HttpSession;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.socket.WebSocketSession;
 
 import java.util.List;
 import java.security.Principal;
@@ -27,23 +22,22 @@ import java.util.Optional;
 public class GameController {
     private final UserService userService;
     private final MoveService moveService;
-    private final UserHelper userHelper;
     GameService gameService;
     RandomUniqIdGenerator randomUniqIdGenerator;
 
     @Autowired
-    public GameController(GameService gameService, RandomUniqIdGenerator randomUniqIdGenerator, UserService userService, MoveService moveService, UserHelper userHelper) {
+    public GameController(GameService gameService, RandomUniqIdGenerator randomUniqIdGenerator,
+                          UserService userService, MoveService moveService) {
         this.gameService = gameService;
         this.randomUniqIdGenerator = randomUniqIdGenerator;
         this.userService = userService;
         this.moveService = moveService;
-        this.userHelper = userHelper;
     }
 
     @GetMapping("/play/test")
-    public String test(Model model, Principal principal){
+    public String test(Model model, Principal principal) {
         Game g = new Game(randomUniqIdGenerator.generateUniqId());
-        if(principal != null){
+        if (principal != null) {
             g.setWhite(userService.findByUserName(principal.getName()));
         }
         g.setBlack(userService.findById(2).get());
@@ -61,9 +55,9 @@ public class GameController {
     }
 
     @GetMapping("/play/{gamId}")
-    public String classic(Model model, @PathVariable String gamId, Principal principal){
+    public String classic(Model model, @PathVariable String gamId, Principal principal) {
         Optional<Game> optional = gameService.getGameById(gamId);
-        if(optional.isEmpty()){
+        if (optional.isEmpty()) {
             return "game/lobby";
         }
         Game g = optional.get();
