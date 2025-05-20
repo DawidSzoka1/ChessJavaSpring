@@ -1,5 +1,6 @@
 package com.chessd.chess.ranking.service;
 
+import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.ranking.entity.Ranking;
 import com.chessd.chess.ranking.entity.RankingPosition;
 import com.chessd.chess.ranking.repository.RankingPositionDao;
@@ -48,5 +49,15 @@ public class RankingPositionServiceImpl implements RankingPositionService {
     @Override
     public List<RankingPosition> findAllByUser(User user) {
         return rankingPositionDao.findAllByUser(user);
+    }
+
+    @Override
+    public RankingPosition findByUserAndGameType(User user, GameType gameType) {
+        return null;
+    }
+
+    @Override
+    public List<RankingPosition> findAllLowerThanAndRanking(int points, Ranking ranking) {
+        return rankingPositionDao.findAllByRankingAndPointsLessThan(ranking, points);
     }
 }

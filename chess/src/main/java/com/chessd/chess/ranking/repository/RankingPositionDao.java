@@ -14,4 +14,6 @@ public interface RankingPositionDao extends JpaRepository<RankingPosition, Ranki
     Page<RankingPosition> findAllByRanking(Ranking ranking, Pageable pageable);
 
     List<RankingPosition> findAllByUser(User user);
+
+    List<RankingPosition> findAllByRankingAndPointsLessThan(Ranking ranking, int points);
 }

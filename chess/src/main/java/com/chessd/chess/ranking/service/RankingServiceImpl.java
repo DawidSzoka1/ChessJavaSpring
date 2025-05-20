@@ -1,5 +1,6 @@
 package com.chessd.chess.ranking.service;
 
+import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.ranking.entity.Ranking;
 import com.chessd.chess.ranking.repository.RankingDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,10 @@ public class RankingServiceImpl implements RankingService {
     @Override
     public Ranking findByName(String name) {
         return rankingDao.findByName(name);
+    }
+
+    @Override
+    public Ranking findByGameType(GameType gameType) {
+        return rankingDao.findByGameType(gameType);
     }
 }

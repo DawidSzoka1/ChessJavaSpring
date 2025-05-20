@@ -1,5 +1,6 @@
 package com.chessd.chess.ranking.service;
 
+import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.ranking.entity.Ranking;
 import java.util.List;
 
@@ -14,4 +15,7 @@ public interface RankingService {
     List<Ranking> findAll();
 
     Ranking findByName(String name);
+
+
+    Ranking findByGameType(GameType gameType);
 }
