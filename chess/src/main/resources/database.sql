@@ -4,8 +4,12 @@ DELETE
 FROM figure_moves;
 DELETE
 FROM figure;
+DELETE from move;
+DELETE from ranking_position;
+DELETE from ranking;
 DELETE
 FROM game;
+DELETE from game_type;
 DELETE
 FROM users_roles;
 DELETE
@@ -52,16 +56,19 @@ VALUES (2, 1),
        (1, 8),
        (1, 9),
        (1, 10);
-INSERT INTO ranking (id, name, game_type, ranking_icon_file_name)
-VALUES (1, 'Ranking Błyskawiczny', 'blitz', 'blitz_icon.png'),
-       (2, 'Ranking Klasyczny', 'classical', 'classical_icon.png'),
-       (3, 'Ranking Bullet', 'bullet', 'bullet_icon.png');
+
 INSERT INTO game_type (type, time_per_player, add_per_move) VALUES
-                                                               ('Bullet', 1.0, 0.0),         -- 1 minuta, bez dodawanego czasu
-                                                               ('Blitz', 5.0, 0.0),          -- 5 minut, bez dodatku
-                                                               ('Rapid', 15.0, 10.0),        -- 15 minut + 10 sekund na ruch
-                                                               ('Classical', 30.0, 30.0),    -- 30 minut + 30 sekund na ruch
-                                                               ('Custom', 10.0, 5.0);        -- 10 minut + 5 sekund (do testów)
+                                                                ('Bullet', 1.0, 0.0),         -- 1 minuta, bez dodawanego czasu
+                                                                ('Blitz', 5.0, 0.0),          -- 5 minut, bez dodatku
+                                                                ('Rapid', 15.0, 10.0),        -- 15 minut + 10 sekund na ruch
+                                                                ('Classical', 30.0, 30.0),    -- 30 minut + 30 sekund na ruch
+                                                                ('Custom', 10.0, 5.0);
+
+INSERT INTO ranking (id, name, game_type, ranking_icon_file_name)
+VALUES (1, 'Ranking Błyskawiczny', 2, 'blitz_icon.png'),
+       (2, 'Ranking Klasyczny', 4, 'classical_icon.png'),
+       (3, 'Ranking Bullet', 1, 'bullet_icon.png');
+
 INSERT INTO ranking_position (user_id, ranking_id, position, points) VALUES
                                                                          (1, 1, 1, 1800),
                                                                          (2, 1, 2, 1750),
