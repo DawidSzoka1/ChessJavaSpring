@@ -3,6 +3,7 @@ package com.chessd.chess.ranking.service;
 import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.ranking.entity.Ranking;
 import com.chessd.chess.ranking.entity.RankingPosition;
+import com.chessd.chess.ranking.entity.RankingPositionKey;
 import com.chessd.chess.ranking.repository.RankingPositionDao;
 import com.chessd.chess.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,13 @@ public class RankingPositionServiceImpl implements RankingPositionService {
     @Override
     public RankingPosition findByUserAndGameType(User user, GameType gameType) {
         Ranking ranking = rankingService.findByGameType(gameType);
-        return rankingPositionDao.findByUserAndRanking(user, ranking);
+        RankingPosition rankingPosition = rankingPositionDao.findByUserAndRanking(user, ranking);
+        if(rankingPosition == null){
+            RankingPositionKey key = new RankingPositionKey(user.getId(), ranking.getId());
+            rankingPosition = new RankingPosition(key, user, ranking, this.lowestPosition(ranking), 0);
+            this.save(rankingPosition);
+        }
+        return rankingPosition;
     }
 
     @Override
@@ -68,5 +75,18 @@ public class RankingPositionServiceImpl implements RankingPositionService {
     @Override
     public List<RankingPosition> findAllByPointsAndRanking(int points, Ranking ranking) {
         return rankingPositionDao.findAllByPointsAndRanking(points, ranking);
+    }
+
+    @Override
+    public int lowestPosition(Ranking ranking) {
+        return rankingPositionDao.findByPositionMax(ranking);
+    }
+
+    @Override
+    public int findNewPosition(Ranking ranking, int points) {
+        RankingPosition oneAbove = rankingPositionDao
+                .findTopByRankingAndPointsGreaterThanEqualOrderByPointsAscPositionAsc(ranking, points);
+
+        return oneAbove.getPosition() + 1;
     }
 }

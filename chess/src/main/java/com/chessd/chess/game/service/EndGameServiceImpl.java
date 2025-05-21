@@ -35,8 +35,9 @@ public class EndGameServiceImpl implements EndGameService {
         return figureDao.possibleMoveByColor(game, color);
     }
 
-    private void endGame(Game game) {
-        gameService.endGame(game, GameResult.fromCheckStatus(game.getCheckStatus()));
+    private void endGame(Game game, GameResult gameResult) {
+        GameResult result = gameResult == null ? GameResult.fromCheckStatus(game.getCheckStatus()) : gameResult;
+        gameService.endGame(game, result);
     }
 
     private void processLosser(User losser, GameType gameType) {
@@ -51,7 +52,6 @@ public class EndGameServiceImpl implements EndGameService {
                 rankingPositionService.findByUserAndGameType(winner, gameType);
         rankingWinner.setPoints(rankingWinner.getPoints() + 20);
         this.updateRankingPositions(rankingWinner, gameType);
-
     }
 
     private void processDraw(Game game) {
@@ -67,6 +67,7 @@ public class EndGameServiceImpl implements EndGameService {
     }
 
     private void updateRankingPositions(RankingPosition changed, GameType gameType) {
+        rankingPositionService.save(changed);
         Ranking ranking = rankingService.findByGameType(gameType);
         List<RankingPosition> positionList = rankingPositionService
                 .findAllLowerThanAndRanking(changed.getPosition(), gameType);
@@ -74,7 +75,17 @@ public class EndGameServiceImpl implements EndGameService {
             position.setPosition(position.getPosition() + 1);
             rankingPositionService.save(position);
         }
+
         List<RankingPosition> samePosition = rankingPositionService.findAllByPointsAndRanking(changed.getPoints(), ranking);
+        if(samePosition == null || samePosition.size() == 1){
+            changed.setPosition(rankingPositionService.findNewPosition(ranking, changed.getPoints()));
+            rankingPositionService.save(changed);
+            return;
+        }
+       this.handleSamePosition(samePosition);
+    }
+
+    private void handleSamePosition(List<RankingPosition> samePosition){
         int highestPosition = RankingPosition.bestPosition(samePosition);
         for (RankingPosition position : samePosition) {
             position.setPosition(highestPosition);
@@ -96,7 +107,12 @@ public class EndGameServiceImpl implements EndGameService {
 
     @Override
     public void handleAfterGame(Game game) {
-        this.endGame(game);
+        this.handleAfterGame(game, null);
+    }
+
+    @Override
+    public void handleAfterGame(Game game, GameResult gameResult){
+        this.endGame(game, gameResult);
         this.processPoints(game);
     }
 }

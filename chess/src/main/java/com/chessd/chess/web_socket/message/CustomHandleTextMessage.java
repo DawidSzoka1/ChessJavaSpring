@@ -5,6 +5,8 @@ import com.chessd.chess.figure.repository.FigureDao;
 import com.chessd.chess.figure.utils.Position;
 import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.game.entity.GameType;
+import com.chessd.chess.game.event.EndGameEvent;
+import com.chessd.chess.game.event.ValidateMoveEvent;
 import com.chessd.chess.game.service.GameTypeService;
 import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.game.service.GameService;
@@ -21,11 +23,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -54,13 +59,14 @@ public class CustomHandleTextMessage {
     private final Map<String, Set<WebSocketSession>> sessionsByGame = new HashMap<>();
     private FigureDao figureDao;
     private GameTypeService gameTypeService;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     public CustomHandleTextMessage(GameService gameService,
                                    RandomUniqIdGenerator randomUniqIdGenerator,
                                    MatchmakingMechanism matchmakingMechanism,
                                    UserService userService,
-                                   UserHelper userHelper, FigureDao figureDao, GameTypeService gameTypeService) {
+                                   UserHelper userHelper, FigureDao figureDao, GameTypeService gameTypeService, ApplicationEventPublisher applicationEventPublisher) {
         this.gameService = gameService;
         this.matchmakingMechanism = matchmakingMechanism;
         this.randomUniqIdGenerator = randomUniqIdGenerator;
@@ -68,6 +74,7 @@ public class CustomHandleTextMessage {
         this.userHelper = userHelper;
         this.figureDao = figureDao;
         this.gameTypeService = gameTypeService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     WebSocketSession opponent(Set<WebSocketSession> playersSession, User user) {
@@ -249,13 +256,9 @@ public class CustomHandleTextMessage {
         }
         Game game = opt.get();
         User user = userService.findByUserName(this.userName);
-        User winner = game.getWhite().equals(user) ? game.getBlack() : game.getWhite();
         GameResult gameResult = game.getWhite().equals(user) ? GameResult.BLACK_WINS
                 : GameResult.WHITE_WINS;
-        game.setWinner(winner);
-        game.setResult(gameResult);
-        gameService.save(game);
-
+        applicationEventPublisher.publishEvent(new EndGameEvent(this, game, gameResult));
         for(WebSocketSession s: this.sessionsByGame.get(this.gameId)){
             if(s.isOpen()){
                 s.sendMessage(new TextMessage(

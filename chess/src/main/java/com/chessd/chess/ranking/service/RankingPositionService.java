@@ -24,4 +24,8 @@ public interface RankingPositionService {
     List<RankingPosition> findAllLowerThanAndRanking(int points, GameType gameType);
 
     List<RankingPosition> findAllByPointsAndRanking(int points, Ranking ranking);
+
+    int lowestPosition(Ranking ranking);
+
+    int findNewPosition(Ranking ranking, int points);
 }

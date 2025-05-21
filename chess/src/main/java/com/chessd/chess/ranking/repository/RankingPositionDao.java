@@ -7,6 +7,7 @@ import com.chessd.chess.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -20,4 +21,9 @@ public interface RankingPositionDao extends JpaRepository<RankingPosition, Ranki
     RankingPosition findByUserAndRanking(User user, Ranking ranking);
 
     List<RankingPosition> findAllByPointsAndRanking(int points, Ranking ranking);
+
+    @Query("select position from RankingPosition where ranking=?1 and position = (select max(position) from RankingPosition where ranking=?1)")
+    int findByPositionMax(Ranking ranking);
+
+    RankingPosition findTopByRankingAndPointsGreaterThanEqualOrderByPointsAscPositionAsc(Ranking ranking, int points);
 }
