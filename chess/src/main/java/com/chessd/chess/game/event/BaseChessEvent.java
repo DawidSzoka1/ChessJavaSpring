@@ -17,6 +17,10 @@ public abstract class BaseChessEvent extends ApplicationEvent {
     private final HashMap<Position, Figure> board;
     private final String typeOfMove;
 
+    BaseChessEvent(Object source,Game game){
+        this(source, null, null, null, game, null, null);
+    }
+
     BaseChessEvent(Object source, Figure figure, String from, String to, Game game, HashMap<Position, Figure> board, String typeOfMove) {
         super(source);
         this.figure = figure;
