@@ -147,6 +147,7 @@
             background-color: #f0f0f0;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
+
         }
 
         .player-header .player-rank {
@@ -204,6 +205,33 @@
             box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
             transform: scale(1.03);
         }
+        .update-link {
+            display: inline-block;
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #ffffff;
+            background-color: #0d6efd; /* Bootstrap-primary blue */
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
+        }
+
+        .update-link:hover {
+            background-color: #0b5ed7;
+            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+        }
+
+        .update-link:active {
+            background-color: #0a58ca;
+        }
+
+        .update-link:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.4);
+        }
+
     </style>
 </head>
 <body>
@@ -215,7 +243,8 @@
             <div class="alert alert-success" th:text="${success}">
             </div>
         </div>
-        <a class="button" th:href="@{${#mvc.url('RC#showForm').build()}}" sec:authorize="hasRole('ROLE_ADMIN')">+ Dodaj Nowy Ranking</a>
+        <a class="button" th:href="@{${#mvc.url('RC#showForm').build()}}" sec:authorize="hasRole('ROLE_ADMIN')">+ Dodaj
+            Nowy Ranking</a>
         <div class="ranking" th:each="element : ${rankings}">
             <div class="ranking-header">
                 <div class="left-group">
@@ -227,6 +256,12 @@
                     <h3 th:text="${element.key.gameType?.type ?: ''}"></h3>
                 </div>
                 <div class="right-group" sec:authorize="hasRole('ROLE_ADMIN')">
+
+                    <a th:href="@{/ranking/admin/update/{id}(id=${element.key.id})}"
+                       class="update-link mr-2"
+                       style="cursor: pointer;">
+                        Aktualizacja
+                    </a>
                     <form th:action="@{${#mvc.url('RC#handleDelete').build()}}" method="post"
                           onsubmit="return confirm('Czy na pewno chcesz usunąć ten ranking?');" class="d-inline">
                         <input type="hidden" name="ranking_id" th:value="${element.key.id}">

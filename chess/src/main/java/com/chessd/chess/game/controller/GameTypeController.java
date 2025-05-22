@@ -1,12 +1,8 @@
 package com.chessd.chess.game.controller;
 
-import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.game.entity.GameType;
-import com.chessd.chess.game.service.GameService;
 import com.chessd.chess.game.service.GameTypeService;
-import com.chessd.chess.ranking.entity.Ranking;
-import com.chessd.chess.ranking.service.RankingService;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,13 +20,11 @@ import java.util.Optional;
 public class GameTypeController {
 
     private final GameTypeService gameTypeService;
-    private final RankingService rankingService;
-    private final GameService gameService;
+    @Value("${redirect.attribute-name.error}")
+    private String errorType;
 
-    public GameTypeController(GameTypeService gameTypeService, RankingService rankingService, GameService gameService) {
+    public GameTypeController(GameTypeService gameTypeService) {
         this.gameTypeService = gameTypeService;
-        this.rankingService = rankingService;
-        this.gameService = gameService;
     }
 
     @GetMapping("gameType/form")
@@ -51,12 +45,12 @@ public class GameTypeController {
             for (ObjectError error : bindingResult.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
-            redirectAttributes.addFlashAttribute("error", errorMessages);
+            redirectAttributes.addFlashAttribute(errorType, errorMessages);
             return new RedirectView("/admin/gameType/form");
         }
         GameType existing = gameTypeService.findByType(gameType.getType());
         if (existing != null) {
-            redirectAttributes.addFlashAttribute("error", "Ten tryb gry juz istnieje, daj inna nazwe");
+            redirectAttributes.addFlashAttribute(errorType, "Ten tryb gry juz istnieje, daj inna nazwe");
             return new RedirectView("/admin/gameType/form");
         }
         gameTypeService.save(gameType);
@@ -83,12 +77,12 @@ public class GameTypeController {
             for (ObjectError error : bindingResult.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
-            redirectAttributes.addFlashAttribute("error", errorMessages);
+            redirectAttributes.addFlashAttribute(errorType, errorMessages);
             return new RedirectView("/admin/gameType/update/" + gameType.getId());
         }
         GameType existing = gameTypeService.findByType(gameType.getType());
         if (existing != null && !existing.equals(gameType)) {
-            redirectAttributes.addFlashAttribute("error",
+            redirectAttributes.addFlashAttribute(errorType,
                     "Ten tryb gry juz istnieje, daj inna nazwe");
             return new RedirectView("/admin/gameType/update/" + gameType.getId());
         }

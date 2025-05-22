@@ -6,6 +6,7 @@ import com.chessd.chess.ranking.entity.RankingPosition;
 import com.chessd.chess.ranking.service.RankingPositionService;
 import com.chessd.chess.ranking.service.RankingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,15 @@ public class RankingController {
     private final RankingPositionService rankingPositionService;
     private final RankingService rankingService;
     private final GameTypeService gameTypeService;
+
+    @Value("${redirect.attribute-name.error}")
+    private String errorType;
+
+    @Value("${redirect.attribute-name.success}")
+    private String successType;
+
+    private static final String SUCCESS_URL = "/ranking";
+    private static final String RANKING = "ranking";
 
     @Autowired
     public RankingController(RankingPositionService rankingPositionService, RankingService rankingService, GameTypeService gameTypeService) {
@@ -64,7 +74,7 @@ public class RankingController {
         }
         Page<RankingPosition> page = rankingPositionService.findAllByRanking(ranking, pageNumber, pageSize);
         model.addAttribute("page", page)
-                .addAttribute("ranking", ranking);
+                .addAttribute(RANKING, ranking);
         return "ranking/specificRanking";
     }
 
@@ -72,7 +82,7 @@ public class RankingController {
     public String showForm(Model model){
         Ranking ranking = new Ranking();
         model.addAttribute("gameTypes", gameTypeService. findAllAvailable())
-                .addAttribute("ranking", ranking);
+                .addAttribute(RANKING, ranking);
         return "ranking/form";
     }
     private String validRanking(Ranking ranking){
@@ -98,18 +108,18 @@ public class RankingController {
             for(ObjectError error : bindingResult.getAllErrors()){
                 errorMessages.add(error.getDefaultMessage());
             }
-            redirectAttributes.addFlashAttribute("error", errorMessages);
+            redirectAttributes.addFlashAttribute(errorType, errorMessages);
             return new RedirectView("/ranking/admin/create");
         }
         String result = this.validRanking(ranking);
         if(!result.isEmpty()){
-            redirectAttributes.addFlashAttribute("error", result);
+            redirectAttributes.addFlashAttribute(errorType, result);
             return new RedirectView("/ranking/admin/create");
         }
 
         rankingService.save(ranking);
-        redirectAttributes.addFlashAttribute("success", "Poprawnie dodano rankig: " + ranking.getName());
-        return new RedirectView("/ranking");
+        redirectAttributes.addFlashAttribute(successType, "Poprawnie dodano rankig: " + ranking.getName());
+        return new RedirectView(SUCCESS_URL);
     }
 
     @PostMapping("admin/delete")
@@ -119,12 +129,48 @@ public class RankingController {
         int idValue = Integer.parseInt(id.substring(1));
         Optional<Ranking> ranking = rankingService.findById(idValue);
         if(ranking.isEmpty()){
-            redirectAttributes.addFlashAttribute("error", "Nie ma takiego rankingu");
-            return new RedirectView("/ranking");
+            redirectAttributes.addFlashAttribute(errorType, "Nie ma takiego rankingu");
+            return new RedirectView(SUCCESS_URL);
         }
         rankingPositionService.deletAllByRanking(ranking.get());
         rankingService.delete(ranking.get());
-        redirectAttributes.addFlashAttribute("success", "Pomyślnie usunieto ranking");
-        return new RedirectView("/ranking");
+        redirectAttributes.addFlashAttribute(successType, "Pomyślnie usunieto ranking");
+        return new RedirectView(SUCCESS_URL);
+    }
+
+    @GetMapping("admin/update/{id}")
+    public String showUpdateForm(@PathVariable int id, Model model){
+        Optional<Ranking> ranking = rankingService.findById(id);
+        if(ranking.isEmpty()){
+            return "ranking/all";
+        }
+        model.addAttribute(RANKING, ranking.get())
+                .addAttribute("gameTypes", gameTypeService.findAllAvailable());
+        return "ranking/updateForm";
+    }
+
+    @PostMapping("admin/update")
+    public RedirectView handleUpdate(
+            @ModelAttribute("ranking") Ranking ranking,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes){
+        if (bindingResult.hasErrors()) {
+            List<String> errorMessages = new ArrayList<>();
+            for(ObjectError error : bindingResult.getAllErrors()){
+                errorMessages.add(error.getDefaultMessage());
+            }
+            redirectAttributes.addFlashAttribute(errorType, errorMessages);
+            return new RedirectView("/ranking/admin/update/" + ranking.getId());
+        }
+        Ranking existing = rankingService.findByName(ranking.getName());
+        if(existing != null && !existing.equals(ranking)){
+            redirectAttributes.addFlashAttribute(errorType,
+                    "Ranking o takiej nazwie juz istnieje");
+            return new RedirectView("/ranking/admin/update/" + ranking.getId());
+        }
+        rankingService.save(ranking);
+        redirectAttributes.addFlashAttribute(successType,
+                "Poprawnie zmieniono ranking: " + ranking.getName());
+        return new RedirectView(SUCCESS_URL);
     }
 }

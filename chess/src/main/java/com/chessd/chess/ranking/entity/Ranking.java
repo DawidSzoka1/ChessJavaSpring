@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -30,4 +31,17 @@ public class Ranking {
 
     @OneToMany(mappedBy = "ranking")
     Set<RankingPosition> users;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Ranking ranking = (Ranking) o;
+        return id == ranking.id &&
+                Objects.equals(name, ranking.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, gameType, users);
+    }
 }
