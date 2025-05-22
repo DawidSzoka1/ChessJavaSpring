@@ -16,7 +16,7 @@
 
     <div class="login-container">
         <img class="chess-icon" th:src="@{/images/index/chess_piece.png}" alt="chess-piece">
-        <form th:action="@{/ranking/create}" method="post" th:object="${ranking}">
+        <form th:action="@{${#mvc.url('RC#handleFrom').build()}}" method="post" th:object="${ranking}">
             <div class="login-form">
                 <h1>Nowy Ranking</h1>
                 <div th:if="${error}" class="alert-box">

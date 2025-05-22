@@ -32,8 +32,11 @@
 <div th:insert="~{fragments/sidebar :: sidebar}">
 
 </div>
-
 <div class="admin-panel">
+    <div th:if="${success}" class="alert-box">
+        <div class="alert alert-success" th:text="${success}">
+        </div>
+    </div>
     <div class="admin-info">
         <span class="role">Administrator</span>
         <span class="admin-username" th:text="${admin.userName}"></span>
@@ -47,17 +50,6 @@
             <a class="admin-btn" th:href="@{${#mvc.url('RC#showForm').build()}}">Dodaj ranking</a>
             <a class="admin-btn" th:href="@{${#mvc.url('GTC#gameTypeForm').build()}}">Dodaj tryb gry</a>
         </div>
-    </div>
-    <div class="admin-section">
-        <h2>Oczekujące wiadomości od użytkowników</h2>
-        <table class="admin-table">
-            <tr>
-                <th>Data</th>
-                <th>Użytkownik</th>
-                <th>Temat</th>
-                <th>Status</th>
-            </tr>
-        </table>
     </div>
     <div class="admin-section">
         <h2>Ostatnie partie</h2>
@@ -81,21 +73,22 @@
             </tr>
         </table>
     </div>
-
     <div class="admin-section">
-        <h2>Zgłoszenia użytkowników</h2>
+        <h2> Tryby gry</h2>
         <table class="admin-table">
             <tr>
-                <th>ID</th>
-                <th>Użytkownik</th>
-                <th>Powód</th>
-                <th>Status</th>
+                <th>Nazwa</th>
+                <th>Czas gry (min)</th>
+                <th>Dodawany za ruch (sek)</th>
+                <th>Opcje</th>
+            </tr>
+            <tr th:each="gameType : ${gameTypes}">
+                <td th:text="${gameType.type}"></td>
+                <td th:text="${gameType.timePerPlayer}"></td>
+                <td th:text="${gameType.addPerMove}"></td>
+                <td>Usun</td>
             </tr>
         </table>
-    </div>
-
-    <div class="admin-section">
-        <h2>Historia aktywności administratora</h2>
     </div>
 </div>
 </body>
