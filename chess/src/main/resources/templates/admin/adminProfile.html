@@ -44,6 +44,8 @@
         <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
             <a class="admin-btn" th:href="@{${#mvc.url('AC#adminPanel').build()}}">Lista użytkowników</a>
             <a class="admin-btn" th:href="@{${#mvc.url('AC#getGamePanel').build()}}">Lista wszystkich gier</a>
+            <a class="admin-btn" th:href="@{${#mvc.url('RC#showForm').build()}}">Dodaj ranking</a>
+            <a class="admin-btn" th:href="@{${#mvc.url('GTC#gameTypeForm').build()}}">Dodaj tryb gry</a>
         </div>
     </div>
     <div class="admin-section">
