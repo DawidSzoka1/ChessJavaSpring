@@ -50,6 +50,17 @@ public class RankingPositionServiceImpl implements RankingPositionService {
     }
 
     @Override
+    public void deletAllByRanking(Ranking ranking) {
+        List<RankingPosition> positions = this.findAllByRanking(ranking);
+        positions.forEach(this::delete);
+    }
+
+    @Override
+    public List<RankingPosition> findAllByRanking(Ranking ranking) {
+        return rankingPositionDao.findAllByRanking(ranking);
+    }
+
+    @Override
     public List<RankingPosition> findAllByUser(User user) {
         return rankingPositionDao.findAllByUser(user);
     }

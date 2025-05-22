@@ -24,4 +24,14 @@ public class GameTypeServiceImpl implements GameTypeService {
     public List<GameType> findAll() {
         return gameTypeDao.findAll();
     }
+
+    @Override
+    public void save(GameType gameType) {
+        gameTypeDao.save(gameType);
+    }
+
+    @Override
+    public void delete(GameType gameType) {
+        gameTypeDao.delete(gameType);
+    }
 }

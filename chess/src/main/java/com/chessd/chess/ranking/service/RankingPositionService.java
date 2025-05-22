@@ -17,6 +17,10 @@ public interface RankingPositionService {
 
     Page<RankingPosition> findAllByRanking(Ranking ranking, int pageNumber, int pageSize);
 
+    void deletAllByRanking(Ranking ranking);
+
+    List<RankingPosition> findAllByRanking(Ranking ranking);
+
     List<RankingPosition> findAllByUser(User user);
 
     RankingPosition findByUserAndGameType(User user, GameType gameType);

@@ -8,4 +8,8 @@ public interface GameTypeService {
     GameType findByType(String type);
 
     List<GameType> findAll();
+
+    void save(GameType gameType);
+
+    void delete(GameType gameType);
 }

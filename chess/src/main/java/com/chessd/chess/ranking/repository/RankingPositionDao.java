@@ -14,6 +14,8 @@ import java.util.List;
 public interface RankingPositionDao extends JpaRepository<RankingPosition, RankingPositionKey> {
     Page<RankingPosition> findAllByRanking(Ranking ranking, Pageable pageable);
 
+    List<RankingPosition> findAllByRanking(Ranking ranking);
+
     List<RankingPosition> findAllByUser(User user);
 
     List<RankingPosition> findAllByRankingAndPointsLessThan(Ranking ranking, int points);

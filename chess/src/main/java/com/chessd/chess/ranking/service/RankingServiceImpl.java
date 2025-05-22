@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -47,5 +48,10 @@ public class RankingServiceImpl implements RankingService {
     @Override
     public Ranking findByGameType(GameType gameType) {
         return rankingDao.findByGameType(gameType);
+    }
+
+    @Override
+    public Optional<Ranking> findById(int id) {
+        return rankingDao.findById(id);
     }
 }

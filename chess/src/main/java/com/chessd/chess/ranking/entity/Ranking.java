@@ -28,9 +28,6 @@ public class Ranking {
     @JoinColumn(name = "game_type")
     private GameType gameType;
 
-    @Column(name = "ranking_icon_file_name")
-    private String rankingIconFileName;
-
     @OneToMany(mappedBy = "ranking")
     Set<RankingPosition> users;
 }
