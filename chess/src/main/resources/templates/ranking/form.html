@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj Ranking</title>
+    <link th:href="@{/css/global.css}" rel="stylesheet">
+    <link th:href="@{/css/form.css}" rel="stylesheet">
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+</head>
+<body>
+
+<div th:insert="~{fragments/sidebar :: sidebar}">
+</div>
+
+<div class="main">
+
+    <div class="login-container">
+        <img class="chess-icon" th:src="@{/images/index/chess_piece.png}" alt="chess-piece">
+        <form th:action="@{/ranking/create}" method="post" th:object="${ranking}">
+            <div class="login-form">
+                <h1>Nowy Ranking</h1>
+                <div th:if="${error}" class="alert-box">
+                    <div class="alert alert-error">
+                        <th:block th:each="e : ${error}">
+                            <span th:text="${e}"></span> <br>
+                        </th:block>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="rankingName">Nazwa:</label>
+                    <input type="text" th:field="*{name}" id="rankingName" name="rankingName" placeholder="Wpisz nazwe">
+                </div>
+                <div class="input-group">
+                    <label for="gameType">Typ Gry:</label>
+                    <select id="gameType" class="form-select" name="gameType" th:field="*{gameType}" required>
+                        <option th:each="gameType : ${gameTypes}" th:value="${gameType.id}"
+                                th:text="${gameType.type}"></option>
+                    </select>
+                </div>
+                <p class="text-link">Nie ma trybu?
+                    <a th:href="@{${#mvc.url('GTC#gameTypeForm').build()}}">Dodaj tryb gry.</a></p>
+                <button class="send-btn" type="submit">Utwórz Ranking</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

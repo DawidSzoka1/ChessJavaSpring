@@ -24,7 +24,7 @@
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .ranking-header {
@@ -32,6 +32,12 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 10px;
+            justify-content: space-between;
+        }
+
+        .left-group, .center-group, .right-group {
+            display: flex;
+            align-items: center;
         }
 
         .ranking-header i {
@@ -73,9 +79,21 @@
             text-align: center;
         }
 
-        .top-1 .player-rank { color: #FFD700; } /* Złoto */
-        .top-2 .player-rank { color: #C0C0C0; } /* Srebro */
-        .top-3 .player-rank { color: #CD7F32; } /* Brąz */
+        .top-1 .player-rank {
+            color: #FFD700;
+        }
+
+        /* Złoto */
+        .top-2 .player-rank {
+            color: #C0C0C0;
+        }
+
+        /* Srebro */
+        .top-3 .player-rank {
+            color: #CD7F32;
+        }
+
+        /* Brąz */
 
         .player-img {
             width: 32px;
@@ -105,6 +123,20 @@
             border-radius: 6px;
             font-size: 0.85em;
         }
+
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
         .player-header {
             display: flex;
             align-items: center;
@@ -134,12 +166,14 @@
         .player-header .player-points {
             font-weight: bold;
         }
+
         .ranking-header .ranking-icon {
             width: 32px;
             height: 32px;
             object-fit: contain;
             border-radius: 4px;
         }
+
         .more-button-wrapper {
             display: flex;
             justify-content: center;
@@ -157,21 +191,49 @@
             transition: background-color 0.3s ease;
         }
 
+        .button:hover {
+            background-color: #3367d6;
+        }
+
         .more-button:hover {
             background-color: #3367d6;
+        }
+
+        .btn-delete:hover {
+            box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+            transform: scale(1.03);
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <div  th:insert="~{fragments/sidebar :: sidebar}">
+    <div th:insert="~{fragments/sidebar :: sidebar}">
     </div>
     <div class="main">
+        <div th:if="${success}" class="alert-box">
+            <div class="alert alert-success" th:text="${success}">
+            </div>
+        </div>
+        <a class="button" th:href="@{${#mvc.url('RC#showForm').build()}}">+ Dodaj Nowy Ranking</a>
         <div class="ranking" th:each="element : ${rankings}">
             <div class="ranking-header">
-                <img th:src="@{${'/images/ranking/' + element.key.rankingIconFileName}}" alt="icon"
-                     class="ranking-icon">
-                <h3 th:text="${element.key.name}"></h3>
+                <div class="left-group">
+                    <img src="" alt="icon"
+                         class="ranking-icon">
+                    <h3 th:text="${element.key.name}"></h3>
+                </div>
+                <div class="center-group">
+                    <h3 th:text="${element.key.gameType.type}"></h3>
+                </div>
+                <div class="right-group">
+                    <form th:action="@{${#mvc.url('RC#handleDelete').build()}}" method="post"
+                          onsubmit="return confirm('Czy na pewno chcesz usunąć ten ranking?');" class="d-inline">
+                        <input type="hidden" name="ranking_id" th:value="${element.key.id}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm btn-delete" style="cursor: pointer;">
+                            Usuń
+                        </button>
+                    </form>
+                </div>
             </div>
             <div class="player-header">
                 <div class="player-rank">#</div>
@@ -180,9 +242,11 @@
                 <div class="player-points">Punkty</div>
             </div>
             <ul class="player-list" th:each="player : ${element.value}">
-                <a th:href="@{/users/profile/{userName}(userName=${player.user.userName})}" class="player-item" th:classappend="'top-' + ${player.position}">
+                <a th:href="@{/users/profile/{userName}(userName=${player.user.userName})}" class="player-item"
+                   th:classappend="'top-' + ${player.position}">
                     <div class="player-rank" th:text="${player.position}"></div>
-                    <th:block th:if="${player.user?.profilePictureFilename == null || player.user?.profilePictureFilename.isEmpty()}">
+                    <th:block
+                            th:if="${player.user?.profilePictureFilename == null || player.user?.profilePictureFilename.isEmpty()}">
                         <img th:src="@{/images/util/default-user.png}" alt="user" class="player-img">
                     </th:block>
                     <th:block th:if="${player.user?.profilePictureFilename != null}">
