@@ -54,7 +54,7 @@ public class Game {
     private int moveCount;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "game_type_id", nullable = false)
+    @JoinColumn(name = "game_type_id")
     private GameType gameType;
 
     public Game(String gameId) {

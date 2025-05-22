@@ -37,6 +37,13 @@
         <div class="alert alert-success" th:text="${success}">
         </div>
     </div>
+    <div th:if="${error}" class="alert-box">
+        <div class="alert alert-error">
+            <th:block th:each="e : ${error}">
+                <span th:text="${e}"></span> <br>
+            </th:block>
+        </div>
+    </div>
     <div class="admin-info">
         <span class="role">Administrator</span>
         <span class="admin-username" th:text="${admin.userName}"></span>
@@ -86,7 +93,12 @@
                 <td th:text="${gameType.type}"></td>
                 <td th:text="${gameType.timePerPlayer}"></td>
                 <td th:text="${gameType.addPerMove}"></td>
-                <td>Usun</td>
+                <td><form th:action="@{/admin/gameType/update/{id}(id=${gameType.id})}" method="get"
+                          class="d-inline">
+                    <button type="submit" class="btn btn-outline-danger btn-sm btn-delete" style="cursor: pointer;">
+                        Zmień
+                    </button>
+                </form></td>
             </tr>
         </table>
     </div>

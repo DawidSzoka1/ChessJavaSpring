@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Zmień tryb gry</title>
+    <link th:href="@{/css/global.css}" rel="stylesheet">
+    <link th:href="@{/css/form.css}" rel="stylesheet">
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+</head>
+<body>
+
+<div th:insert="~{fragments/sidebar :: sidebar}">
+</div>
+
+<div class="main">
+
+    <div class="login-container">
+        <img class="chess-icon" th:src="@{/images/index/chess_piece.png}" alt="chess-piece">
+        <form th:action="@{${#mvc.url('GTC#handleUpdate').build()}}" method="post" th:object="${gameType}">
+            <div class="login-form">
+                <h1>Zmień tryb gry:</h1>
+                <div th:if="${error}" class="alert-box">
+                    <div class="alert alert-error">
+                        <th:block th:each="e : ${error}">
+                            <span th:text="${e}"></span> <br>
+                        </th:block>
+                    </div>
+                </div>
+                <input type="hidden" th:field="*{id}" name="id">
+                <div class="input-group">
+                    <label for="gameType">Nazwa:</label>
+                    <input type="text" th:field="*{type}" id="gameType" name="gameType" placeholder="Wpisz nazwe" required>
+                </div>
+                <div class="input-group">
+                    <label for="timePerPlayer">Czas na gracza (w min):</label>
+                    <input type="number" th:field="*{timePerPlayer}" id="timePerPlayer" name="timePerPlayer" required
+                           placeholder="czas w minutach">
+                </div>
+                <div class="input-group">
+                    <label for="addPerMove">Czas dodany za ruch (w sek):</label>
+                    <input type="number" th:field="*{addPerMove}" id="addPerMove" name="addPerMove"
+                           placeholder="czas w sekundach">
+                </div>
+                <button class="send-btn" type="submit">Zakceptuj zmiany</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

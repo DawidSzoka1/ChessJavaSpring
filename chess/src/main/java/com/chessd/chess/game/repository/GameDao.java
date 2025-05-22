@@ -1,6 +1,7 @@
 package com.chessd.chess.game.repository;
 
 import com.chessd.chess.game.entity.Game;
+import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.game.utils.GameResult;
 import com.chessd.chess.user.entity.User;
 import org.springframework.data.domain.Page;
@@ -29,4 +30,6 @@ public interface GameDao extends JpaRepository<Game, String> {
 
     @Query("select g from Game g where g.winner is not null and g.winner <>:user and (g.white =:user1 or g.black =:user2)")
     List<Game> getGamesByWinnerNotAndWinnerNotNullAndWhiteOrBlack(User user, User user1, User user2);
+
+    List<Game> findAllByGameType(GameType gameType);
 }

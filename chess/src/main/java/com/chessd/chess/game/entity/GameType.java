@@ -33,7 +33,8 @@ public class GameType {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         GameType gameType = (GameType) o;
-        return id == gameType.id && Double.compare(timePerPlayer, gameType.timePerPlayer) == 0 && Double.compare(addPerMove, gameType.addPerMove) == 0 && Objects.equals(type, gameType.type);
+        return id == gameType.id &&
+                Objects.equals(type, gameType.type);
     }
 
     @Override

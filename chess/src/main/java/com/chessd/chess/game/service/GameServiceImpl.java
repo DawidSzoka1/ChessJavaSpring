@@ -6,12 +6,12 @@ import com.chessd.chess.figure.utils.Column;
 import com.chessd.chess.figure.utils.CreatingFigures;
 import com.chessd.chess.figure.utils.Position;
 import com.chessd.chess.game.entity.Game;
+import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.game.event.ValidateMoveEvent;
 import com.chessd.chess.figure.repository.FigureDao;
 import com.chessd.chess.game.exception.InvalidPlayer;
 import com.chessd.chess.game.repository.GameDao;
 import com.chessd.chess.game.utils.GameResult;
-import com.chessd.chess.user.entity.Role;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.repository.RoleDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -211,5 +211,18 @@ public class GameServiceImpl implements GameService {
             board[f.getRow()][f.getCol()] = f;
         }
         return board;
+    }
+
+    @Override
+    public List<Game> findAllByGameType(GameType gameType) {
+        return gameDao.findAllByGameType(gameType);
+    }
+
+    @Override
+    public void setGameTypeNull(GameType gameType) {
+        this.findAllByGameType(gameType).forEach(g ->{
+            g.setGameType(null);
+            this.save(g);
+        });
     }
 }

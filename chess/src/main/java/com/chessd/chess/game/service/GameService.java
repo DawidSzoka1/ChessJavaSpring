@@ -2,11 +2,12 @@ package com.chessd.chess.game.service;
 
 import com.chessd.chess.figure.entity.Figure;
 import com.chessd.chess.game.entity.Game;
+import com.chessd.chess.game.entity.GameType;
 import com.chessd.chess.game.utils.GameResult;
 import com.chessd.chess.figure.utils.Position;
 import com.chessd.chess.user.entity.User;
 import org.springframework.data.domain.Page;
-
+import java.util.List;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -42,4 +43,8 @@ public interface GameService {
     HashMap<Position, Figure> getBoard(Game game);
 
     Figure[][] getBoardAsTable(Game game);
+
+    List<Game> findAllByGameType(GameType gameType);
+
+    void setGameTypeNull(GameType gameType);
 }
