@@ -2,6 +2,7 @@ package com.chessd.chess.admin.controller;
 
 import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.game.service.GameService;
+import com.chessd.chess.game.service.GameTypeService;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
 import com.chessd.chess.utils.PaginationUtil;
@@ -27,12 +28,14 @@ public class AdminController {
     private final GameService gameService;
     private final TimeUtils timeUtils;
     private final PaginationUtil paginationUtil;
+    private final GameTypeService gameTypeService;
 
-    public AdminController(UserService userService, GameService gameService, TimeUtils timeUtils, PaginationUtil paginationUtil) {
+    public AdminController(UserService userService, GameService gameService, TimeUtils timeUtils, PaginationUtil paginationUtil, GameTypeService gameTypeService) {
         this.userService = userService;
         this.gameService = gameService;
         this.timeUtils = timeUtils;
         this.paginationUtil = paginationUtil;
+        this.gameTypeService = gameTypeService;
     }
 
     @GetMapping("/profile")
@@ -40,7 +43,8 @@ public class AdminController {
         User admin = userService.findByUserName(principal.getName());
         List<Game> lastGames = gameService.getAllEndedGames(0, 3).getContent();
         model.addAttribute("admin", admin)
-                .addAttribute("games", lastGames);
+                .addAttribute("games", lastGames)
+                .addAttribute("gameTypes", gameTypeService.findAll());
         return "admin/adminProfile";
     }
 

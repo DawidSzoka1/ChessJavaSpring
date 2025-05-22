@@ -24,7 +24,7 @@ public class Ranking {
     @Column(name = "name", unique = true)
     private String name;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "game_type")
     private GameType gameType;
 

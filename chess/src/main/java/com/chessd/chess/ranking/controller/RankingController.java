@@ -5,8 +5,6 @@ import com.chessd.chess.ranking.entity.Ranking;
 import com.chessd.chess.ranking.entity.RankingPosition;
 import com.chessd.chess.ranking.service.RankingPositionService;
 import com.chessd.chess.ranking.service.RankingService;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -73,9 +71,20 @@ public class RankingController {
     @GetMapping("admin/create")
     public String showForm(Model model){
         Ranking ranking = new Ranking();
-        model.addAttribute("gameTypes", gameTypeService.findAll())
+        model.addAttribute("gameTypes", gameTypeService. findAllAvailable())
                 .addAttribute("ranking", ranking);
         return "ranking/form";
+    }
+    private String validRanking(Ranking ranking){
+        Ranking existing = rankingService.findByName(ranking.getName());
+        if(existing != null){
+            return "Ranking o tej nazwie juz istnieje";
+        }
+        Ranking byGameType = rankingService.findByGameType(ranking.getGameType());
+        if(byGameType != null){
+            return "Ranking z tym trybem gry juz istnieje";
+        }
+        return "";
     }
 
     @PostMapping("admin/create")
@@ -90,14 +99,14 @@ public class RankingController {
                 errorMessages.add(error.getDefaultMessage());
             }
             redirectAttributes.addFlashAttribute("error", errorMessages);
-            return new RedirectView("/ranking/create");
+            return new RedirectView("/ranking/admin/create");
+        }
+        String result = this.validRanking(ranking);
+        if(!result.isEmpty()){
+            redirectAttributes.addFlashAttribute("error", result);
+            return new RedirectView("/ranking/admin/create");
         }
 
-        Ranking existing = rankingService.findByName(ranking.getName());
-        if(existing != null){
-            redirectAttributes.addFlashAttribute("error", "Ranking o tej nazwie juz istnieje");
-            return  new RedirectView("/ranking/create");
-        }
         rankingService.save(ranking);
         redirectAttributes.addFlashAttribute("success", "Poprawnie dodano rankig: " + ranking.getName());
         return new RedirectView("/ranking");
