@@ -17,7 +17,7 @@ public interface RankingPositionService {
 
     Page<RankingPosition> findAllByRanking(Ranking ranking, int pageNumber, int pageSize);
 
-    void deletAllByRanking(Ranking ranking);
+    void deleteAllByRanking(Ranking ranking);
 
     List<RankingPosition> findAllByRanking(Ranking ranking);
 
@@ -32,4 +32,10 @@ public interface RankingPositionService {
     int lowestPosition(Ranking ranking);
 
     int findNewPosition(Ranking ranking, int points);
+
+    List<RankingPosition> affectedByPointsChange(Ranking ranking, int pointsAfter, int pointsBefore);
+
+    int topPosition(List<RankingPosition> rankingPositions);
+
+    int bottomPosition(List<RankingPosition> rankingPositions);
 }

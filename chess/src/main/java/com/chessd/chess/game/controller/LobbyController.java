@@ -30,7 +30,7 @@ public class LobbyController {
 
         String playerName = userDetails == null ? "player" : userDetails.getUsername();
         User user = userService.findByUserName(playerName);
-        model.addAttribute("gameTypes", gameTypeService.findAll());
+        model.addAttribute("gameTypes", gameTypeService.findAllTaken());
         if(user == null){
             return "game/lobby";
         }

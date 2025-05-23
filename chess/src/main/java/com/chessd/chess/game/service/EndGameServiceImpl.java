@@ -43,15 +43,17 @@ public class EndGameServiceImpl implements EndGameService {
     private void processLosser(User losser, GameType gameType) {
         RankingPosition rankingLosser =
                 rankingPositionService.findByUserAndGameType(losser, gameType);
-        rankingLosser.setPoints(rankingLosser.getPoints() - 20);
-        this.updateRankingPositions(rankingLosser, gameType);
+        int losserBefore = rankingLosser.getPoints();
+        rankingLosser.setPoints(Math.max(rankingLosser.getPoints() - 100, 0));
+        this.updateRankingPositions(rankingLosser, gameType, losserBefore);
     }
 
     private void processWinner(User winner, GameType gameType) {
         RankingPosition rankingWinner =
                 rankingPositionService.findByUserAndGameType(winner, gameType);
-        rankingWinner.setPoints(rankingWinner.getPoints() + 20);
-        this.updateRankingPositions(rankingWinner, gameType);
+        int winnerBefore = rankingWinner.getPoints();
+        rankingWinner.setPoints(rankingWinner.getPoints() + 100);
+        this.updateRankingPositions(rankingWinner, gameType, winnerBefore);
     }
 
     private void processDraw(Game game) {
@@ -60,33 +62,67 @@ public class EndGameServiceImpl implements EndGameService {
                 rankingPositionService.findByUserAndGameType(game.getWhite(), gameType);
         RankingPosition rankingPlayerBlack =
                 rankingPositionService.findByUserAndGameType(game.getBlack(), gameType);
+        int whiteBefore = rankingPlayerWhite.getPoints();
+        int blackBefore = rankingPlayerBlack.getPoints();
+
         rankingPlayerWhite.setPoints(rankingPlayerWhite.getPoints() + 2);
         rankingPlayerBlack.setPoints(rankingPlayerBlack.getPoints() + 2);
-        this.updateRankingPositions(rankingPlayerWhite, gameType);
-        this.updateRankingPositions(rankingPlayerBlack, gameType);
+        this.updateRankingPositions(rankingPlayerWhite, gameType, whiteBefore);
+        this.updateRankingPositions(rankingPlayerBlack, gameType, blackBefore);
     }
 
-    private void updateRankingPositions(RankingPosition changed, GameType gameType) {
+    private void updateRankingPositions(RankingPosition changed, GameType gameType, int pointsBefore) {
         rankingPositionService.save(changed);
         Ranking ranking = rankingService.findByGameType(gameType);
-        List<RankingPosition> positionList = rankingPositionService
-                .findAllLowerThanAndRanking(changed.getPosition(), gameType);
-        for (RankingPosition position : positionList) {
-            position.setPosition(position.getPosition() + 1);
-            rankingPositionService.save(position);
-        }
 
-        List<RankingPosition> samePosition = rankingPositionService.findAllByPointsAndRanking(changed.getPoints(), ranking);
-        if(samePosition == null || samePosition.size() == 1){
-            changed.setPosition(rankingPositionService.findNewPosition(ranking, changed.getPoints()));
-            rankingPositionService.save(changed);
+        List<RankingPosition> affectedPositions = findAffectedPositions(changed, pointsBefore, ranking);
+        if (affectedPositions.size() == 1) {
             return;
         }
-       this.handleSamePosition(samePosition);
+
+        updateChangedPosition(changed, affectedPositions, pointsBefore);
+        resolveSamePointConflicts(changed, ranking);
     }
 
-    private void handleSamePosition(List<RankingPosition> samePosition){
-        int highestPosition = RankingPosition.bestPosition(samePosition);
+    private List<RankingPosition> findAffectedPositions(RankingPosition changed, int pointsBefore, Ranking ranking) {
+        int minPoints = Math.min(changed.getPoints(), pointsBefore);
+        int maxPoints = Math.max(changed.getPoints(), pointsBefore);
+        return rankingPositionService.affectedByPointsChange(ranking, minPoints, maxPoints);
+    }
+
+    private void updateChangedPosition(RankingPosition changed, List<RankingPosition> affectedPositions, int pointsBefore) {
+        int newPosition;
+        int changedBy;
+        if (changed.getPosition() > pointsBefore) {
+            changedBy = 1;
+            newPosition = rankingPositionService.topPosition(affectedPositions);
+        } else {
+            newPosition = rankingPositionService.bottomPosition(affectedPositions);
+            changedBy = -1;
+        }
+        System.out.println("NOWA POZYCJA TOPADUSADAS: " + newPosition);
+        changed.setPosition(newPosition);
+        rankingPositionService.save(changed);
+        affectedPositions.forEach(p -> {
+            if(!p.equals(changed)){
+                p.setPosition(p.getPosition() + changedBy);
+                rankingPositionService.save(p);
+            }
+        });
+    }
+
+    private void resolveSamePointConflicts(RankingPosition changed, Ranking ranking) {
+        List<RankingPosition> samePointPositions = rankingPositionService.findAllByPointsAndRanking(changed.getPoints(), ranking);
+        if (samePointPositions == null || samePointPositions.size() <= 1) {
+            return;
+        }
+        handleSamePosition(samePointPositions);
+    }
+
+    private void handleSamePosition(List<RankingPosition> samePosition) {
+        int highestPosition = rankingPositionService.topPosition(samePosition);
+        System.out.println("NAJWIEKSZA tO: " + highestPosition);
+        System.out.println(samePosition);
         for (RankingPosition position : samePosition) {
             position.setPosition(highestPosition);
             rankingPositionService.save(position);
@@ -111,7 +147,7 @@ public class EndGameServiceImpl implements EndGameService {
     }
 
     @Override
-    public void handleAfterGame(Game game, GameResult gameResult){
+    public void handleAfterGame(Game game, GameResult gameResult) {
         this.endGame(game, gameResult);
         this.processPoints(game);
     }

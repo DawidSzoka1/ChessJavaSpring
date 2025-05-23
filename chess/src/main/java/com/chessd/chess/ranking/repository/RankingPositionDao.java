@@ -24,8 +24,13 @@ public interface RankingPositionDao extends JpaRepository<RankingPosition, Ranki
 
     List<RankingPosition> findAllByPointsAndRanking(int points, Ranking ranking);
 
-    @Query("select position from RankingPosition where ranking=?1 and position = (select max(position) from RankingPosition where ranking=?1)")
+    @Query("select position from RankingPosition where ranking=?1 and position = " +
+            "(select max(position) from RankingPosition where ranking=?1)")
     int findByPositionMax(Ranking ranking);
 
-    RankingPosition findTopByRankingAndPointsGreaterThanEqualOrderByPointsAscPositionAsc(Ranking ranking, int points);
+    @Query("select position  from RankingPosition  where ranking=?1 and position = " +
+            "(select max(position) from RankingPosition  where ranking=?1 and position >= ?2)")
+    int findNewPosition(Ranking ranking, int newPoints);
+
+    List<RankingPosition> findAllByRankingAndPointsBetweenOrderByPointsDesc(Ranking ranking, int pointsAfter, int pointsBefore);
 }

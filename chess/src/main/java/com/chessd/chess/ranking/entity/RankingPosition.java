@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ranking_position")
@@ -36,13 +37,24 @@ public class RankingPosition {
     @Column(name = "points")
     private int points;
 
-    public static int bestPosition(List<RankingPosition> samePosition) {
-        int result = samePosition.getFirst().getPosition();
-        for(RankingPosition position: samePosition){
-            if(position.getPosition() < result){
-                result = position.getPosition();
-            }
-        }
-        return result;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        RankingPosition rankingPosition = (RankingPosition) o;
+        return Objects.equals(id, rankingPosition.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "RankingPosition{" +
+                "user=" + user.getUserName() +
+                ", position=" + position +
+                ", points=" + points +
+                '}';
     }
 }

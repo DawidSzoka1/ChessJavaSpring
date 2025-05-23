@@ -57,4 +57,16 @@ public class GameTypeServiceImpl implements GameTypeService {
         }
         return result;
     }
+
+    @Override
+    public List<GameType> findAllTaken() {
+        List<GameType> result = new ArrayList<>();
+        for(GameType gameType: this.findAll()){
+            Ranking existing = rankingService.findByGameType(gameType);
+            if(existing != null){
+                result.add(gameType);
+            }
+        }
+        return result;
+    }
 }

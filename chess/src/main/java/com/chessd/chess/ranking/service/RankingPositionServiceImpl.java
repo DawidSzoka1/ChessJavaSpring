@@ -50,7 +50,7 @@ public class RankingPositionServiceImpl implements RankingPositionService {
     }
 
     @Override
-    public void deletAllByRanking(Ranking ranking) {
+    public void deleteAllByRanking(Ranking ranking) {
         List<RankingPosition> positions = this.findAllByRanking(ranking);
         positions.forEach(this::delete);
     }
@@ -71,11 +71,13 @@ public class RankingPositionServiceImpl implements RankingPositionService {
         RankingPosition rankingPosition = rankingPositionDao.findByUserAndRanking(user, ranking);
         if(rankingPosition == null){
             RankingPositionKey key = new RankingPositionKey(user.getId(), ranking.getId());
-            rankingPosition = new RankingPosition(key, user, ranking, this.lowestPosition(ranking), 0);
+            rankingPosition = new RankingPosition(key, user, ranking, this.lowestPosition(ranking) + 1, 0);
             this.save(rankingPosition);
         }
         return rankingPosition;
     }
+
+
 
     @Override
     public List<RankingPosition> findAllLowerThanAndRanking(int points, GameType gameType) {
@@ -95,9 +97,33 @@ public class RankingPositionServiceImpl implements RankingPositionService {
 
     @Override
     public int findNewPosition(Ranking ranking, int points) {
-        RankingPosition oneAbove = rankingPositionDao
-                .findTopByRankingAndPointsGreaterThanEqualOrderByPointsAscPositionAsc(ranking, points);
+        return rankingPositionDao.findNewPosition(ranking, points) + 1;
+    }
 
-        return oneAbove.getPosition() + 1;
+    @Override
+    public List<RankingPosition> affectedByPointsChange(Ranking ranking, int pointsAfter, int pointsBefore) {
+        return rankingPositionDao.findAllByRankingAndPointsBetweenOrderByPointsDesc(ranking, pointsAfter, pointsBefore);
+    }
+
+    @Override
+    public int topPosition(List<RankingPosition> rankingPositions) {
+        int top = rankingPositions.getFirst().getPosition();
+        for(RankingPosition position : rankingPositions){
+            if(position.getPosition() < top){
+                top = position.getPosition();
+            }
+        }
+        return top;
+    }
+
+    @Override
+    public int bottomPosition(List<RankingPosition> rankingPositions) {
+        int bottom = rankingPositions.getFirst().getPosition();
+        for(RankingPosition position : rankingPositions){
+            if(position.getPosition() > bottom){
+                bottom = position.getPosition();
+            }
+        }
+        return bottom;
     }
 }

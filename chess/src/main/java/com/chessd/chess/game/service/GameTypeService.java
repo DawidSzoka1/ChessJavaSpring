@@ -17,4 +17,6 @@ public interface GameTypeService {
     Optional<GameType> findById(int id);
 
     List<GameType> findAllAvailable();
+
+    List<GameType> findAllTaken();
 }

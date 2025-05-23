@@ -238,9 +238,7 @@ public class CustomHandleTextMessage {
         if(opt.isEmpty()){
             return new MessageToJS("ERROR", "Nie ma takiej gry", false);
         }
-        Game game = opt.get();
-        game.setResult(GameResult.DRAW);
-        gameService.save(game);
+        applicationEventPublisher.publishEvent(new EndGameEvent(this, opt.get(), GameResult.DRAW));
         return this.drawHandle(new MessageToJS("DRAWACCEPT", "Remis zaakceptowany", true));
     }
 

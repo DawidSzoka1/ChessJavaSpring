@@ -132,7 +132,7 @@ public class RankingController {
             redirectAttributes.addFlashAttribute(errorType, "Nie ma takiego rankingu");
             return new RedirectView(SUCCESS_URL);
         }
-        rankingPositionService.deletAllByRanking(ranking.get());
+        rankingPositionService.deleteAllByRanking(ranking.get());
         rankingService.delete(ranking.get());
         redirectAttributes.addFlashAttribute(successType, "Pomyślnie usunieto ranking");
         return new RedirectView(SUCCESS_URL);
