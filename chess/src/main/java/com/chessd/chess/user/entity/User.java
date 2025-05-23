@@ -72,9 +72,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
-    @Column(name = "authorization")
-    private String authorization;
-
     @OneToMany(mappedBy = "white")
     private List<Game> gamesAsWhite = new ArrayList<>();
 
@@ -89,6 +86,15 @@ public class User {
     public void nullifGames() {
         gamesAsBlack.forEach(game -> game.setBlack(null));
         gamesAsWhite.forEach(game -> game.setWhite(null));
+    }
+
+    public String getAuthorization(){
+        for(Role role : this.getRoles()){
+            if(role.getName().equals("ROLE_ADMIN")){
+                return "Admin";
+            }
+        }
+        return "Użytkownik";
     }
 
     public User(String userName, String password, boolean enabled, int ranking) {

@@ -182,7 +182,7 @@
                 </td>
                 <td th:text="${user.email ?: 'brak danych'}"></td>
                 <td><span class="badge active"> Aktywny</span></td>
-                <td th:text="${user.authorization ?: 'Użytkownik'}"></td>
+                <td th:text="${user.getAuthorization ?: 'Użytkownik'}"></td>
                 <td th:text="${user.created}"></td>
                 <td class="actions">
                     <button>Usuń</button>

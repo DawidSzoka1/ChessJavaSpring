@@ -34,6 +34,7 @@
         <div class="input-group">
           <label for="gameType">Typ Gry:</label>
           <select id="gameType" class="form-select" name="gameType" th:field="*{gameType}" required>
+            <option th:value="${ranking.gameType.id}" th:text="${ranking.gameType.type}" selected></option>
             <option th:each="gameType : ${gameTypes}" th:value="${gameType.id}"
                     th:text="${gameType.type}"></option>
           </select>
