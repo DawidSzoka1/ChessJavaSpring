@@ -33,4 +33,6 @@ public interface RankingPositionDao extends JpaRepository<RankingPosition, Ranki
     int findNewPosition(Ranking ranking, int newPoints);
 
     List<RankingPosition> findAllByRankingAndPointsBetweenOrderByPointsDesc(Ranking ranking, int pointsAfter, int pointsBefore);
+
+    List<RankingPosition> findAllByRankingOrderByPointsDesc(Ranking ranking);
 }

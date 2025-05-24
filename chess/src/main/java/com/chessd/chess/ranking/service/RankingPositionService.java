@@ -25,17 +25,13 @@ public interface RankingPositionService {
 
     RankingPosition findByUserAndGameType(User user, GameType gameType);
 
-    List<RankingPosition> findAllLowerThanAndRanking(int points, GameType gameType);
 
     List<RankingPosition> findAllByPointsAndRanking(int points, Ranking ranking);
 
     int lowestPosition(Ranking ranking);
 
-    int findNewPosition(Ranking ranking, int points);
-
-    List<RankingPosition> affectedByPointsChange(Ranking ranking, int pointsAfter, int pointsBefore);
-
     int topPosition(List<RankingPosition> rankingPositions);
 
-    int bottomPosition(List<RankingPosition> rankingPositions);
+
+    List<RankingPosition> findAllByRankingOrderByPoints(Ranking ranking);
 }

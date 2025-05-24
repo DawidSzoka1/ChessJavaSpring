@@ -69,20 +69,12 @@ public class RankingPositionServiceImpl implements RankingPositionService {
     public RankingPosition findByUserAndGameType(User user, GameType gameType) {
         Ranking ranking = rankingService.findByGameType(gameType);
         RankingPosition rankingPosition = rankingPositionDao.findByUserAndRanking(user, ranking);
-        if(rankingPosition == null){
+        if (rankingPosition == null) {
             RankingPositionKey key = new RankingPositionKey(user.getId(), ranking.getId());
             rankingPosition = new RankingPosition(key, user, ranking, this.lowestPosition(ranking) + 1, 0);
             this.save(rankingPosition);
         }
         return rankingPosition;
-    }
-
-
-
-    @Override
-    public List<RankingPosition> findAllLowerThanAndRanking(int points, GameType gameType) {
-        Ranking ranking = rankingService.findByGameType(gameType);
-        return rankingPositionDao.findAllByRankingAndPointsLessThan(ranking, points);
     }
 
     @Override
@@ -96,20 +88,10 @@ public class RankingPositionServiceImpl implements RankingPositionService {
     }
 
     @Override
-    public int findNewPosition(Ranking ranking, int points) {
-        return rankingPositionDao.findNewPosition(ranking, points) + 1;
-    }
-
-    @Override
-    public List<RankingPosition> affectedByPointsChange(Ranking ranking, int pointsAfter, int pointsBefore) {
-        return rankingPositionDao.findAllByRankingAndPointsBetweenOrderByPointsDesc(ranking, pointsAfter, pointsBefore);
-    }
-
-    @Override
     public int topPosition(List<RankingPosition> rankingPositions) {
         int top = rankingPositions.getFirst().getPosition();
-        for(RankingPosition position : rankingPositions){
-            if(position.getPosition() < top){
+        for (RankingPosition position : rankingPositions) {
+            if (position.getPosition() < top) {
                 top = position.getPosition();
             }
         }
@@ -117,13 +99,7 @@ public class RankingPositionServiceImpl implements RankingPositionService {
     }
 
     @Override
-    public int bottomPosition(List<RankingPosition> rankingPositions) {
-        int bottom = rankingPositions.getFirst().getPosition();
-        for(RankingPosition position : rankingPositions){
-            if(position.getPosition() > bottom){
-                bottom = position.getPosition();
-            }
-        }
-        return bottom;
+    public List<RankingPosition> findAllByRankingOrderByPoints(Ranking ranking) {
+        return rankingPositionDao.findAllByRankingOrderByPointsDesc(ranking);
     }
 }
