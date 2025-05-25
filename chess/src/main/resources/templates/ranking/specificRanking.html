@@ -32,37 +32,20 @@
             </a>
             <div class="game-history-pagination-wrapper">
                 <ul class="game-history-pagination">
-<!--                    <li th:each="i : ${#numbers.sequence(start, end)}">-->
-<!--                        <a th:href="@{${#mvc.url('RC#allByRankingName').arg(1, i).arg(2, page.size).build()}}">-->
-<!--                            <img th:if="${page.number} == ${i}"-->
-<!--                                 th:src="@{/images/B/paginationQueen.png}"-->
-<!--                                 class="game-history-chess-icon" alt="Hetman"/>-->
-<!--                            <img th:if="${page.number} != ${i}"-->
-<!--                                 th:src="@{/images/B/paginationPawn.png}"-->
-<!--                                 class="game-history-chess-icon" alt="Pionek"/>-->
-<!--                            <span th:text="${i+1}" class="game-history-pagination-number"></span>-->
-<!--                        </a>-->
-<!--                    </li>-->
+                    <li th:each="i : ${#numbers.sequence(start, end)}">
+                        <a th:href="@{${#mvc.url('RC#allByRankingName').arg(1, ranking.name).arg(2, i).arg(3, page.size).build()}}">
+                            <img th:if="${page.number} == ${i}"
+                                 th:src="@{/images/B/paginationQueen.png}"
+                                 class="game-history-chess-icon" alt="Hetman"/>
+                            <img th:if="${page.number} != ${i}"
+                                 th:src="@{/images/B/paginationPawn.png}"
+                                 class="game-history-chess-icon" alt="Pionek"/>
+                            <span th:text="${i+1}" class="game-history-pagination-number"></span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </section>
-
-        <aside class="game-history-filter-box">
-            <h3>Filtruj Ranking</h3>
-            <label for="gracz">Gracz:</label>
-            <input type="text" id="gracz" placeholder="np. michal_adamczyk"/>
-
-            <label for="sortuj">Sortuj:</label>
-            <select id="sortuj">
-                <option>Domyślnie</option>
-                <option>Od końca</option>
-                <option>A-Z</option>
-            </select>
-
-            <button>Zastosuj</button>
-            <p>Pasujących wyników: 3</p>
-        </aside>
-
     </div>
 </div>
 

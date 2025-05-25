@@ -5,6 +5,7 @@ import com.chessd.chess.ranking.entity.Ranking;
 import com.chessd.chess.ranking.entity.RankingPosition;
 import com.chessd.chess.ranking.service.RankingPositionService;
 import com.chessd.chess.ranking.service.RankingService;
+import com.chessd.chess.utils.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,7 @@ public class RankingController {
     private final RankingPositionService rankingPositionService;
     private final RankingService rankingService;
     private final GameTypeService gameTypeService;
+    private final PaginationUtil paginationUtil;
 
     @Value("${redirect.attribute-name.error}")
     private String errorType;
@@ -39,10 +41,11 @@ public class RankingController {
     private static final String RANKING = "ranking";
 
     @Autowired
-    public RankingController(RankingPositionService rankingPositionService, RankingService rankingService, GameTypeService gameTypeService) {
+    public RankingController(RankingPositionService rankingPositionService, RankingService rankingService, GameTypeService gameTypeService, PaginationUtil paginationUtil) {
         this.rankingPositionService = rankingPositionService;
         this.rankingService = rankingService;
         this.gameTypeService = gameTypeService;
+        this.paginationUtil = paginationUtil;
     }
 
     @GetMapping("")
@@ -60,7 +63,8 @@ public class RankingController {
     }
 
     @GetMapping("/{rankingName}/all")
-    public String allByRankingName(Model model, @PathVariable String rankingName,
+    public String allByRankingName(Model model,
+                                   @PathVariable String rankingName,
                                    @RequestParam(
                                            value = "pageNumber", defaultValue = "0", required = false
                                    ) int pageNumber,
@@ -73,8 +77,8 @@ public class RankingController {
             return "error/404";
         }
         Page<RankingPosition> page = rankingPositionService.findAllByRanking(ranking, pageNumber, pageSize);
-        model.addAttribute("page", page)
-                .addAttribute(RANKING, ranking);
+        paginationUtil.setPagination(page, model);
+        model.addAttribute(RANKING, ranking);
         return "ranking/specificRanking";
     }
 
