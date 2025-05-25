@@ -156,6 +156,14 @@
 </div>
 
 <main class="content">
+    <div th:if="${success}" class="alert-box">
+        <div class="alert alert-success" th:text="${success}">
+        </div>
+    </div>
+    <div th:if="${error}" class="alert-box">
+        <div class="alert alert-error" th:text="${error}">
+        </div>
+    </div>
     <div class="top-bar">
         <h1 class="title-main">Lista użytkowników</h1>
         <a class="btn-back" th:href="@{${(#mvc.url('AC#getProfile')).build()}}">← Powrót do panelu</a>
@@ -185,7 +193,13 @@
                 <td th:text="${user.getAuthorization ?: 'Użytkownik'}"></td>
                 <td th:text="${user.created}"></td>
                 <td class="actions">
-                    <button>Usuń</button>
+                    <form th:action="${#mvc.url('AC#deleteUser').build()}" method="post"
+                          onsubmit="return confirm('Czy na pewno chcesz usunąć tego użytkownika?');" class="d-inline">
+                        <input type="hidden" name="userName" th:value="${user.userName}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm btn-delete" style="cursor: pointer;">
+                            Usuń
+                        </button>
+                    </form>
                 </td>
             </tr>
             </tbody>

@@ -243,6 +243,10 @@
             <div class="alert alert-success" th:text="${success}">
             </div>
         </div>
+        <div th:if="${error}" class="alert-box">
+            <div class="alert alert-error" th:text="${error}">
+            </div>
+        </div>
         <a class="button" th:href="@{${#mvc.url('RC#showForm').build()}}" sec:authorize="hasRole('ROLE_ADMIN')">+ Dodaj
             Nowy Ranking</a>
         <div class="ranking" th:each="element : ${rankings}">

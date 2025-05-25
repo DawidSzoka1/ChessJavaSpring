@@ -29,6 +29,7 @@ public class AdminController {
     private final TimeUtils timeUtils;
     private final PaginationUtil paginationUtil;
     private final GameTypeService gameTypeService;
+    private static final String REDIRECT = "/admin/users/list";
 
     public AdminController(UserService userService, GameService gameService, TimeUtils timeUtils, PaginationUtil paginationUtil, GameTypeService gameTypeService) {
         this.userService = userService;
@@ -62,23 +63,26 @@ public class AdminController {
         return "admin/adminUsersList";
     }
 
-    @PostMapping("delete/users")
-    public RedirectView deleteUsers(@RequestParam(name = "userIds", required = false) List<Integer> userIds,
-                                    Principal principal, RedirectAttributes redirectAttributes) {
-        int amount = userIds.size();
-        userIds.removeIf(i -> principal.getName().equals(userService.findById(i).get().getUserName()));
-        if (amount != userIds.size()) {
-            redirectAttributes.addFlashAttribute("info", "Nie mozna usunac admina");
+    @PostMapping("delete/user")
+    public RedirectView deleteUser(
+            @RequestParam(name = "userName") String userName,
+            RedirectAttributes redirectAttributes) {
+        userName = userName.substring(1);
+        User user = userService.findByUserName(userName);
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error",
+                    "Brak takiego użytkownika " + userName);
+            return new RedirectView(REDIRECT);
         }
-        try {
-            userService.deleteUsers(userIds);
-            redirectAttributes.addFlashAttribute("success",
-                    "Usunieto zaznaczonych uzytkownikow(" + userIds.size() + ")");
-            return new RedirectView("/admin/panel");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return new RedirectView("/admin/panel");
+        if (user.getAuthorization().equals("Admin")) {
+            redirectAttributes.addFlashAttribute("error",
+                    "Nie można usunąc admina");
+            return new RedirectView(REDIRECT);
         }
+        userService.delete(user);
+        redirectAttributes.addFlashAttribute("success",
+                "Poprawnie usunieto użytkownika " + userName);
+        return new RedirectView(REDIRECT);
     }
 
     @GetMapping("/review/panel")
