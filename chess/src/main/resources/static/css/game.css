@@ -1,0 +1,295 @@
+body {
+    font-family: 'Outfit', sans-serif;
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.col-md-4 {
+    width: 36%;
+}
+
+.col-md-8 {
+    width: 64%;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#offer-draw-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin: 10px 0;
+}
+
+#offer-draw-btn:hover {
+    background-color: #45a049;
+}
+
+#draw-request-container {
+    background-color: #f8f9fa;
+    border: 2px solid #ddd;
+    padding: 15px;
+    border-radius: 10px;
+    max-width: 300px;
+    text-align: center;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#draw-request-container p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+#accept-draw-btn, #reject-draw-btn {
+    padding: 8px 14px;
+    margin: 5px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+#accept-draw-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+#accept-draw-btn:hover {
+    background-color: #0069d9;
+}
+
+#reject-draw-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+#reject-draw-btn:hover {
+    background-color: #c82333;
+}
+
+.buttons-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Klasy dla odwróconej szachownicy */
+.board-flipped {
+    transform: rotate(180deg);
+}
+
+.board-flipped .square-content {
+    transform: rotate(180deg);
+}
+
+/* Panel końca gry - minimalistyczny */
+.game-end-panel {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    min-width: 280px;
+    max-width: 320px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    animation: fadeInScale 0.3s ease-out;
+    backdrop-filter: blur(10px);
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #666;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.result-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.result-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.result-subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.mini-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.mini-stat {
+    text-align: center;
+    flex: 1;
+}
+
+.mini-stat-label {
+    display: block;
+    color: #666;
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+}
+
+.mini-stat-value {
+    font-weight: 600;
+    color: #333;
+}
+
+.points-display {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.points-positive {
+    background: #d4edda;
+    color: #155724;
+}
+
+.points-negative {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.points-neutral {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+.mini-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.mini-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.mini-btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.mini-btn-primary:hover {
+    background: #0056b3;
+}
+
+.mini-btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.mini-btn-secondary:hover {
+    background: #545b62;
+}
+
+/* Kolory dla różnych wyników */
+.panel-win {
+    border-left: 4px solid #28a745;
+}
+
+.panel-loss {
+    border-left: 4px solid #dc3545;
+}
+
+.panel-draw {
+    border-left: 4px solid #ffc107;
+}
+
+/* Relatywne pozycjonowanie dla kontenera szachownicy */
+.chessboard-container {
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 1.1rem;
+    }
+
+    .main-content-game {
+        margin-left: 80px;
+        max-width: calc(100vw - 100px);
+        overflow-x: hidden;
+    }
+
+    .col-md-4 {
+        width: 100%;
+    }
+
+    .col-md-8 {
+        width: 100%;
+
+    }
+
+    .player-info {
+        height: 10%;
+    }
+}
