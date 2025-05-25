@@ -26,6 +26,7 @@
             text-decoration: none;
             color: inherit;
         }
+
         #offer-draw-btn {
             background-color: #4CAF50;
             color: white;
@@ -50,7 +51,7 @@
             max-width: 300px;
             text-align: center;
             margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         #draw-request-container p {
@@ -86,6 +87,7 @@
         #reject-draw-btn:hover {
             background-color: #c82333;
         }
+
         .buttons-area {
             display: flex;
             justify-content: center;
@@ -93,6 +95,190 @@
             flex-direction: column;
             gap: 15px;
         }
+
+        /* Klasy dla odwróconej szachownicy */
+        .board-flipped {
+            transform: rotate(180deg);
+        }
+
+        .board-flipped .square-content {
+            transform: rotate(180deg);
+        }
+
+        /* Panel końca gry - minimalistyczny */
+        .game-end-panel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-width: 280px;
+            max-width: 320px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            animation: fadeInScale 0.3s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .result-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .result-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .result-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .mini-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .mini-stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .mini-stat-label {
+            display: block;
+            color: #666;
+            font-size: 0.75rem;
+            margin-bottom: 2px;
+        }
+
+        .mini-stat-value {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .points-display {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .points-positive {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .points-negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .points-neutral {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .mini-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .mini-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .mini-btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .mini-btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .mini-btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .mini-btn-secondary:hover {
+            background: #545b62;
+        }
+
+        /* Kolory dla różnych wyników */
+        .panel-win {
+            border-left: 4px solid #28a745;
+        }
+
+        .panel-loss {
+            border-left: 4px solid #dc3545;
+        }
+
+        .panel-draw {
+            border-left: 4px solid #ffc107;
+        }
+
+        /* Relatywne pozycjonowanie dla kontenera szachownicy */
+        .chessboard-container {
+            position: relative;
+        }
+
         @media (max-width: 768px) {
             body {
                 font-size: 1.1rem;
@@ -128,43 +314,136 @@
         <main class="col-12 col-md-11 p-4 main-content-game">
             <div class="row">
                 <div class="col-12 col-md-4">
-                    <a th:href="@{${white != null ? ('/users/profile/' + white.userName) : '#'}}">
+                    <a th:href="@{${enemy != null ?
+                        ('/users/profile/' + enemy.userName) : '#'}}">
                         <div class="player-info profile-avatar">
-                            <img th:src="@{${white == null ? '/images/util/default-user.png':
-                            (white.profilePictureFilename == null ? '/images/util/default-user.png' :
-                              '/files/' + white.profilePictureFilename) }}"
+                            <img th:src="@{${enemy != null ?
+                                (enemy.profilePictureFilename == null ? '/images/util/default-user.png':
+                                '/files/' + black.profilePictureFilename) :
+                                '/images/util/default-user.png'}}"
                                  class="me-3" alt="profil">
                             <div>
-                                <h5 th:text="${white?.userName ?: 'Anonimowy'}"></h5>
-                                <p class="mb-0" th:text="${'Czas: ' + game.gameType?.timePerPlayer ?: '1'}"></p>
+                                <h5 th:text="${enemy != null  ?
+                                    enemy.userName : 'Anonimowy'}"></h5>
+                                <p class="mb-0" th:text="${'Czas: ' + game.gameType?.timePerPlayer ?: '01:00'}"></p>
                             </div>
                         </div>
                     </a>
-                    <div id="chessboard">
-                        <div th:each="row, statRow : ${gameBoard}" class="g-0 chessboard">
-                            <div th:each="col, statCol : ${row}"
-                                 th:class="${(statRow.index + statCol.index) % 2 == 0 ? 'square white' : 'square black'}">
+                    <div class="chessboard-container">
+                        <div id="chessboard" th:class="${player != null ?
+                            (player.userName.equals(white.userName) ? 'board-flipped' : '') : ''}">
+                            <div th:each="row, statRow : ${gameBoard}" class="g-0 chessboard">
+                                <div th:each="col, statCol : ${row}"
+                                     th:class="${(statRow.index + statCol.index) % 2 == 0 ? 'square white' : 'square black'}">
 
-                                <div class="square-content"
-                                     th:id="${columns[statCol.index] + '' + (statRow.index+1) + '-'}">
-                                    <th:block th:if="${col != null}">
-                                        <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure"
-                                             class="piece"
-                                             draggable="true" th:id="${col.position}">
-                                    </th:block>
+                                    <div class="square-content"
+                                         th:id="${columns[statCol.index] + '' + (statRow.index+1) + '-'}">
+                                        <th:block th:if="${col != null}">
+                                            <img th:src="@{${'/images/'+ col.color + '/' + col.imageName}}" alt="figure"
+                                                 class="piece"
+                                                 draggable="true" th:id="${col.position}">
+                                        </th:block>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div th:if="${!game.result.name().equals('ONGOING')}"
+                             id="mini-game-end-panel"
+                             th:class="${'game-end-panel ' +
+                                (game.result.name().equals('DRAW') ? 'panel-draw' :
+                                 ((player != null &&
+                                   ((game.result.name().equals('WHITE_WINS') && player.userName.equals(white?.userName)) ||
+                                    (game.result.name().equals('BLACK_WINS') && player.userName.equals(black?.userName)))) ? 'panel-win' : 'panel-loss'))}">
+
+                            <button class="close-btn" onclick="closeMiniPanel()">&times;</button>
+
+                            <span class="result-icon">
+                                <th:block th:if="${game.result.name().equals('DRAW')}">🤝</th:block>
+                                <th:block
+                                        th:if="${game.result.name().equals('WHITE_WINS') || game.result.name().equals('BLACK_WINS')}">
+                                    <th:block th:if="${player != null &&
+                                        ((game.result.name().equals('WHITE_WINS') && player.userName.equals(white?.userName)) ||
+                                         (game.result.name().equals('BLACK_WINS') && player.userName.equals(black?.userName)))}">🏆</th:block>
+                                    <th:block th:unless="${player != null &&
+                                        ((game.result.name().equals('WHITE_WINS') && player.userName.equals(white?.userName)) ||
+                                         (game.result.name().equals('BLACK_WINS') && player.userName.equals(black?.userName)))}">😔</th:block>
+                                </th:block>
+                            </span>
+
+
+                            <div class="result-title">
+                                <th:block th:if="${game.result.name().equals('DRAW')}">Remis!</th:block>
+                                <th:block
+                                        th:if="${game.result.name().equals('WHITE_WINS') || game.result.name().equals('BLACK_WINS')}">
+                                    <th:block th:if="${player != null &&
+                                        ((game.result.name().equals('WHITE_WINS') && player.userName.equals(white?.userName)) ||
+                                         (game.result.name().equals('BLACK_WINS') && player.userName.equals(black?.userName)))}">
+                                        Zwycięstwo!
+                                    </th:block>
+                                    <th:block th:unless="${player != null &&
+                                        ((game.result.name().equals('WHITE_WINS') && player.userName.equals(white?.userName)) ||
+                                         (game.result.name().equals('BLACK_WINS') && player.userName.equals(black?.userName)))}">
+                                        Porażka
+                                    </th:block>
+                                </th:block>
+                            </div>
+
+                            <!-- Podtytuł -->
+                            <div class="result-subtitle" th:text="${game.result.name().equals('WHITE_WINS') ?
+                             'Białe wygrały (' + game.winner.userName + ')' :
+                                (game.result.name().equals('BLACK_WINS') ?
+                                'Czarne wygrały (' + game.winner.userName + ')' : 'Partia zakończona remisem')}">
+                            </div>
+
+                            <!-- Mini statystyki -->
+                            <div class="mini-stats">
+                                <div class="mini-stat">
+                                    <span class="mini-stat-label">Ruchy</span>
+                                    <span class="mini-stat-value" th:text="${moveList?.size() ?: 0}"></span>
+                                </div>
+                                <div class="mini-stat">
+                                    <span class="mini-stat-label">Czas</span>
+                                    <span class="mini-stat-value"
+                                          th:text="${game.gameType?.timePerPlayer + 'min' ?: '∞'}"></span>
+                                </div>
+                                <div class="mini-stat">
+                                    <span class="mini-stat-label">Punkty</span>
+                                    <span class="mini-stat-value">
+                                        <th:block th:if="${game.result.name().equals('DRAW')}">
+                                            <span class="points-display points-neutral">+2</span>
+                                        </th:block>
+                                        <th:block th:if="${player != null &&
+                                            ((game.result.name().equals('WHITE_WINS') && player.userName.equals(white?.userName)) ||
+                                             (game.result.name().equals('BLACK_WINS') && player.userName.equals(black?.userName)))}">
+                                            <span class="points-display points-positive">+20</span>
+                                        </th:block>
+                                        <th:block th:if="${player != null &&
+                                            !((game.result.name().equals('WHITE_WINS') && player.userName.equals(white?.userName)) ||
+                                              (game.result.name().equals('BLACK_WINS') && player.userName.equals(black?.userName))) &&
+                                            !game.result.name().equals('DRAW')}">
+                                            <span class="points-display points-negative">-20</span>
+                                        </th:block>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Mini przyciski -->
+                            <div class="mini-buttons">
+                                <a th:href="@{/play}" class="mini-btn mini-btn-primary">Nowa gra</a>
+                            </div>
+                        </div>
                     </div>
-                    <a th:href="@{${black != null ? ('/users/profile/' + black?.userName) : '#'}}">
+                    <!-- Gracz na dole - aktualny gracz -->
+                    <a th:href="@{${player != null ?
+                        ('/users/profile/' + player.userName) : '#'}}">
                         <div class="player-info mt-3 justify-content-end text-end profile-avatar">
                             <div>
-                                <h5 th:text="${black?.userName ?: 'Anonimowy'}"></h5>
-                                <p class="mb-0" th:text="${'Czas: ' + game.gameType?.timePerPlayer ?: '1'}"></p>
+                                <h5 th:text="${player != null ? player.userName : 'Anonimowy'}"></h5>
+                                <p class="mb-0" th:text="${'Czas: ' + game.gameType?.timePerPlayer ?: '01:00'}"></p>
                             </div>
-                            <img th:src="@{${black == null ? '/images/util/default-user.png':
-                            (black.profilePictureFilename == null ? '/images/util/default-user.png' :
-                              '/files/' + black.profilePictureFilename) }}"
+                            <img th:src="@{${player != null ?
+                                (player.profilePictureFilename == null ? '/images/util/default-user.png':
+                                '/files/' + white.profilePictureFilename) : '/images/util/default-user.png'}}"
                                  class="me-3" alt="profil">
                         </div>
                     </a>
@@ -185,7 +464,7 @@
 
                     <div class="panel text-center buttons-area" id="buttons-area"
                          th:if="${game.result.name().equals('ONGOING')
-                         && (player.equals(white.userName) || player.equals(black.userName))}">
+                         && (player?.userName.equals(white.userName) || player?.userName.equals(black.userName))}">
                         <button id="offer-draw-btn">Zaproponuj remis</button>
                         <div id="draw-request-sent" class="info-box" style="display: none;">
                             Propozycja remisu została wysłana
@@ -215,4 +494,9 @@
 
 </body>
 <script type="module" th:src="@{/js/figureMove.js}"></script>
+<script>
+    function closeMiniPanel() {
+        document.getElementById('mini-game-end-panel').style.display = 'none';
+    }
+</script>
 </html>

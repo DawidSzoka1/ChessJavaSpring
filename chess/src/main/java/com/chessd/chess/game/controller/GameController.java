@@ -6,6 +6,7 @@ import com.chessd.chess.game.service.RandomUniqIdGenerator;
 import com.chessd.chess.figure.utils.Column;
 import com.chessd.chess.move.entity.Move;
 import com.chessd.chess.move.service.MoveService;
+import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,26 +35,6 @@ public class GameController {
         this.moveService = moveService;
     }
 
-    @GetMapping("/play/test")
-    public String test(Model model, Principal principal) {
-        Game g = new Game(randomUniqIdGenerator.generateUniqId());
-        if (principal != null) {
-            g.setWhite(userService.findByUserName(principal.getName()));
-        }
-        g.setBlack(userService.findById(2).get());
-        gameService.save(g);
-        gameService.startGame(g);
-
-        model
-                .addAttribute("white", g.getWhite())
-                .addAttribute("black", g.getBlack())
-                .addAttribute("columns", Column.values())
-                .addAttribute("game", g)
-                .addAttribute("gameBoard", gameService.getBoardAsTable(g))
-                .addAttribute("gameService", gameService);
-        return "game/classic-board";
-    }
-
     @GetMapping("/play/{gamId}")
     public String classic(Model model, @PathVariable String gamId, Principal principal) {
         Optional<Game> optional = gameService.getGameById(gamId);
@@ -62,7 +43,12 @@ public class GameController {
         }
         Game g = optional.get();
         List<Move> moveList = moveService.getAllByGame(g);
-        String player = principal != null ? principal.getName() : "";
+        String playerName = principal != null ? principal.getName() : "";
+        User player = userService.findByUserName(playerName);
+        if(player == null || (!player.equals(g.getBlack()) && !player.equals(g.getWhite()))){
+            player = g.getWhite();
+        }
+        User enemy = g.getBlack().getUserName().equals(player.getUserName()) ? g.getWhite() : g.getBlack();
         model
                 .addAttribute("white", g.getWhite())
                 .addAttribute("black", g.getBlack())
@@ -71,7 +57,8 @@ public class GameController {
                 .addAttribute("gameBoard", gameService.getBoardAsTable(g))
                 .addAttribute("gameService", gameService)
                 .addAttribute("moveList", moveList)
-                .addAttribute("player", player);
+                .addAttribute("player", player)
+                .addAttribute("enemy", enemy);
         return "game/classic-board";
     }
 
