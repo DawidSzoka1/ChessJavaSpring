@@ -3,6 +3,7 @@ package com.chessd.chess.admin.controller;
 import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.game.service.GameService;
 import com.chessd.chess.game.service.GameTypeService;
+import com.chessd.chess.ranking.service.RankingPositionService;
 import com.chessd.chess.user.entity.User;
 import com.chessd.chess.user.service.UserService;
 import com.chessd.chess.utils.PaginationUtil;
@@ -30,13 +31,15 @@ public class AdminController {
     private final PaginationUtil paginationUtil;
     private final GameTypeService gameTypeService;
     private static final String REDIRECT = "/admin/users/list";
+    private final RankingPositionService rankingPositionService;
 
-    public AdminController(UserService userService, GameService gameService, TimeUtils timeUtils, PaginationUtil paginationUtil, GameTypeService gameTypeService) {
+    public AdminController(UserService userService, GameService gameService, TimeUtils timeUtils, PaginationUtil paginationUtil, GameTypeService gameTypeService, RankingPositionService rankingPositionService) {
         this.userService = userService;
         this.gameService = gameService;
         this.timeUtils = timeUtils;
         this.paginationUtil = paginationUtil;
         this.gameTypeService = gameTypeService;
+        this.rankingPositionService = rankingPositionService;
     }
 
     @GetMapping("/profile")
@@ -79,6 +82,7 @@ public class AdminController {
                     "Nie można usunąc admina");
             return new RedirectView(REDIRECT);
         }
+        rankingPositionService.deleteAll(user);
         userService.delete(user);
         redirectAttributes.addFlashAttribute("success",
                 "Poprawnie usunieto użytkownika " + userName);

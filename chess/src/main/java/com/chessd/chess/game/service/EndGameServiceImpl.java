@@ -71,18 +71,8 @@ public class EndGameServiceImpl implements EndGameService {
 
     private void updateRankingPositions(RankingPosition changed, GameType gameType) {
         Ranking ranking = rankingService.findByGameType(gameType);
-        updateChangedPosition(ranking);
+        rankingPositionService.updateRanking(ranking);
         resolveSamePointConflicts(changed, ranking);
-    }
-
-    private void updateChangedPosition(Ranking ranking) {
-        List<RankingPosition> all = rankingPositionService.findAllByRankingOrderByPoints(ranking);
-        int currentPosition = 1;
-        for(RankingPosition temp: all){
-            temp.setPosition(currentPosition);
-            currentPosition++;
-            rankingPositionService.save(temp);
-        }
     }
 
     private void resolveSamePointConflicts(RankingPosition changed, Ranking ranking) {

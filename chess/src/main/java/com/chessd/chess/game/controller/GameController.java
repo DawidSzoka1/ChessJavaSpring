@@ -48,7 +48,11 @@ public class GameController {
         if(player == null || (!player.equals(g.getBlack()) && !player.equals(g.getWhite()))){
             player = g.getWhite();
         }
-        User enemy = g.getBlack().getUserName().equals(player.getUserName()) ? g.getWhite() : g.getBlack();
+        User enemy = null;
+        if(g.getBlack() != null){
+            enemy = g.getBlack().getUserName().equals(player.getUserName()) ? g.getWhite() : g.getBlack();
+
+        }
         model
                 .addAttribute("white", g.getWhite())
                 .addAttribute("black", g.getBlack())

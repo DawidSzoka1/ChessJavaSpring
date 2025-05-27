@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RankingPositionServiceImpl implements RankingPositionService {
@@ -101,5 +102,24 @@ public class RankingPositionServiceImpl implements RankingPositionService {
     @Override
     public List<RankingPosition> findAllByRankingOrderByPoints(Ranking ranking) {
         return rankingPositionDao.findAllByRankingOrderByPointsDesc(ranking);
+    }
+
+    @Override
+    public void updateRanking(Ranking ranking) {
+        List<RankingPosition> all = this.findAllByRankingOrderByPoints(ranking);
+        int currentPosition = 1;
+        for(RankingPosition temp: all){
+            temp.setPosition(currentPosition);
+            currentPosition++;
+            this.save(temp);
+        }
+    }
+
+    @Override
+    public void deleteAll(User user) {
+        Set<RankingPosition> rankings = user.getRankings();
+        for(RankingPosition rankingPosition : rankings){
+            this.delete(rankingPosition);
+        }
     }
 }

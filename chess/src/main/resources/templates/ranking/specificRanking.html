@@ -17,6 +17,7 @@
         <section class="game-history-section">
             <h1 class="game-history-title title-main" th:text="${ranking.name}"></h1>
             <a th:each="rankingPosition : ${page.content}"
+               th:href="@{/users/profile/{userName}(userName=${rankingPosition.user.userName})}"
                 class="game-history-card-link">
                 <div class="game-history-ranking-card" th:classappend="'game-history-ranking-card ' +
                         (${rankingPosition.position == 1} ? 'podium-first' :

@@ -32,6 +32,9 @@ public interface RankingPositionService {
 
     int topPosition(List<RankingPosition> rankingPositions);
 
-
     List<RankingPosition> findAllByRankingOrderByPoints(Ranking ranking);
+
+    void updateRanking(Ranking ranking);
+
+    void deleteAll(User user);
 }

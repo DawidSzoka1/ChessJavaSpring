@@ -1,5 +1,6 @@
 package com.chessd.chess.user.entity;
 
+import com.chessd.chess.figure.entity.Figure;
 import com.chessd.chess.game.entity.Game;
 import com.chessd.chess.ranking.entity.RankingPosition;
 import jakarta.persistence.*;
@@ -78,14 +79,21 @@ public class User {
     @OneToMany(mappedBy = "black")
     private List<Game> gamesAsBlack = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "user")
-    Set<RankingPosition> rankings;
+    private Set<RankingPosition> rankings;
+
+    @OneToMany(mappedBy = "winner")
+    private List<Game> gameWon;
+
+    @OneToMany(mappedBy = "ownerId")
+    private List<Figure> figures;
 
     @PreRemove
-    public void nullifGames() {
+    public void nullif() {
         gamesAsBlack.forEach(game -> game.setBlack(null));
         gamesAsWhite.forEach(game -> game.setWhite(null));
+        gameWon.forEach(game -> game.setWinner(null));
+        figures.forEach(f -> f.setOwnerId(null));
     }
 
     public String getAuthorization(){
