@@ -82,11 +82,14 @@ public class StorageServiceImpl implements StorageService {
             throw new StorageException("Cannot store file outside current directory.");
         }
         String contentType = file.getContentType();
+        if (contentType == null) {
+            throw new StorageFileNotFoundException("Could not read file: " + file.getOriginalFilename());
+        }
         return switch (contentType) {
             case "image/jpeg" -> "jpg";
             case "image/png" -> "png";
             case "image/webp" -> "webp";
-            case null, default -> throw new IOException("Nieobsługiwany typ pliku");
+            default -> throw new IOException("Nieobsługiwany typ pliku");
         };
     }
 

@@ -23,7 +23,7 @@ public class RoleDaoImpl implements RoleDao {
         Role role;
         try {
             role = query.getSingleResult();
-        }catch (Exception _){
+        }catch (Exception e){
             throw new RuntimeException("Given role dont exist: " + name);
         }
         return role;
