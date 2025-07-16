@@ -41,8 +41,8 @@ Obecnie pracuję nad:
 ### Skonfiguruj MySQL:
 1. **Klonuj repozytorium:**
    ```bash
-   git clone https://github.com/twoj-user/chess-springboot.git
-   cd chess-springboot
+   git clone https://github.com/DawidSzoka1/ChessJavaSpring.git
+   cd ChessJavaSpring
    
 2. **Utwórz bazę danych `chess_db` i zaktualizuj dane dostępu w `application.properties`:**
 
